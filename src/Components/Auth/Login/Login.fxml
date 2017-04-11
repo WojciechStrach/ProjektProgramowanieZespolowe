@@ -25,9 +25,9 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <TextField layoutX="226.0" layoutY="166.0" prefHeight="25.0" prefWidth="198.0" style="-fx-background-radius: 0;" />
-      <TextField layoutX="226.0" layoutY="203.0" prefHeight="25.0" prefWidth="198.0" style="-fx-background-radius: 0;" />
+      <TextField fx:id="loginInput" layoutX="226.0" layoutY="166.0" prefHeight="25.0" prefWidth="198.0" style="-fx-background-radius: 0;" />
+      <TextField fx:id="passwordInput" layoutX="226.0" layoutY="203.0" prefHeight="25.0" prefWidth="198.0" style="-fx-background-radius: 0;" />
       <Hyperlink layoutX="226.0" layoutY="230.0" text="Forgot password?" />
-      <Button layoutX="226.0" layoutY="267.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="198.0" style="-fx-background-radius: 0;" text="Log in" />
+      <Button fx:id="logInButton" layoutX="226.0" layoutY="267.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="198.0" style="-fx-background-radius: 0;" text="Log in" />
    </children>
 </AnchorPane>

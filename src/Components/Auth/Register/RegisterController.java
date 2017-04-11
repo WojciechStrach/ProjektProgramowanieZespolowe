@@ -1,4 +1,4 @@
-package Components.Register;
+package Components.Auth.Register;
 
 import java.net.URL;
 import java.util.ResourceBundle;

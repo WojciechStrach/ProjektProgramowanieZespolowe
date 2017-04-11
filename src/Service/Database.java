@@ -3,7 +3,7 @@ package Service;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class Database {
+class Database {
     private static String databaseUrl = "jdbc:mysql://sql11.freemysqlhosting.net:3306/sql11167655";
     private static String databaseLogin = "sql11167655";
     private static String databasePassword = "d7Wr67dWJQ";
@@ -30,12 +30,12 @@ public class Database {
                         }
                         result.add(row);
                     }
-                    return result;
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
             throw new Error("");
         }
+        return result;
     }
 }
