@@ -45,7 +45,7 @@ public class Users {
 
     public String getDisplayName() { return display_name.get(); }
 
-    public void setDisplay_name(String displayName) { this.display_name.set(displayName); }
+    public void setDisplayName(String displayName) { this.display_name.set(displayName); }
 
     public  StringProperty displayNameProperty() { return display_name; }
 }

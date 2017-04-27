@@ -106,7 +106,7 @@ public class ProjectsDAO {
 
         String updateStmt =
                         "DELETE FROM projects" +
-                        "WHERE title ="+ title +";";
+                        "WHERE title ='"+ title +"';";
 
         try {
             DatabaseHandler.databaseExecuteUpdate(updateStmt);
