@@ -1,8 +1,8 @@
-package zespolowe.model;
+package model;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import zespolowe.Utilize.DatabaseHandler;
+import Utilize.DatabaseHandler;
 
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -100,6 +100,27 @@ public class TasksDAO {
         String selectStmt = "SELECT * " +
                 "FROM tasks " +
                 "WHERE dateAndTime =" + data;
+
+        try {
+            ResultSet rsTasks = DatabaseHandler.databaseExecuteQuery(selectStmt);
+
+            ObservableList<Tasks> tasksList = getTasksList(rsTasks);
+
+            return tasksList;
+
+        } catch (Exception e) {
+            System.out.println("Wystąpił błąd podczas wyszukiwania zadań " + e);
+            e.printStackTrace();
+
+            return null;
+        }
+    }
+
+    public static ObservableList<Tasks> getTaskById(int id) throws SQLException, ClassNotFoundException {
+
+        String selectStmt = "SELECT * " +
+                "FROM tasks " +
+                "WHERE project_id =" + id;
 
         try {
             ResultSet rsTasks = DatabaseHandler.databaseExecuteQuery(selectStmt);

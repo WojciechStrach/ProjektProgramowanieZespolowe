@@ -1,8 +1,8 @@
-package zespolowe.model;
+package model;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import zespolowe.Utilize.DatabaseHandler;
+import Utilize.DatabaseHandler;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -27,8 +27,8 @@ public class ProjectsDAO {
     public static Projects searchProject (String title) throws SQLException, ClassNotFoundException {
 
         String selectStmt = "SELECT * " +
-                            "FROM projects" +
-                            "WHERE title ="+ title +";";
+                            "FROM projects " +
+                            "WHERE title = '"+ title +"';";
 
         try {
             ResultSet rsProject = DatabaseHandler.databaseExecuteQuery(selectStmt);

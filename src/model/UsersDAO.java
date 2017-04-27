@@ -1,8 +1,8 @@
-package zespolowe.model;
+package model;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import zespolowe.Utilize.DatabaseHandler;
+import Utilize.DatabaseHandler;
 
 import java.sql.Date;
 import java.sql.ResultSet;

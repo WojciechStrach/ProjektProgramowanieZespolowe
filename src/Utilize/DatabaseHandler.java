@@ -1,4 +1,4 @@
-package zespolowe.Utilize;
+package Utilize;
 
 import com.sun.rowset.CachedRowSetImpl;
 import java.sql.*;
@@ -30,12 +30,12 @@ public class DatabaseHandler {
 
 
     private static void databaseConnect() throws SQLException, ClassNotFoundException {
-        try {
-            Class.forName(JDBC_DRIVER);
-        } catch (ClassNotFoundException e) {
-            System.out.println("Coś ze sterownikiem");
-            e.printStackTrace();
-        }
+        //try {
+            //Class.forName(JDBC_DRIVER);
+        //} catch (ClassNotFoundException e) {
+            //System.out.println("Coś ze sterownikiem");
+            //e.printStackTrace();
+        //}
 
         try {
             conn = DriverManager.getConnection("jdbc:mysql://" + databaseUrl + "/" + databaseName,username,password);
