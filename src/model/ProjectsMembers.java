@@ -1,4 +1,4 @@
-package zespolowe.model;
+package model;
 
 import javafx.beans.property.*;
 import java.sql.Date;
@@ -8,13 +8,13 @@ public class ProjectsMembers {
     private IntegerProperty projectMember_id;
     private IntegerProperty project_id;
     private IntegerProperty user_id;
-    private IntegerProperty admin;
+    private BooleanProperty admin;
 
     public ProjectsMembers(){
         this.projectMember_id = new SimpleIntegerProperty();
         this.project_id = new SimpleIntegerProperty();
         this.user_id = new SimpleIntegerProperty();
-        this.admin = new SimpleIntegerProperty();
+        this.admin = new SimpleBooleanProperty();
     }
 
     //
@@ -55,15 +55,15 @@ public class ProjectsMembers {
 
     //
 
-    public int getAdmin() {
+    public boolean getAdmin() {
         return admin.get();
     }
 
-    public void setAdmin(int admin){
+    public void setAdmin(boolean admin){
         this.admin.set(admin);
     }
 
-    public IntegerProperty adminProperty(){
+    public BooleanProperty adminProperty(){
         return admin;
     }
 

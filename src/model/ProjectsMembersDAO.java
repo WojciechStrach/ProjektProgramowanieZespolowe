@@ -1,8 +1,8 @@
-package zespolowe.model;
+package model;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import zespolowe.Utilize.DatabaseHandler;
+import Utilize.DatabaseHandler;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,7 +19,7 @@ public class ProjectsMembersDAO {
             projectMember.setProjectMemberId(rs.getInt("projectMember_id"));
             projectMember.setProjectId(rs.getInt("project_id"));
             projectMember.setUserId(rs.getInt("user_id"));
-            projectMember.setAdmin(rs.getInt("admin"));
+            projectMember.setAdmin(rs.getBoolean("admin"));
 
             projectsMembersList.add(projectMember);
         }
@@ -50,11 +50,33 @@ public class ProjectsMembersDAO {
     public static ObservableList<ProjectsMembers> searchProjectMembers (int data) throws SQLException, ClassNotFoundException {
 
         String selectStmt = "SELECT * " +
-                "FROM projects " +
-                "WHERE projectMember_id =" + data +
-                "OR project_id =" + data +
-                "OR user_id =" + data +
-                "OR admin =" + data;
+                "FROM projectsmembers " +
+                "WHERE projectMember_id = " + data + " " +
+                "OR project_id = " + data + " " +
+                "OR user_id = " + data + " " +
+                "OR admin = " + data;
+
+        try {
+            ResultSet rsProjectMembers = DatabaseHandler.databaseExecuteQuery(selectStmt);
+
+            ObservableList<ProjectsMembers> projectsMembersList = getProjectsMembersList(rsProjectMembers);
+
+            return projectsMembersList;
+
+        } catch (Exception e) {
+            System.out.println("Wystąpił błąd podczas wyszukiwania uczestników projektu " + e);
+            e.printStackTrace();
+
+            return null;
+        }
+    }
+
+    public static ObservableList<ProjectsMembers> searchProjectMembersByProjectId (int projectId) throws SQLException, ClassNotFoundException {
+
+        String selectStmt = "SELECT * " +
+                "FROM projectsmembers " +
+                "WHERE project_id = " + projectId;
+
 
         try {
             ResultSet rsProjectMembers = DatabaseHandler.databaseExecuteQuery(selectStmt);

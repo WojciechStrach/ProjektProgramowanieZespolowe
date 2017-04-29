@@ -1,4 +1,4 @@
-package zespolowe.model;
+package model;
 
 import javafx.beans.property.*;
 import java.sql.Date;

@@ -1,5 +1,6 @@
 package Models;
 
+import Service.Session;
 import javafx.beans.property.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,6 +9,9 @@ public class User {
     public static User parseUserDataSetToUserModel(ResultSet resultSet) {
         User user = new User();
         try {
+            Session.setUserId(resultSet.getInt("user_id"));
+            Session.setEmail(resultSet.getString("email"));
+            Session.setDisplayName(resultSet.getString("display_name"));
             user.setEmail(resultSet.getString("email"));
         } catch (SQLException e) {
             e.printStackTrace();
