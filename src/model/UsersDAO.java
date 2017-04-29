@@ -20,7 +20,7 @@ public class UsersDAO {
             user.setUserId(rs.getInt("user_id"));
             user.setEmail(rs.getString("email"));
             user.setPassword(rs.getString("password"));
-            user.setDisplayName(rs.getString("description"));
+            user.setDisplayName(rs.getString("display_name"));
 
             usersList.add(user);
         }
@@ -39,7 +39,7 @@ public class UsersDAO {
             user.setUserId(rs.getInt("user_id"));
             user.setEmail(rs.getString("email"));
             user.setPassword(rs.getString("password"));
-            user.setDisplayName(rs.getString("description"));
+            user.setDisplayName(rs.getString("display_name"));
 
         }
 

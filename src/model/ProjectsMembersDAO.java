@@ -71,6 +71,28 @@ public class ProjectsMembersDAO {
         }
     }
 
+    public static ObservableList<ProjectsMembers> searchProjectMembersByProjectId (int projectId) throws SQLException, ClassNotFoundException {
+
+        String selectStmt = "SELECT * " +
+                "FROM projectsmembers " +
+                "WHERE project_id = " + projectId;
+
+
+        try {
+            ResultSet rsProjectMembers = DatabaseHandler.databaseExecuteQuery(selectStmt);
+
+            ObservableList<ProjectsMembers> projectsMembersList = getProjectsMembersList(rsProjectMembers);
+
+            return projectsMembersList;
+
+        } catch (Exception e) {
+            System.out.println("Wystąpił błąd podczas wyszukiwania uczestników projektu " + e);
+            e.printStackTrace();
+
+            return null;
+        }
+    }
+
     public static void insertProjectMember (int projectId, int userId, int admin) throws SQLException, ClassNotFoundException {
 
         String updateStmt =

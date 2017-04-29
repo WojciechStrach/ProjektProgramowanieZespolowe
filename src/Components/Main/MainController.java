@@ -23,8 +23,10 @@ import static model.ProjectsMembersDAO.searchProjectMembers;
 public class MainController implements Initializable {
 
     private SimpleStringProperty clickedProject = new SimpleStringProperty();
-    ObservableList<Projects> userProjects;
-    ObservableList<Tasks> projectTasks;
+    private Projects currentProject;
+    private ObservableList<Projects> userProjects;
+    private ObservableList<Tasks> projectTasks;
+    private ObservableList<Users> projectMembers;
     
     @FXML
     private Label label;
@@ -65,9 +67,34 @@ public class MainController implements Initializable {
 
         }catch (Exception e){
             e.printStackTrace();
+            return null;
         }
 
         return matchedProjects;
+    }
+
+    private ObservableList<Users> projectMembers(){
+        ObservableList<Users> matchedMembers = FXCollections.observableArrayList();
+        try {
+            ObservableList<ProjectsMembers> membersProject = ProjectsMembersDAO.searchProjectMembersByProjectId
+                    (currentProject.getProjectId());
+
+            List<Integer> usersIds = new ArrayList<>();
+            for (ProjectsMembers member : membersProject){
+                usersIds.add(member.getUserId());
+            }
+
+            for (int i=0; i<usersIds.size(); i++){
+                matchedMembers.add(UsersDAO.searchUsers(usersIds.get(i)));
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+
+        return matchedMembers;
+
     }
     
     @Override
@@ -77,22 +104,6 @@ public class MainController implements Initializable {
                 userName.setText(Session.getDisplayName());
 
                 clickedProject.bindBidirectional(projects.valueProperty());
-
-                clickedProject.addListener((observable, oldValue, newValue) -> {
-                    System.out.println(newValue);
-
-                    try {
-
-                        Projects getProject = ProjectsDAO.searchProject(newValue);
-                        projectTasks = TasksDAO.getTaskById(getProject.getProjectId());
-
-                        for (Tasks pT : projectTasks) {
-                            System.out.println(pT.getDescription());
-                        }
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }
-                });
 
                 userProjects = matchProjects();
 
@@ -107,12 +118,21 @@ public class MainController implements Initializable {
 
                     try {
 
-                        Projects getProject = ProjectsDAO.searchProject(newValue);
-                        projectTasks = TasksDAO.getTaskById(getProject.getProjectId());
+                        currentProject = ProjectsDAO.searchProject(newValue);
+                        projectTasks = TasksDAO.getTaskById(currentProject.getProjectId());
 
                         for (Tasks pT : projectTasks) {
                             System.out.println(pT.getDescription());
+                            //TODO
                         }
+
+                        projectMembers = projectMembers();
+
+                        for (Users pU : projectMembers){
+                            System.out.println(pU.getDisplayName());
+                            //TODO
+                        }
+
                     }catch (Exception e){
                         e.printStackTrace();
                     }
