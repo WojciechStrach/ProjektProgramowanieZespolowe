@@ -10,9 +10,9 @@ public class KiraStart extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         DatabaseHandler.setDatabaseUrl("localhost");
-        DatabaseHandler.setDatabaseName("projektprogramowaniezespolowe");
-        DatabaseHandler.setUsername("root");
-        DatabaseHandler.setPassword("wojtek123");
+        DatabaseHandler.setDatabaseName("programowaniegrupowe");
+        DatabaseHandler.setUsername("chujwieco");
+        DatabaseHandler.setPassword("sushijestsmaczne");
         stage.setScene(new Scene(ParentsLoader.getParent(ParentsList.login)));
         stage.show();
 

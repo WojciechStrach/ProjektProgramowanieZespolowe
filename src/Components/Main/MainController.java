@@ -1,5 +1,7 @@
 package Components.Main;
 
+import java.awt.*;
+import java.awt.Button;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -15,6 +17,9 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.Label;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import model.*;
 
 
@@ -34,6 +39,9 @@ public class MainController implements Initializable {
     private Label userName;
     @FXML
     private ComboBox<String> projects;
+    @FXML
+    private Pane parentpane;
+
     
     @FXML
     private void handleButtonAction(ActionEvent event) {
@@ -120,10 +128,18 @@ public class MainController implements Initializable {
 
                         currentProject = ProjectsDAO.searchProject(newValue);
                         projectTasks = TasksDAO.getTaskById(currentProject.getProjectId());
+                        int x = 15;
+                        int y = 40;
 
-                        for (Tasks pT : projectTasks) {
-                            System.out.println(pT.getDescription());
-                            //TODO
+                        for (int i = 0; i <=1 ; i++){
+
+                            Pane task1 = new Pane();
+                            task1.setLayoutX(x);
+                            task1.setLayoutY(y);
+                            task1.setPrefHeight(50);
+                            task1.setPrefWidth(660);
+                            task1.setStyle("-fx-background-color: darkgrey;");
+                            task1.setId(" "+i);
                         }
 
                         projectMembers = projectMembers();
