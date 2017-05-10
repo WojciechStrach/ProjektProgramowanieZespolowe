@@ -1,5 +1,6 @@
 package Main;
 
+import Models.User;
 import Utilize.DatabaseHandler;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -14,10 +15,10 @@ public class KiraStart extends Application {
         DatabaseHandler.setPassword("wojtek123");
         stage.setScene(new Scene(ParentsLoader.getParent(ParentsList.login)));
         stage.show();
+
+
     }
 
-    public static void main(String[] args) {
-        launch(args);
-    }
+    public static void main(String[] args) { launch(args); }
     
 }
