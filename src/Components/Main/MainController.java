@@ -1,12 +1,13 @@
 package Components.Main;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import Service.Session;
+import com.sun.javafx.tk.Toolkit;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -27,6 +28,9 @@ public class MainController implements Initializable {
     private ObservableList<Projects> userProjects;
     private ObservableList<Tasks> projectTasks;
     private ObservableList<Users> projectMembers;
+    private int numberOfUsersObjects = 0;
+    private int numberOfTasksObjects = 0;
+
     
     @FXML
     private Label label;
@@ -34,6 +38,10 @@ public class MainController implements Initializable {
     private Label userName;
     @FXML
     private ComboBox<String> projects;
+    @FXML
+    private ListView<String> projectTaskList;
+    @FXML
+    private ListView<String> projectUserList;
     
     @FXML
     private void handleButtonAction(ActionEvent event) {
@@ -113,25 +121,75 @@ public class MainController implements Initializable {
 
                 clickedProject.bindBidirectional(projects.valueProperty());
 
+
                 clickedProject.addListener((observable, oldValue, newValue) -> {
                     System.out.println(newValue);
+
+                    projectUserList.getItems().clear();
+                    projectTaskList.getItems().clear();
+
+                    numberOfTasksObjects = 0;
+                    numberOfUsersObjects = 0;
+
 
                     try {
 
                         currentProject = ProjectsDAO.searchProject(newValue);
-                        projectTasks = TasksDAO.getTaskById(currentProject.getProjectId());
 
-                        for (Tasks pT : projectTasks) {
-                            System.out.println(pT.getDescription());
-                            //TODO
-                        }
+                        Runnable refreshValues = new Runnable() {
+                            public void run() {
+                                try {
 
-                        projectMembers = projectMembers();
+                                    projectTasks = TasksDAO.getTaskById(currentProject.getProjectId());
 
-                        for (Users pU : projectMembers){
-                            System.out.println(pU.getDisplayName());
-                            //TODO
-                        }
+                                    if(numberOfTasksObjects < projectTasks.size()){
+                                        for(int i = numberOfTasksObjects; i<projectTasks.size(); i++){
+                                            Tasks temp = projectTasks.get(i);
+                                            projectTaskList.getItems().add(temp.getDescription());
+
+                                        }
+                                        numberOfTasksObjects = projectTasks.size();
+                                    }
+
+                                    if(numberOfTasksObjects > projectTasks.size()){
+                                        numberOfTasksObjects =  projectTasks.size();
+                                        ObservableList<String> temp = projectTaskList.getItems();
+                                        for(int j=0; j<temp.size(); j++){
+                                            boolean isPresent = false;
+                                            for (int k=0; k<projectTasks.size(); k++){
+                                                if(temp.get(j).equals(projectTasks)){
+                                                    isPresent = true;
+                                                }
+                                            }
+                                            if (isPresent == false){
+                                                
+                                            }
+                                        }
+                                    }
+
+                                    for (Tasks pT : projectTasks) {
+                                        System.out.println(pT.getDescription());
+
+
+                                    }
+
+
+                                    projectMembers = projectMembers();
+                                    numberOfUsersObjects = projectMembers.size();
+                                    for (Users pU : projectMembers) {
+                                        System.out.println(pU.getDisplayName());
+
+                                    }
+
+                                }catch (Exception e){
+                                    e.printStackTrace();
+                                }
+                            }
+                        };
+
+                        ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+                        executor.scheduleAtFixedRate(refreshValues, 0, 3, TimeUnit.SECONDS);
+
 
                     }catch (Exception e){
                         e.printStackTrace();

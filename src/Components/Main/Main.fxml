@@ -14,6 +14,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import java.lang.String?>
 <?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.ListView?>
 <AnchorPane id="AnchorPane" prefHeight="632.0" prefWidth="959.0" xmlns="http://javafx.com/javafx/8.0.91" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Components.Main.MainController">
     <children>
         <Label fx:id="label" layoutX="126" layoutY="120" minHeight="16" minWidth="69" />
@@ -36,37 +37,12 @@
       </Pane>
       <Pane layoutY="43.0" prefHeight="590.0" prefWidth="278.0" style="-fx-background-color: #cce6ff;">
          <children>
-            <Pane layoutX="15.0" layoutY="50.0" prefHeight="40.0" prefWidth="250.0" style="-fx-background-color: b3d9ff;">
-               <children>
-                  <Label layoutX="49.0" layoutY="13.0" prefHeight="17.0" prefWidth="108.0" text="User 1" />
-                  <Pane layoutX="6.0" layoutY="6.0" prefHeight="28.0" prefWidth="28.0" style="-fx-background-color: #0080ff;" />
-               </children>
-            </Pane>
-            <Label layoutX="14.0" layoutY="14.0" prefHeight="30.0" prefWidth="254.0" text="Users:" />
-            <Pane layoutX="15.0" layoutY="100.0" prefHeight="40.0" prefWidth="250.0" style="-fx-background-color: b3d9ff;">
-               <children>
-                  <Label layoutX="49.0" layoutY="13.0" prefHeight="17.0" prefWidth="167.0" text="User 2" />
-                  <Pane layoutX="6.0" layoutY="6.0" prefHeight="28.0" prefWidth="28.0" style="-fx-background-color: #0080ff;" />
-               </children>
-            </Pane>
-            <Pane layoutX="15.0" layoutY="150.0" prefHeight="40.0" prefWidth="250.0" style="-fx-background-color: b3d9ff;">
-               <children>
-                  <Label layoutX="49.0" layoutY="13.0" prefHeight="17.0" prefWidth="108.0" text="User 3" />
-                  <Pane layoutX="6.0" layoutY="6.0" prefHeight="28.0" prefWidth="28.0" style="-fx-background-color: #0080ff;" />
-               </children>
-            </Pane>
-            <Pane layoutX="15.0" layoutY="200.0" prefHeight="40.0" prefWidth="250.0" style="-fx-background-color: b3d9ff;">
-               <children>
-                  <Label layoutX="49.0" layoutY="13.0" prefHeight="17.0" prefWidth="108.0" text="User 4" />
-                  <Pane layoutX="6.0" layoutY="6.0" prefHeight="28.0" prefWidth="28.0" style="-fx-background-color: #0080ff;" />
-               </children>
-            </Pane>
-            <Pane layoutX="15.0" layoutY="250.0" prefHeight="40.0" prefWidth="250.0" style="-fx-background-color: b3d9ff;">
-               <children>
-                  <Label layoutX="49.0" layoutY="13.0" prefHeight="17.0" prefWidth="108.0" text="User 5" />
-                  <Pane layoutX="6.0" layoutY="6.0" prefHeight="28.0" prefWidth="28.0" style="-fx-background-color: #0080ff;" />
-               </children>
-            </Pane>
+            <Label layoutX="14.0" layoutY="14.0" prefHeight="17.0" prefWidth="108.0" text="Członkowie" />
+            <ListView fx:id="projectUserList" layoutX="15.0" layoutY="50.0" prefHeight="500.0" prefWidth="250.0" style="-fx-background-color: b3d9ff;">
+               <FXCollections fx:factory="observableArrayList">
+                  <String fx:value="Wybierz projekt z listy"/>
+               </FXCollections>
+            </ListView>
             <Button layoutX="14.0" layoutY="551.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="250.0" style="-fx-background-radius: 0; -fx-background-color: #80aaff;" text="Add User" textAlignment="CENTER">
                <font>
                   <Font name="Times New Roman" size="15.0" />
@@ -74,34 +50,10 @@
             </Button>
          </children>
       </Pane>
-      <Pane layoutX="278.0" layoutY="43.0" prefHeight="590.0" prefWidth="681.0" style="-fx-background-color: #e6eeff;">
-         <children>
-            <Label layoutX="14.0" layoutY="14.0" prefHeight="17.0" prefWidth="108.0" text="Tasks" />
-            <Pane layoutX="14.0" layoutY="41.0" prefHeight="50.0" prefWidth="660.0" style="-fx-background-color: lightgrey;">
-               <children>
-                  <CheckBox layoutX="14.0" layoutY="17.0" mnemonicParsing="false" style="-fx-border-radius: 0;" text="Task 1" />
-                  <Button layoutX="519.0" layoutY="13.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="130.0" style="-fx-background-radius: 0; -fx-background-color: #80aaff;" text="Allocate" />
-               </children>
-            </Pane>
-            <Pane layoutX="14.0" layoutY="104.0" prefHeight="50.0" prefWidth="660.0" style="-fx-background-color: lightgrey;">
-               <children>
-                  <CheckBox layoutX="14.0" layoutY="17.0" mnemonicParsing="false" text="Task 1" />
-                  <Button layoutX="519.0" layoutY="13.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="130.0" style="-fx-background-radius: 0; -fx-background-color: #80aaff;" text="Allocate" />
-               </children>
-            </Pane>
-            <Pane layoutX="14.0" layoutY="164.0" prefHeight="50.0" prefWidth="660.0" style="-fx-background-color: lightgrey;">
-               <children>
-                  <CheckBox layoutX="14.0" layoutY="17.0" mnemonicParsing="false" text="Task 1" />
-                  <Button layoutX="519.0" layoutY="13.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="130.0" style="-fx-background-radius: 0; -fx-background-color: #80aaff;" text="Allocate" />
-               </children>
-            </Pane>
-            <Pane layoutX="14.0" layoutY="226.0" prefHeight="50.0" prefWidth="660.0" style="-fx-background-color: lightgrey;">
-               <children>
-                  <CheckBox layoutX="14.0" layoutY="17.0" mnemonicParsing="false" text="Task 1" />
-                  <Button layoutX="519.0" layoutY="13.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="130.0" style="-fx-background-radius: 0; -fx-background-color: #80aaff;" text="Allocate" />
-               </children>
-            </Pane>
-         </children>
-      </Pane>
+      <ListView fx:id="projectTaskList" layoutX="278.0" layoutY="43.0" prefHeight="590.0" prefWidth="681.0" style="-fx-background-color: #e6eeff;">
+            <FXCollections fx:factory="observableArrayList">
+               <String fx:value="Wybierz projekt z listy"/>
+            </FXCollections>
+      </ListView>
     </children>
 </AnchorPane>
