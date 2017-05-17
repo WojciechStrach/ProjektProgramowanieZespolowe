@@ -19,6 +19,8 @@ public class ParentsLoader {
                 return FXMLLoader.load(ParentsLoader.class.getResource("../Components/Main/Main.fxml"));
             case splash:
                 return FXMLLoader.load(ParentsLoader.class.getResource("../Components/Splash/Splash.fxml"));
+            case edit:
+                return FXMLLoader.load(ParentsLoader.class.getResource("../Components/Auth/Edit/Edit.fxml"));
             default:
                 throw new Error("Not recognized parent: " + parent);
         }

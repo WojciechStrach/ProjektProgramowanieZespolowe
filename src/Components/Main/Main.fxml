@@ -20,14 +20,21 @@
                <children>
                   <Pane layoutX="17.0" layoutY="8.0" prefHeight="28.0" prefWidth="28.0" style="-fx-background-color: black;" />
                   <Label fx:id="userName" layoutX="53.0" layoutY="13.0" text="UserName" />
-                  <ComboBox fx:id="projects" layoutX="133.0" layoutY="10.0" prefHeight="25.0" prefWidth="131.0" style="-fx-background-radius: 0;">
-                     <items>
-                        <FXCollections fx:factory="observableArrayList">
-                        </FXCollections>
-                     </items>
-                  </ComboBox>
+                   <!--<ComboBox fx:id="projects" layoutX="278.0" layoutY="9.0" prefHeight="25.0" prefWidth="131.0" style="-fx-background-radius: 0;" >`
+                       <items>
+                           <FXCollections fx:factory="observableArrayList">
+                           </FXCollections>
+                       </items>
+                   </ComboBox>-->
+                  <Button fx:id="editUser" layoutX="119.0" layoutY="9.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="145.0" style="-fx-background-radius: 0;" text="Edycja Użytkownika" />
                </children>
             </Pane>
+             <ComboBox layoutX="290.0" layoutY="9.0" prefWidth="150.0" fx:id="projects">
+                 <items>
+                     <FXCollections fx:factory="observableArrayList">
+                     </FXCollections>
+                 </items>
+             </ComboBox>
          </children>
       </Pane>
       <Pane layoutY="43.0" prefHeight="590.0" prefWidth="278.0">

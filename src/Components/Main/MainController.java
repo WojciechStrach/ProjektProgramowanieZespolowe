@@ -1,5 +1,6 @@
 package Components.Main;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -10,6 +11,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
+import Main.ParentsList;
+import Main.ParentsLoader;
 import Models.User;
 import Service.Session;
 import com.sun.javafx.tk.Toolkit;
@@ -20,7 +23,10 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 import model.*;
 
 
@@ -59,6 +65,8 @@ public class MainController implements Initializable {
     private Button addTask;
     @FXML
     private Button addUser;
+    @FXML
+    private Button editUser;
     
     @FXML
     private void handleButtonAction(ActionEvent event) {
@@ -266,20 +274,29 @@ public class MainController implements Initializable {
                         }
                     }
                 });
+
                 /*addUser.setOnAction(new EventHandler<ActionEvent>(){
                     public void handle(ActionEvent){
                         TextInputDialog dialog = new TextInputDialog("Dodaj użytkownika do projektu");
                         dialog.setTitle("Dodawanie użytkownika");
                         dialog.setHeaderText("Wybierz użytkownika z listy aby go dodać");
-
-
                     }
                 });*/
+
+                editUser.setOnAction(event -> {
+                    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    try {
+                        stage.setScene(new Scene(ParentsLoader.getParent(ParentsList.edit)));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    stage.show();
+                });
+
 
             }catch (Exception e){
                 e.printStackTrace();
             }
         // TODO
     }
-    
 }

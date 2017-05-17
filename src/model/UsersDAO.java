@@ -1,5 +1,6 @@
 package model;
 
+import Service.Session;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import Utilize.DatabaseHandler;
@@ -109,6 +110,18 @@ public class UsersDAO {
         }
     }
 
+    public static void updateUser (String email, String password, String displayName) throws  SQLException, ClassNotFoundException {
+
+        String updateStm =
+                    "UPDATE Users SET email= '"+email+"', password='"+password+"', display_name='"+displayName+"' WHERE user_id="+Session.getUserId();
+        try {
+            DatabaseHandler.databaseExecuteUpdate(updateStm);
+        }catch (Exception e){
+            System.out.print("Nie udało się edytować użytkownika, nie patrz na stack trace bo dostaniesz raka " + e);
+            e.printStackTrace();
+        }
+    }
+
     public static void insertUser (String email, String password, String displayName) throws SQLException, ClassNotFoundException {
 
         String updateStmt =
@@ -128,8 +141,7 @@ public class UsersDAO {
     public static void deleteUser (int id) throws SQLException, ClassNotFoundException {
 
         String updateStmt =
-                "DELETE FROM users" +
-                        "WHERE user_id =" + id;
+                "DELETE FROM users WHERE user_id =" + id;
         try {
             DatabaseHandler.databaseExecuteUpdate(updateStmt);
         } catch (SQLException e) {
