@@ -10,17 +10,17 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="632.0" prefWidth="959.0" xmlns="http://javafx.com/javafx/8.0.91" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Components.Main.MainController">
+<AnchorPane id="AnchorPane" prefHeight="632.0" prefWidth="959.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Components.Main.MainController">
     <children>
         <Label fx:id="label" layoutX="126" layoutY="120" minHeight="16" minWidth="69" />
-      <Pane prefHeight="43.0" prefWidth="959.0" style="-fx-background-color: #00bfff;">
+      <Pane prefHeight="43.0" prefWidth="959.0">
          <children>
             <Label fx:id="projectName" layoutX="290.0" layoutY="13.0" prefHeight="17.0" prefWidth="339.0" text="" />
-            <Pane prefHeight="43.0" prefWidth="278.0" style="-fx-background-color: #00aaff;">
+            <Pane prefHeight="43.0" prefWidth="278.0" style="-fx-background-color: ;">
                <children>
                   <Pane layoutX="17.0" layoutY="8.0" prefHeight="28.0" prefWidth="28.0" style="-fx-background-color: black;" />
                   <Label fx:id="userName" layoutX="53.0" layoutY="13.0" text="UserName" />
-                  <ComboBox fx:id="projects" layoutX="235.0" layoutY="10.0" prefHeight="20.0" prefWidth="20.0" style="-fx-background-color: #3385ff;">
+                  <ComboBox fx:id="projects" layoutX="133.0" layoutY="10.0" prefHeight="25.0" prefWidth="131.0" style="-fx-background-radius: 0;">
                      <items>
                         <FXCollections fx:factory="observableArrayList">
                         </FXCollections>
@@ -30,7 +30,7 @@
             </Pane>
          </children>
       </Pane>
-      <Pane layoutY="43.0" prefHeight="590.0" prefWidth="278.0" style="-fx-background-color: #cce6ff;">
+      <Pane layoutY="43.0" prefHeight="590.0" prefWidth="278.0">
          <children>
             <Label layoutX="14.0" layoutY="14.0" prefHeight="17.0" prefWidth="108.0" text="Członkowie" />
             <ListView fx:id="projectUserList" layoutX="15.0" layoutY="50.0" prefHeight="500.0" prefWidth="250.0" style="-fx-background-color: b3d9ff;">
@@ -38,7 +38,7 @@
                   <String fx:value="Wybierz projekt z listy" />
                </FXCollections>
             </ListView>
-            <Button layoutX="14.0" layoutY="551.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="250.0" style="-fx-background-radius: 0; -fx-background-color: #80aaff;" text="Add User" textAlignment="CENTER">
+            <Button fx:id="addUser" layoutX="14.0" layoutY="551.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="250.0" style="-fx-background-radius: 0;" text="Add User" textAlignment="CENTER">
                <font>
                   <Font name="Times New Roman" size="15.0" />
                </font>
@@ -50,7 +50,7 @@
                <String fx:value="Wybierz projekt z listy" />
             </FXCollections>
       </ListView>
-      <Button fx:id="addTask" layoutX="280.0" layoutY="594.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="118.0" text="Dodaj zadanie" />
-      <Button layoutX="415.0" layoutY="596.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="118.0" text="Button" />
+      <Button fx:id="addTask" layoutX="280.0" layoutY="594.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="118.0" style="-fx-background-radius: 0;" text="Dodaj zadanie" />
+      <Button layoutX="405.0" layoutY="594.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="118.0" style="-fx-background-radius: 0;" text="Button" />
     </children>
 </AnchorPane>

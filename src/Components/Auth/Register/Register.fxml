@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.text.*?>
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Components.Auth.Register.RegisterController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Components.Auth.Register.RegisterController">
    <children>
       <Pane layoutY="6.0" prefHeight="373.0" prefWidth="600.0">
          <children>
@@ -36,17 +36,17 @@
                   <Font size="20.0" />
                </font>
             </Label>
-            <TextField layoutX="190.0" layoutY="100.0" prefHeight="30.0" prefWidth="220.0" style="-fx-background-radius: 0;" />
-            <TextField layoutX="190.0" layoutY="140.0" prefHeight="30.0" prefWidth="220.0" style="-fx-background-radius: 0;" />
-            <TextField layoutX="190.0" layoutY="180.0" prefHeight="30.0" prefWidth="220.0" style="-fx-background-radius: 0;" />
-            <TextField layoutX="190.0" layoutY="220.0" prefHeight="30.0" prefWidth="220.0" style="-fx-background-radius: 0;" />
-            <Button layoutX="190.0" layoutY="317.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="220.0" style="-fx-background-radius: 0;" text="Register" />
+            <TextField fx:id="name" layoutX="190.0" layoutY="100.0" prefHeight="30.0" prefWidth="220.0" style="-fx-background-radius: 0;" />
+            <TextField fx:id="username" layoutX="190.0" layoutY="140.0" prefHeight="30.0" prefWidth="220.0" style="-fx-background-radius: 0;" />
+            <TextField fx:id="email" layoutX="190.0" layoutY="180.0" prefHeight="30.0" prefWidth="220.0" style="-fx-background-radius: 0;" />
+            <TextField fx:id="password" layoutX="190.0" layoutY="220.0" prefHeight="30.0" prefWidth="220.0" style="-fx-background-radius: 0;" />
+            <Button fx:id="register" layoutX="190.0" layoutY="317.0" mnemonicParsing="false" onAction="#createUser" prefHeight="25.0" prefWidth="220.0" style="-fx-background-radius: 0;" text="Register" />
             <Label layoutX="18.0" layoutY="260.0" prefHeight="30.0" prefWidth="175.0" text="Repeat Password:">
                <font>
                   <Font size="20.0" />
                </font>
             </Label>
-            <TextField layoutX="190.0" layoutY="260.0" prefHeight="30.0" prefWidth="220.0" style="-fx-background-radius: 0;" />
+            <TextField fx:id="repeatPassword" layoutX="190.0" layoutY="260.0" prefHeight="30.0" prefWidth="220.0" style="-fx-background-radius: 0;" />
          </children>
       </Pane>
    </children>
