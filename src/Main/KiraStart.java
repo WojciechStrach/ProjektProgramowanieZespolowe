@@ -8,10 +8,6 @@ import javafx.stage.Stage;
 public class KiraStart extends Application {
     @Override
     public void start(Stage stage) throws Exception {
-        DatabaseHandler.setDatabaseUrl("localhost");
-        DatabaseHandler.setDatabaseName("programowaniegrupowe");
-        DatabaseHandler.setUsername("mjaskot");
-        DatabaseHandler.setPassword("sushijestsmaczne");
         stage.setScene(new Scene(ParentsLoader.getParent(ParentsList.splash)));
         stage.show();
     }
