@@ -13,15 +13,15 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <Button layoutY="360.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="300.0" style="-fx-background-radius: 0; -fx-background-color: #5cce7b;" text="Edit" textAlignment="CENTER" />
-      <Button layoutX="300.0" layoutY="360.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="300.0" style="-fx-background-radius: 0; -fx-background-color: #ce5c5c;" text="Delete User" />
+      <Button fx:id="edit" layoutY="360.0" mnemonicParsing="false" onAction="#editUser" prefHeight="40.0" prefWidth="300.0" style="-fx-background-radius: 0; -fx-background-color: #5cce7b;" text="Edit" textAlignment="CENTER" />
+      <Button fx:id="delete" layoutX="300.0" layoutY="360.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="300.0" style="-fx-background-radius: 0; -fx-background-color: #ce5c5c;" text="Delete User" />
       <Label layoutX="273.0" layoutY="52.0" text="Username" />
-      <TextField layoutX="201.0" layoutY="69.0" prefHeight="25.0" prefWidth="200.0" style="-fx-background-radius: 0;" />
+      <TextField fx:id="username" layoutX="201.0" layoutY="69.0" prefHeight="25.0" prefWidth="200.0" style="-fx-background-radius: 0;" />
       <Label layoutX="287.0" layoutY="106.0" text="Email" />
-      <TextField layoutX="201.0" layoutY="123.0" prefHeight="25.0" prefWidth="200.0" style="-fx-background-radius: 0;" />
+      <TextField fx:id="email" layoutX="201.0" layoutY="123.0" prefHeight="25.0" prefWidth="200.0" style="-fx-background-radius: 0;" />
       <Label layoutX="276.0" layoutY="163.0" text="Password" />
-      <TextField layoutX="200.0" layoutY="180.0" prefHeight="25.0" prefWidth="200.0" style="-fx-background-radius: 0;" />
+      <TextField fx:id="password" layoutX="200.0" layoutY="180.0" prefHeight="25.0" prefWidth="200.0" style="-fx-background-radius: 0;" />
       <Label layoutX="257.0" layoutY="215.0" text="Repeat Password" />
-      <TextField layoutX="200.0" layoutY="232.0" prefHeight="25.0" prefWidth="200.0" style="-fx-background-radius: 0;" />
+      <TextField fx:id="rpassword" layoutX="200.0" layoutY="232.0" prefHeight="25.0" prefWidth="200.0" style="-fx-background-radius: 0;" />
    </children>
 </AnchorPane>

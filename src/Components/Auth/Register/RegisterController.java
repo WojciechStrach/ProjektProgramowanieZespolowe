@@ -25,10 +25,6 @@ public class RegisterController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        DatabaseHandler.setDatabaseUrl("localhost");
-        DatabaseHandler.setDatabaseName("programowaniegrupowe");
-        DatabaseHandler.setUsername("mjaskot");
-        DatabaseHandler.setPassword("sushijestsmaczne");
     }
     public void createUser()
     {
