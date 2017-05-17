@@ -21,7 +21,6 @@ public class TasksDAO {
             task.setProjectId(rs.getInt("project_id"));
             task.setUserId(rs.getInt("user_id"));
             task.setDescripition(rs.getString("description"));
-            task.setDateAndTime(rs.getDate("dateAndTime"));
             task.setState(rs.getInt("state"));
 
             tasksList.add(task);
@@ -137,13 +136,13 @@ public class TasksDAO {
         }
     }
 
-    public static void insertTask (int projectId, int userId, String description, Date dateAndTime, int state) throws SQLException, ClassNotFoundException {
+    public static void insertTask (int projectId, int userId, String description, int state) throws SQLException, ClassNotFoundException {
 
         String updateStmt =
                 "INSERT INTO tasks" +
-                        "(project_id, user_id, description, dateAndTime, state)" +
+                        "(project_id, user_id, description, state)" +
                         "VALUES" +
-                        "( " +projectId+ "," +userId+ ",'" +description+ "'," +dateAndTime+ "," +state+ ")";
+                        "( " +projectId+ "," +userId+ ",'" +description+ "'," +state+ ")";
 
         try {
             DatabaseHandler.databaseExecuteUpdate(updateStmt);
@@ -158,6 +157,19 @@ public class TasksDAO {
         String updateStmt =
                 "DELETE FROM tasks" +
                         "WHERE task_id =" + id;
+        try {
+            DatabaseHandler.databaseExecuteUpdate(updateStmt);
+        } catch (SQLException e) {
+            System.out.print("Nie udało się usunąć zadania: " + e);
+            e.printStackTrace();
+        }
+    }
+
+    public static void deleteTaskByDescription (String desc) throws SQLException, ClassNotFoundException {
+
+        String updateStmt =
+                "DELETE FROM tasks" +
+                        "WHERE description = '"+ desc +"';";
         try {
             DatabaseHandler.databaseExecuteUpdate(updateStmt);
         } catch (SQLException e) {
