@@ -165,4 +165,17 @@ public class TasksDAO {
             e.printStackTrace();
         }
     }
+
+    public static void deleteTaskByDescription (String desc) throws SQLException, ClassNotFoundException {
+
+        String updateStmt =
+                "DELETE FROM tasks" +
+                        "WHERE description = '"+ desc +"';";
+        try {
+            DatabaseHandler.databaseExecuteUpdate(updateStmt);
+        } catch (SQLException e) {
+            System.out.print("Nie udało się usunąć zadania: " + e);
+            e.printStackTrace();
+        }
+    }
 }

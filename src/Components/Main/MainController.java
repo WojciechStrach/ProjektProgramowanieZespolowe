@@ -4,8 +4,10 @@ import java.net.URL;
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
+import Models.User;
 import Service.Session;
 import com.sun.javafx.tk.Toolkit;
 import javafx.beans.property.SimpleStringProperty;
@@ -30,6 +32,9 @@ public class MainController implements Initializable {
     private ObservableList<Users> projectMembers;
     private int numberOfUsersObjects = 0;
     private int numberOfTasksObjects = 0;
+    private ScheduledExecutorService executor = Executors.newScheduledThreadPool(0);
+    private ScheduledFuture<?> exec;
+    private boolean executorStatus = false;
 
     
     @FXML
@@ -125,6 +130,10 @@ public class MainController implements Initializable {
                 clickedProject.addListener((observable, oldValue, newValue) -> {
                     System.out.println(newValue);
 
+                    if(executorStatus){
+                        exec.cancel(false);
+                    }
+
                     projectUserList.getItems().clear();
                     projectTaskList.getItems().clear();
 
@@ -157,12 +166,18 @@ public class MainController implements Initializable {
                                         for(int j=0; j<temp.size(); j++){
                                             boolean isPresent = false;
                                             for (int k=0; k<projectTasks.size(); k++){
-                                                if(temp.get(j).equals(projectTasks)){
+                                                if(temp.get(j).equals(projectTasks.get(k).getDescription())){
                                                     isPresent = true;
                                                 }
                                             }
                                             if (isPresent == false){
-                                                
+                                                System.out.println(temp.get(j));
+                                                projectTaskList.getItems().clear();
+                                                for (int l=0; l<projectTasks.size(); l++){
+                                                    Tasks removeTemp = projectTasks.get(l);
+                                                    projectTaskList.getItems().add(removeTemp.getDescription());
+                                                }
+
                                             }
                                         }
                                     }
@@ -175,7 +190,25 @@ public class MainController implements Initializable {
 
 
                                     projectMembers = projectMembers();
-                                    numberOfUsersObjects = projectMembers.size();
+
+                                    if(numberOfUsersObjects < projectMembers.size()){
+                                        for(int i = numberOfUsersObjects; i<projectMembers.size(); i++){
+                                            Users temp = projectMembers.get(i);
+                                            projectUserList.getItems().add(temp.getDisplayName());
+
+                                        }
+                                        numberOfUsersObjects = projectMembers.size();
+                                    }
+
+                                    if(numberOfUsersObjects > projectMembers.size()){
+                                        numberOfTasksObjects = projectMembers.size();
+                                        projectUserList.getItems().clear();
+                                        for (int j=0; j<projectMembers.size(); j++){
+                                            Users userRemoveTemp = projectMembers.get(j);
+                                            projectUserList.getItems().add(userRemoveTemp.getDisplayName());
+                                        }
+                                    }
+
                                     for (Users pU : projectMembers) {
                                         System.out.println(pU.getDisplayName());
 
@@ -187,8 +220,9 @@ public class MainController implements Initializable {
                             }
                         };
 
-                        ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-                        executor.scheduleAtFixedRate(refreshValues, 0, 3, TimeUnit.SECONDS);
+
+                        exec = executor.scheduleAtFixedRate(refreshValues, 0, 1, TimeUnit.SECONDS);
+                        executorStatus = true;
 
 
                     }catch (Exception e){
