@@ -3,27 +3,63 @@ package Components.Splash;
 import Main.ParentsList;
 import Main.ParentsLoader;
 import Utilize.DatabaseHandler;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.scene.control.Button;
 
-import java.awt.*;
+import java.beans.EventHandler;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 /**
  * Created by mjaskot on 2017-05-17.
  */
-public class SplashController {
 
-    public void openLogin(Stage stage) throws Exception{
+public class SplashController implements Initializable {
+
+    @FXML private Button login;
+    @FXML private Button register;
+
+    static {
+        try {
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+
+
+
         DatabaseHandler.setDatabaseUrl("localhost");
         DatabaseHandler.setDatabaseName("programowaniegrupowe");
         DatabaseHandler.setUsername("mjaskot");
         DatabaseHandler.setPassword("sushijestsmaczne");
-        stage.setScene(new Scene(ParentsLoader.getParent(ParentsList.login)));
-        stage.show();
-    }
-    public void openRegister(Stage stage) throws Exception{
-        stage.setScene(new Scene(ParentsLoader.getParent(ParentsList.register)));
-        stage.show();
+
+
+        login.setOnAction(event -> {
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                try {
+                    stage.setScene(new Scene(ParentsLoader.getParent(ParentsList.login)));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                stage.show();
+        });
+        register.setOnAction(event -> {
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            try {
+                stage.setScene(new Scene(ParentsLoader.getParent(ParentsList.register)));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            stage.show();
+        });
     }
 }

@@ -10,6 +10,9 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import model.UsersDAO;
 
 
 public class RegisterController implements Initializable {
@@ -22,17 +25,17 @@ public class RegisterController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
+        DatabaseHandler.setDatabaseUrl("localhost");
+        DatabaseHandler.setDatabaseName("programowaniegrupowe");
+        DatabaseHandler.setUsername("mjaskot");
+        DatabaseHandler.setPassword("sushijestsmaczne");
     }
     public void createUser()
     {
-        if((!email.getText().isEmpty() || !username.getText().isEmpty() || !email.getText().isEmpty()) ) {
+        if((!email.getText().isEmpty() && !username.getText().isEmpty() && !password.getText().isEmpty()) ) {
             if (password.getText().equals(repeatPassword.getText())) {
-                String sqlQuerry = "INSERT INTO USERS (email, password, display_name) VALUES (" + email.getText() + ", "
-                        + password.getText() + ", "
-                        + username.getText() + ")";
                 try {
-                    DatabaseHandler.databaseExecuteQuery(sqlQuerry);
+                    UsersDAO.insertUser(email.getText(),password.getText(), username.getText());
                 } catch (SQLException e) {
                     e.printStackTrace();
                 } catch (ClassNotFoundException e) {
@@ -44,7 +47,7 @@ public class RegisterController implements Initializable {
         }
         else
         {
-            System.out.println("Hasła nie zgadzają się.");
+            System.out.println("Uzupełnij Pola.");
         }
     }
 }
