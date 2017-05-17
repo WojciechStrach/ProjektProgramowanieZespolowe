@@ -24,6 +24,8 @@ import javafx.scene.control.*;
 import model.*;
 
 
+import javax.swing.*;
+
 import static model.ProjectsMembersDAO.searchProjectMembers;
 
 public class MainController implements Initializable {
@@ -55,6 +57,8 @@ public class MainController implements Initializable {
     private Label projectName;
     @FXML
     private Button addTask;
+    @FXML
+    private Button addUser;
     
     @FXML
     private void handleButtonAction(ActionEvent event) {
@@ -150,7 +154,6 @@ public class MainController implements Initializable {
                     numberOfTasksObjects = 0;
                     numberOfUsersObjects = 0;
 
-
                     try {
 
                         currentProject = ProjectsDAO.searchProject(newValue);
@@ -198,7 +201,6 @@ public class MainController implements Initializable {
 
                                     }
 
-
                                     projectMembers = projectMembers();
 
                                     if(numberOfUsersObjects < projectMembers.size()){
@@ -229,12 +231,8 @@ public class MainController implements Initializable {
                                 }
                             }
                         };
-
-
                         exec = executor.scheduleAtFixedRate(refreshValues, 0, 500, TimeUnit.MILLISECONDS);
                         executorStatus = true;
-
-
                     }catch (Exception e){
                         e.printStackTrace();
                     }
@@ -268,16 +266,19 @@ public class MainController implements Initializable {
                         }
                     }
                 });
+                /*addUser.setOnAction(new EventHandler<ActionEvent>(){
+                    public void handle(ActionEvent){
+                        TextInputDialog dialog = new TextInputDialog("Dodaj użytkownika do projektu");
+                        dialog.setTitle("Dodawanie użytkownika");
+                        dialog.setHeaderText("Wybierz użytkownika z listy aby go dodać");
 
+
+                    }
+                });*/
 
             }catch (Exception e){
                 e.printStackTrace();
             }
-
-
-
-
-
         // TODO
     }
     
