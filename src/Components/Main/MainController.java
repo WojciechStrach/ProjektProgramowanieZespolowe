@@ -1,7 +1,10 @@
 package Components.Main;
 
 import java.net.URL;
+import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.*;
+import java.util.Date;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -47,6 +50,10 @@ public class MainController implements Initializable {
     private ListView<String> projectTaskList;
     @FXML
     private ListView<String> projectUserList;
+    @FXML
+    private Label projectName;
+    @FXML
+    private Button addTask;
     
     @FXML
     private void handleButtonAction(ActionEvent event) {
@@ -129,9 +136,10 @@ public class MainController implements Initializable {
 
                 clickedProject.addListener((observable, oldValue, newValue) -> {
                     System.out.println(newValue);
+                    projectName.setText(newValue);
 
                     if(executorStatus){
-                        exec.cancel(false);
+                        exec.cancel(true);
                     }
 
                     projectUserList.getItems().clear();
@@ -221,12 +229,32 @@ public class MainController implements Initializable {
                         };
 
 
-                        exec = executor.scheduleAtFixedRate(refreshValues, 0, 1, TimeUnit.SECONDS);
+                        exec = executor.scheduleAtFixedRate(refreshValues, 0, 500, TimeUnit.MILLISECONDS);
                         executorStatus = true;
 
 
                     }catch (Exception e){
                         e.printStackTrace();
+                    }
+                });
+
+                addTask.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        TextInputDialog dialog = new TextInputDialog("Wpisz treść zadania");
+                        dialog.setTitle("Dodawanie zadania");
+                        dialog.setHeaderText("Wypełnij poniższe pole aby dodać nowe zadanie");
+                        dialog.setContentText("Wpisz treść zadania");
+
+                        Optional<String> result = dialog.showAndWait();
+                        if(result.isPresent()){
+                            try {
+                                TasksDAO.insertTask(currentProject.getProjectId(), Session.getUserId(), result.get(),1 );
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
+
+                        }
                     }
                 });
 
