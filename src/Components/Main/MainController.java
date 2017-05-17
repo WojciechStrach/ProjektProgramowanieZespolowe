@@ -30,6 +30,7 @@ public class MainController implements Initializable {
 
     private SimpleStringProperty clickedProject = new SimpleStringProperty();
     private Projects currentProject;
+    private boolean isProjectSet = false;
     private ObservableList<Projects> userProjects;
     private ObservableList<Tasks> projectTasks;
     private ObservableList<Users> projectMembers;
@@ -137,6 +138,7 @@ public class MainController implements Initializable {
                 clickedProject.addListener((observable, oldValue, newValue) -> {
                     System.out.println(newValue);
                     projectName.setText(newValue);
+                    isProjectSet = true;
 
                     if(executorStatus){
                         exec.cancel(true);
@@ -241,19 +243,28 @@ public class MainController implements Initializable {
                 addTask.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
-                        TextInputDialog dialog = new TextInputDialog("Wpisz treść zadania");
-                        dialog.setTitle("Dodawanie zadania");
-                        dialog.setHeaderText("Wypełnij poniższe pole aby dodać nowe zadanie");
-                        dialog.setContentText("Wpisz treść zadania");
+                        if(isProjectSet) {
+                            TextInputDialog dialog = new TextInputDialog("Wpisz treść zadania");
+                            dialog.setTitle("Dodawanie zadania");
+                            dialog.setHeaderText("Wypełnij poniższe pole aby dodać nowe zadanie");
+                            dialog.setContentText("Wpisz treść zadania");
 
-                        Optional<String> result = dialog.showAndWait();
-                        if(result.isPresent()){
-                            try {
-                                TasksDAO.insertTask(currentProject.getProjectId(), Session.getUserId(), result.get(),1 );
-                            }catch (Exception e){
-                                e.printStackTrace();
+                            Optional<String> result = dialog.showAndWait();
+                            if (result.isPresent()) {
+                                try {
+                                    TasksDAO.insertTask(currentProject.getProjectId(), Session.getUserId(), result.get(), 1);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+
                             }
+                        }else {
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Błąd");
+                            alert.setHeaderText("Nie wybrano projektu");
+                            alert.setContentText("Aby dodać zadanie najpierw wybierz projekt z menu");
 
+                            alert.showAndWait();
                         }
                     }
                 });
