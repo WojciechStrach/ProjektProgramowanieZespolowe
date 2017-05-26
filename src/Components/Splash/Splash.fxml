@@ -9,13 +9,13 @@
 
 <AnchorPane prefHeight="220.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Components.Splash.SplashController">
    <children>
-      <Label layoutX="217.0" layoutY="22.0" prefHeight="35.0" prefWidth="166.0" text="Project Control " textAlignment="CENTER">
+      <Label layoutX="217.0" layoutY="22.0" prefHeight="35.0" prefWidth="166.0" text="         KIRA " textAlignment="CENTER">
          <font>
             <Font size="24.0" />
          </font></Label>
-      <Button layoutX="262.0" layoutY="109.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" text="login" fx:id="login"/>
-      <Button layoutX="263.0" layoutY="142.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" text="register" fx:id="register" />
-      <Label layoutX="286.0" layoutY="57.0" text="v0.001a" />
+      <Button layoutX="262.0" layoutY="109.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" text="Zaloguj" fx:id="login"/>
+      <Button layoutX="263.0" layoutY="142.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" text="Zarejestruj" fx:id="register" />
+      <Label layoutX="286.0" layoutY="57.0" text="v0.5a" />
       <Hyperlink layoutX="277.0" layoutY="183.0" text="GitHub" />
       <Separator layoutX="150.0" layoutY="74.0" prefHeight="6.0" prefWidth="300.0" />
    </children>

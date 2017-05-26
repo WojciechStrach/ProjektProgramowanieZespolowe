@@ -16,11 +16,11 @@
                   <Font size="30.0" />
                </font>
             </Label>
-            <Label layoutX="85.0" layoutY="100.0" prefHeight="30.0" prefWidth="108.0" text="Name: ">
+           <!-- <Label layoutX="85.0" layoutY="100.0" prefHeight="30.0" prefWidth="108.0" text="Name: ">
                <font>
                   <Font size="20.0" />
                </font>
-            </Label>
+            </Label>-->
             <Label layoutX="85.0" layoutY="140.0" prefHeight="30.0" prefWidth="101.0" text="Username:">
                <font>
                   <Font size="20.0" />
@@ -36,7 +36,7 @@
                   <Font size="20.0" />
                </font>
             </Label>
-            <TextField fx:id="name" layoutX="190.0" layoutY="100.0" prefHeight="30.0" prefWidth="220.0" style="-fx-background-radius: 0;" />
+            <!--<TextField fx:id="name" layoutX="190.0" layoutY="100.0" prefHeight="30.0" prefWidth="220.0" style="-fx-background-radius: 0;" />-->
             <TextField fx:id="username" layoutX="190.0" layoutY="140.0" prefHeight="30.0" prefWidth="220.0" style="-fx-background-radius: 0;" />
             <TextField fx:id="email" layoutX="190.0" layoutY="180.0" prefHeight="30.0" prefWidth="220.0" style="-fx-background-radius: 0;" />
             <TextField fx:id="password" layoutX="190.0" layoutY="220.0" prefHeight="30.0" prefWidth="220.0" style="-fx-background-radius: 0;" />

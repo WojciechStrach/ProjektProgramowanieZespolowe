@@ -18,6 +18,7 @@ import Service.Session;
 import com.sun.javafx.tk.Toolkit;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -42,13 +43,16 @@ public class MainController implements Initializable {
     private ObservableList<Projects> userProjects;
     private ObservableList<Tasks> projectTasks;
     private ObservableList<Users> projectMembers;
+    //private ObservableList<String> projectTaskString;
     private int numberOfUsersObjects = 0;
     private int numberOfTasksObjects = 0;
     private ScheduledExecutorService executor = Executors.newScheduledThreadPool(0);
     private ScheduledFuture<?> exec;
     private boolean executorStatus = false;
 
-    
+
+    @FXML
+    private ObservableList<String> projectTaskCollection;
     @FXML
     private Label label;
     @FXML
@@ -56,7 +60,7 @@ public class MainController implements Initializable {
     @FXML
     private ComboBox<String> projects;
     @FXML
-    private ListView<String> projectTaskList;
+    private ListView<String> projectTaskList = new ListView<>(projectTaskCollection);
     @FXML
     private ListView<String> projectUserList;
     @FXML
@@ -64,10 +68,18 @@ public class MainController implements Initializable {
     @FXML
     private Button addTask;
     @FXML
+    private Button removeTask;
+    @FXML
     private Button addUser;
     @FXML
     private Button editUser;
-    
+    @FXML
+    private Button newProject;
+    @FXML
+    private Button addMember;
+    @FXML
+    private Button removeMember;
+
     @FXML
     private void handleButtonAction(ActionEvent event) {
         System.out.println("You clicked me!");
@@ -157,7 +169,9 @@ public class MainController implements Initializable {
                     }
 
                     projectUserList.getItems().clear();
-                    projectTaskList.getItems().clear();
+                    projectTaskCollection.clear();
+
+                    projectTaskList.setItems(projectTaskCollection);
 
                     numberOfTasksObjects = 0;
                     numberOfUsersObjects = 0;
@@ -172,32 +186,44 @@ public class MainController implements Initializable {
 
                                     projectTasks = TasksDAO.getTaskById(currentProject.getProjectId());
 
+                                    /*for (Tasks pT : projectTasks) {
+                                        projectTaskCollection.clear();
+                                        System.out.println(projectTaskCollection);
+                                        projectTaskCollection.add(pT.getDescription());
+                                    }*/
+
+                                    //projectTaskList.setItems(projectTaskCollection);
+
+
+
                                     if(numberOfTasksObjects < projectTasks.size()){
                                         for(int i = numberOfTasksObjects; i<projectTasks.size(); i++){
                                             Tasks temp = projectTasks.get(i);
-                                            projectTaskList.getItems().add(temp.getDescription());
+                                            projectTaskCollection.add(temp.getDescription());
 
                                         }
                                         numberOfTasksObjects = projectTasks.size();
                                     }
 
                                     if(numberOfTasksObjects > projectTasks.size()){
-                                        numberOfTasksObjects =  projectTasks.size();
-                                        ObservableList<String> temp = projectTaskList.getItems();
-                                        for(int j=0; j<temp.size(); j++){
+                                        //ObservableList<String> temp = projectTaskList.getItems();
+                                        for(int j=0; j<projectTaskCollection.size(); j++){
                                             boolean isPresent = false;
                                             for (int k=0; k<projectTasks.size(); k++){
-                                                if(temp.get(j).equals(projectTasks.get(k).getDescription())){
+                                                if(projectTaskCollection.get(j).equals(projectTasks.get(k).getDescription())){
                                                     isPresent = true;
                                                 }
                                             }
                                             if (isPresent == false){
-                                                System.out.println(temp.get(j));
-                                                projectTaskList.getItems().clear();
-                                                for (int l=0; l<projectTasks.size(); l++){
-                                                    Tasks removeTemp = projectTasks.get(l);
-                                                    projectTaskList.getItems().add(removeTemp.getDescription());
-                                                }
+                                                //System.out.println(temp.get(j));
+                                                projectTaskCollection.remove(j);
+                                                //projectTaskList
+                                                //projectTaskList.setItems(temp);
+                                                //projectTaskList.getItems().remove(j);
+                                                /*projectTaskList.getItems().clear();
+                                                for (Tasks pT : projectTasks){
+                                                    projectTaskList.getItems().add(pT.getDescription());
+                                                }*/
 
                                             }
                                         }
@@ -221,7 +247,7 @@ public class MainController implements Initializable {
                                     }
 
                                     if(numberOfUsersObjects > projectMembers.size()){
-                                        numberOfTasksObjects = projectMembers.size();
+                                        numberOfUsersObjects = projectMembers.size();
                                         projectUserList.getItems().clear();
                                         for (int j=0; j<projectMembers.size(); j++){
                                             Users userRemoveTemp = projectMembers.get(j);
@@ -239,7 +265,7 @@ public class MainController implements Initializable {
                                 }
                             }
                         };
-                        exec = executor.scheduleAtFixedRate(refreshValues, 0, 500, TimeUnit.MILLISECONDS);
+                        exec = executor.scheduleAtFixedRate(refreshValues, 0, 1, TimeUnit.SECONDS);
                         executorStatus = true;
                     }catch (Exception e){
                         e.printStackTrace();
@@ -283,6 +309,37 @@ public class MainController implements Initializable {
                     }
                 });*/
 
+                removeTask.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        if(isProjectSet){
+                            String selected = projectTaskList.getSelectionModel().getSelectedItem();
+                            if (selected != null) {
+                                try {
+                                    TasksDAO.deleteTaskByDescription(selected);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }else {
+                                Alert alert = new Alert(Alert.AlertType.ERROR);
+                                alert.setTitle("Błąd");
+                                alert.setHeaderText("Nie zaznaczono zadania");
+                                alert.setContentText("Zaznacz zadanie aby je usunąć");
+
+                                alert.showAndWait();
+                            }
+
+                        }else {
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Błąd");
+                            alert.setHeaderText("Nie wybrano projektu");
+                            alert.setContentText("Aby usunąć zadanie wybierz projekt z listy a następnie zaznacz zadanie");
+
+                            alert.showAndWait();
+                        }
+                    }
+                });
+
                 editUser.setOnAction(event -> {
                     Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                     try {
@@ -292,6 +349,65 @@ public class MainController implements Initializable {
                     }
                     stage.show();
                 });
+
+                newProject.setOnAction(event -> {
+                    TextInputDialog dialog = new TextInputDialog("Podaj nazwę projektu");
+                    dialog.setTitle("Nowy projekt");
+                    dialog.setHeaderText("Wypełnij poniższe pole aby stworzyć nowy projekt");
+                    dialog.setContentText("Wpisz nazwę projektu ");
+
+                    Optional<String> result = dialog.showAndWait();
+                    if (result.isPresent()) {
+                        try {
+                            ProjectsDAO.insertProject(result.get());
+                            Projects temp = ProjectsDAO.searchProject(result.get());
+                            ProjectsMembersDAO.insertProjectMember(temp.getProjectId(), Session.getUserId(), 1);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                });
+
+                addMember.setOnAction(event -> {
+                    if(isProjectSet){
+                        ProjectsMembers adminCheck = ProjectsMembersDAO.adminGetter(currentProject.getProjectId());
+                        int adminCheckId = adminCheck.getUserId();
+                        if(adminCheckId == Session.getUserId()){
+                            
+                        }else {
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Błąd");
+                            alert.setHeaderText("Brak uprawnień");
+                            alert.setContentText("Musisz być właścicielem projektu aby dodawać i usuwać jego członków");
+
+                            alert.showAndWait();
+                        }
+
+                    }else {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Błąd");
+                        alert.setHeaderText("Nie wybrano projektu");
+                        alert.setContentText("Aby dodawać i usuwać członków projektu wybierz projekt z listy");
+
+                        alert.showAndWait();
+                    }
+                });
+
+                removeMember.setOnAction(event -> {
+                    if(isProjectSet){
+
+
+                    }else {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Błąd");
+                        alert.setHeaderText("Nie wybrano projektu");
+                        alert.setContentText("Aby dodawać i usuwać członków projektu wybierz projekt z listy");
+
+                        alert.showAndWait();
+                    }
+                });
+
 
 
             }catch (Exception e){

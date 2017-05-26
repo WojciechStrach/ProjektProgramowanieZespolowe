@@ -27,6 +27,24 @@ public class ProjectsMembersDAO {
         return projectsMembersList;
     }
 
+    private static ProjectsMembers getProjectMemberFromResulSet(ResultSet rs) throws SQLException {
+
+        ProjectsMembers projectMember = null;
+
+        if (rs.next()) {
+
+            projectMember = new ProjectsMembers();
+
+            projectMember.setProjectMemberId(rs.getInt("projectMember_id"));
+            projectMember.setProjectId(rs.getInt("project_id"));
+            projectMember.setUserId(rs.getInt("user_id"));
+            projectMember.setAdmin(rs.getBoolean("admin"));
+
+        }
+
+        return projectMember;
+    }
+
     public static ObservableList<ProjectsMembers> getAllProjectsMembers () throws SQLException, ClassNotFoundException {
 
         String selectStmt = "SELECT * FROM projectsmembers";
@@ -120,6 +138,29 @@ public class ProjectsMembersDAO {
             System.out.print("Nie udało się usunąć członka projektu: " + e);
             e.printStackTrace();
         }
+    }
+
+    public static ProjectsMembers adminGetter(int currentProjectId){
+
+        String selectStmt = "SELECT * " +
+                "FROM projectsmembers " +
+                "WHERE project_id = " + currentProjectId + " " +
+                "AND admin = " + 1;
+
+        try {
+            ResultSet rsProjectMembers = DatabaseHandler.databaseExecuteQuery(selectStmt);
+
+            ProjectsMembers projectMember = getProjectMemberFromResulSet(rsProjectMembers);
+
+            return projectMember;
+
+        } catch (Exception e) {
+            System.out.println("Wystąpił błąd podczas wyszukiwania uczestników projektu " + e);
+            e.printStackTrace();
+
+            return null;
+        }
+
     }
 
 

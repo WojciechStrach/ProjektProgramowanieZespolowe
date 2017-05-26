@@ -10,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import model.UsersDAO;
@@ -38,11 +39,21 @@ public class RegisterController implements Initializable {
                     e.printStackTrace();
                 }
             } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Błąd");
+                alert.setHeaderText(" ");
+                alert.setContentText("Hasła nie zgadzają się");
+                alert.showAndWait();
                 System.out.println("Hasła nie zgadzają się.");
             }
         }
         else
         {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Błąd");
+            alert.setHeaderText(" ");
+            alert.setContentText("Uzupełnij pola");
+            alert.showAndWait();
             System.out.println("Uzupełnij Pola.");
         }
     }

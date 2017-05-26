@@ -5,9 +5,9 @@ import java.sql.*;
 import java.util.ArrayList;
 
 class Database<T> {
-    private static String databaseUrl = "jdbc:mysql://localhost/programowaniegrupowe";
-    private static String databaseLogin = "mjaskot";
-    private static String databasePassword = "sushijestsmaczne";
+    private static String databaseUrl = "jdbc:mysql://localhost/projektprogramowaniezespolowe";
+    private static String databaseLogin = "root";
+    private static String databasePassword = "wojtek123";
 
     static {
         try {
