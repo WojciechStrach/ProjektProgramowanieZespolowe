@@ -44,7 +44,7 @@ public class MainController implements Initializable {
     //private ObservableList<String> projectTaskString;
     private int numberOfUsersObjects = 0;
     private int numberOfTasksObjects = 0;
-    private ScheduledExecutorService executor = new ScheduledThreadPoolExecutor(10);
+    private ScheduledExecutorService executor = new ScheduledThreadPoolExecutor(0);
     private ScheduledFuture<?> exec;
     private boolean executorStatus = false;
 
@@ -161,7 +161,7 @@ public class MainController implements Initializable {
                     isProjectSet = true;
 
                     if(executorStatus){
-                        exec.cancel(true);
+                        exec.cancel(false);
                     }
 
                     projectUserList.getItems().clear();
@@ -183,15 +183,6 @@ public class MainController implements Initializable {
 
                                     projectTasks = TasksDAO.getTaskById(currentProject.getProjectId());
 
-                                    /*for (Tasks pT : projectTasks) {
-                                        projectTaskCollection.clear();
-                                        System.out.println(projectTaskCollection);
-                                        projectTaskCollection.add(pT.getDescription());
-                                    }*/
-
-                                    //projectTaskList.setItems(projectTaskCollection);
-
-
 
                                     if(numberOfTasksObjects < projectTasks.size()){
                                         for(int i = numberOfTasksObjects; i<projectTasks.size(); i++){
@@ -203,7 +194,7 @@ public class MainController implements Initializable {
                                     }
 
                                     if(numberOfTasksObjects > projectTasks.size()){
-                                        //ObservableList<String> temp = projectTaskList.getItems();
+
                                         for(int j=0; j<projectTaskCollection.size(); j++){
                                             boolean isPresent = false;
                                             for (int k=0; k<projectTasks.size(); k++){

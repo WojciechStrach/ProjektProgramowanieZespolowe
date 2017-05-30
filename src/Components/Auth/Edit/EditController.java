@@ -47,6 +47,10 @@ public class EditController implements Initializable {
     }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        username.setText(Session.getDisplayName());
+        email.setText(Session.getEmail());
+
         delete.setOnAction(event -> {
             try {
                 UsersDAO.deleteUser(Session.getUserId());
