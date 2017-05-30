@@ -88,7 +88,28 @@ public class UsersDAO {
         }
     }
 
-    public static ObservableList<Users> searchUsers (String data) throws SQLException, ClassNotFoundException {
+    public static Users searchUsers (String data) throws SQLException, ClassNotFoundException {
+
+        String selectStmt = "SELECT * " +
+                "FROM users " +
+                "WHERE display_name = '"+ data +"';";
+
+        try {
+            ResultSet rsUsers = DatabaseHandler.databaseExecuteQuery(selectStmt);
+
+            Users user = getUserFromResultSet(rsUsers);
+
+            return user;
+
+        } catch (Exception e) {
+            System.out.println("Wystąpił błąd podczas wyszukiwania użytkowników " + e);
+            e.printStackTrace();
+
+            return null;
+        }
+    }
+
+    /*public static ObservableList<Users> searchUsers (String data) throws SQLException, ClassNotFoundException {
 
         String selectStmt = "SELECT * " +
                 "FROM users " +
@@ -108,7 +129,7 @@ public class UsersDAO {
 
             return null;
         }
-    }
+    }*/
 
     public static void updateUser (String email, String password, String displayName) throws  SQLException, ClassNotFoundException {
 

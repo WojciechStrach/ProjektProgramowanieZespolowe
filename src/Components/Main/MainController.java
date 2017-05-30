@@ -6,16 +6,14 @@ import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.Date;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 import Main.ParentsList;
 import Main.ParentsLoader;
 import Models.User;
 import Service.Session;
 import com.sun.javafx.tk.Toolkit;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableArray;
@@ -46,7 +44,7 @@ public class MainController implements Initializable {
     //private ObservableList<String> projectTaskString;
     private int numberOfUsersObjects = 0;
     private int numberOfTasksObjects = 0;
-    private ScheduledExecutorService executor = Executors.newScheduledThreadPool(0);
+    private ScheduledExecutorService executor = new ScheduledThreadPoolExecutor(10);
     private ScheduledFuture<?> exec;
     private boolean executorStatus = false;
 
@@ -156,8 +154,6 @@ public class MainController implements Initializable {
                     projects.getItems().add(uP.getTitle());
                 }
 
-                clickedProject.bindBidirectional(projects.valueProperty());
-
 
                 clickedProject.addListener((observable, oldValue, newValue) -> {
                     System.out.println(newValue);
@@ -183,6 +179,7 @@ public class MainController implements Initializable {
                         Runnable refreshValues = new Runnable() {
                             public void run() {
                                 try {
+
 
                                     projectTasks = TasksDAO.getTaskById(currentProject.getProjectId());
 
@@ -215,25 +212,13 @@ public class MainController implements Initializable {
                                                 }
                                             }
                                             if (isPresent == false){
-                                                //System.out.println(temp.get(j));
+
                                                 projectTaskCollection.remove(j);
-                                                //projectTaskList
-                                                //projectTaskList.setItems(temp);
-                                                //projectTaskList.getItems().remove(j);
-                                                /*projectTaskList.getItems().clear();
-                                                for (Tasks pT : projectTasks){
-                                                    projectTaskList.getItems().add(pT.getDescription());
-                                                }*/
 
                                             }
                                         }
                                     }
 
-                                    for (Tasks pT : projectTasks) {
-                                        System.out.println(pT.getDescription());
-
-
-                                    }
 
                                     projectMembers = projectMembers();
 
@@ -374,7 +359,48 @@ public class MainController implements Initializable {
                         ProjectsMembers adminCheck = ProjectsMembersDAO.adminGetter(currentProject.getProjectId());
                         int adminCheckId = adminCheck.getUserId();
                         if(adminCheckId == Session.getUserId()){
-                            
+
+                            try {
+
+                                ObservableList<ProjectsMembers> projectMembers = ProjectsMembersDAO.searchProjectMembersByProjectId(currentProject.getProjectId());
+                                List<String>temp = new ArrayList<>();
+                                for (ProjectsMembers pM : projectMembers){
+                                    Users userTemp = UsersDAO.searchUsers(pM.getUserId());
+                                    temp.add(userTemp.getDisplayName());
+                                }
+                                ObservableList<Users> allUsers = UsersDAO.getAllUsers();
+
+                                for (int i=0; i<allUsers.size(); i++){
+                                    for(int j=0; j<temp.size(); j++){
+                                        if(allUsers.get(i).getDisplayName().equals(temp.get(j))){
+                                            allUsers.remove(i);
+                                        }
+                                    }
+                                }
+
+                                List<String> choices = new ArrayList<>();
+                                for(int k=0; k<allUsers.size(); k++){
+                                    choices.add(allUsers.get(k).getDisplayName());
+                                }
+
+                                ChoiceDialog<String> dialog = new ChoiceDialog<>(choices.get(0), choices);
+                                dialog.setTitle("Wybierz użytkownika którego chcesz dodać do projektu");
+                                dialog.setHeaderText("wybierz użytkownika z listy poniżej");
+                                dialog.setContentText("Wybierz użytkownika:");
+
+                                Optional<String> result = dialog.showAndWait();
+                                if (result.isPresent()) {
+
+                                    System.out.println("Your choice: " + result.get());
+                                    Users addUser = UsersDAO.searchUsers(result.get());
+                                    ProjectsMembersDAO.insertProjectMember(currentProject.getProjectId(), addUser.getUserId(), 0);
+
+                                }
+
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
+
                         }else {
                             Alert alert = new Alert(Alert.AlertType.ERROR);
                             alert.setTitle("Błąd");
@@ -396,6 +422,28 @@ public class MainController implements Initializable {
 
                 removeMember.setOnAction(event -> {
                     if(isProjectSet){
+                        ProjectsMembers adminCheck = ProjectsMembersDAO.adminGetter(currentProject.getProjectId());
+                        int adminCheckId = adminCheck.getUserId();
+                        if(adminCheckId == Session.getUserId()){
+
+                            try {
+
+                                String selected = projectUserList.getSelectionModel().getSelectedItem();
+                                Users removeUser = UsersDAO.searchUsers(selected);
+                                ProjectsMembersDAO.deleteProjectMember(removeUser.getUserId());
+
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
+
+                        }else {
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Błąd");
+                            alert.setHeaderText("Brak uprawnień");
+                            alert.setContentText("Musisz być właścicielem projektu aby dodawać i usuwać jego członków");
+
+                            alert.showAndWait();
+                        }
 
 
                     }else {
