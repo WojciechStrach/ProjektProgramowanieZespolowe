@@ -38,9 +38,9 @@ public class SplashController implements Initializable {
 
 
         DatabaseHandler.setDatabaseUrl("localhost");
-        DatabaseHandler.setDatabaseName("projektprogramowaniezespolowe");
-        DatabaseHandler.setUsername("root");
-        DatabaseHandler.setPassword("wojtek123");
+        DatabaseHandler.setDatabaseName("programowaniegrupowe");
+        DatabaseHandler.setUsername("mjaskot");
+        DatabaseHandler.setPassword("sushijestsmaczne");
 
 
         login.setOnAction(event -> {

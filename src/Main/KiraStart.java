@@ -1,5 +1,6 @@
 package Main;
 
+import Reports.ProjectsReport;
 import Utilize.DatabaseHandler;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -11,5 +12,8 @@ public class KiraStart extends Application {
         stage.setScene(new Scene(ParentsLoader.getParent(ParentsList.splash)));
         stage.show();
     }
-    public static void main(String[] args) { launch(args); }
+    /*public static void main(String[] args) {
+
+        launch(args);
+    }*/
 }

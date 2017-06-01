@@ -2,21 +2,13 @@ package Components.Main;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.*;
-import java.util.Date;
 import java.util.concurrent.*;
-
 import Main.ParentsList;
 import Main.ParentsLoader;
-import Models.User;
 import Service.Session;
-import com.sun.javafx.tk.Toolkit;
-import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -27,11 +19,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.*;
-
-
-import javax.swing.*;
-
-import static model.ProjectsMembersDAO.searchProjectMembers;
 
 public class MainController implements Initializable {
 
