@@ -7,11 +7,11 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Components.Auth.Register.RegisterController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.91" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Components.Auth.Register.RegisterController">
    <children>
       <Pane layoutY="6.0" prefHeight="373.0" prefWidth="600.0">
          <children>
-            <Label layoutX="246.0" layoutY="14.0" text="Register" textAlignment="CENTER">
+            <Label layoutX="229.0" layoutY="14.0" text="Rejestracja" textAlignment="CENTER">
                <font>
                   <Font size="30.0" />
                </font>
@@ -21,7 +21,7 @@
                   <Font size="20.0" />
                </font>
             </Label>-->
-            <Label layoutX="85.0" layoutY="140.0" prefHeight="30.0" prefWidth="101.0" text="Username:">
+            <Label layoutX="4.0" layoutY="140.0" prefHeight="30.0" prefWidth="182.0" text="Nazwa użytkownika :">
                <font>
                   <Font size="20.0" />
                </font>
