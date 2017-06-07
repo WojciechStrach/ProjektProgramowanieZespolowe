@@ -155,7 +155,7 @@ public class TasksDAO {
     public static void deleteTask (int id) throws SQLException, ClassNotFoundException {
 
         String updateStmt =
-                "DELETE FROM tasks" +
+                "DELETE FROM tasks " +
                         "WHERE task_id =" + id;
         try {
             DatabaseHandler.databaseExecuteUpdate(updateStmt);
@@ -168,7 +168,7 @@ public class TasksDAO {
     public static void deleteTaskByDescription (String desc) throws SQLException, ClassNotFoundException {
 
         String updateStmt =
-                "DELETE FROM tasks" +
+                "DELETE FROM tasks " +
                         "WHERE description = '"+ desc +"';";
         try {
             DatabaseHandler.databaseExecuteUpdate(updateStmt);
