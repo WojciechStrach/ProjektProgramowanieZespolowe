@@ -30,13 +30,6 @@ public class DatabaseHandler {
 
 
     private static void databaseConnect() throws SQLException, ClassNotFoundException {
-        //try {
-            //Class.forName(JDBC_DRIVER);
-        //} catch (ClassNotFoundException e) {
-            //System.out.println("Coś ze sterownikiem");
-            //e.printStackTrace();
-        //}
-
         try {
             conn = DriverManager.getConnection("jdbc:mysql://" + databaseUrl + "/" + databaseName,username,password);
         } catch (SQLException e) {
@@ -80,7 +73,7 @@ public class DatabaseHandler {
                 e.printStackTrace();
 
             } catch (ClassNotFoundException e){
-                System.out.println("Nic się nie udało");
+                System.out.println("To je surowe");
                 e.printStackTrace();
 
             } finally {

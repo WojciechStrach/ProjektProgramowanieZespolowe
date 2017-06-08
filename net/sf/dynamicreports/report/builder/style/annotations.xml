@@ -1,0 +1,5 @@
+<root>
+    <item name='net.sf.dynamicreports.report.builder.style.BaseStyleBuilder T setHorizontalAlignment(net.sf.dynamicreports.report.constant.HorizontalAlignment)'>
+        <annotation name='org.jetbrains.annotations.NotNull'/>
+    </item>
+</root>
