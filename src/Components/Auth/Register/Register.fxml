@@ -21,19 +21,19 @@
                   <Font size="20.0" />
                </font>
             </Label>-->
-            <Label layoutX="-2.0" layoutY="140.0" prefHeight="30.0" prefWidth="193.0" text="Nazwa użytkownika :">
+            <Label layoutX="49.0" layoutY="140.0" prefHeight="30.0" prefWidth="142.0" text="Nazwa użytkownika :">
                <font>
-                  <Font size="20.0" />
+                  <Font size="15.0" />
                </font>
             </Label>
-            <Label layoutX="85.0" layoutY="180.0" prefHeight="30.0" prefWidth="101.0" text="Email: ">
+            <Label layoutX="138.0" layoutY="180.0" prefHeight="30.0" prefWidth="48.0" text="Email: ">
                <font>
-                  <Font size="20.0" />
+                  <Font size="15.0" />
                </font>
             </Label>
-            <Label layoutX="85.0" layoutY="220.0" prefHeight="30.0" prefWidth="101.0" text="Hasło: ">
+            <Label layoutX="138.0" layoutY="220.0" prefHeight="30.0" prefWidth="54.0" text="Hasło: ">
                <font>
-                  <Font size="20.0" />
+                  <Font size="15.0" />
                </font>
             </Label>
             <!--<TextField fx:id="name" layoutX="190.0" layoutY="100.0" prefHeight="30.0" prefWidth="220.0" style="-fx-background-radius: 0;" />-->
@@ -41,9 +41,9 @@
             <TextField fx:id="email" layoutX="190.0" layoutY="180.0" prefHeight="30.0" prefWidth="220.0" style="-fx-background-radius: 0;" />
             <TextField fx:id="password" layoutX="190.0" layoutY="220.0" prefHeight="30.0" prefWidth="220.0" style="-fx-background-radius: 0;" />
             <Button fx:id="register" layoutX="190.0" layoutY="317.0" mnemonicParsing="false" onAction="#createUser" prefHeight="25.0" prefWidth="220.0" style="-fx-background-radius: 0;" text="Register" />
-            <Label layoutX="18.0" layoutY="260.0" prefHeight="30.0" prefWidth="175.0" text="Powtwierdź hasło:">
+            <Label layoutX="66.0" layoutY="260.0" prefHeight="30.0" prefWidth="127.0" text="Powtwierdź hasło:">
                <font>
-                  <Font size="20.0" />
+                  <Font size="15.0" />
                </font>
             </Label>
             <TextField fx:id="repeatPassword" layoutX="190.0" layoutY="260.0" prefHeight="30.0" prefWidth="220.0" style="-fx-background-radius: 0;" />
