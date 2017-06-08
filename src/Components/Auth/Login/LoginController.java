@@ -13,6 +13,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -20,11 +21,20 @@ public class LoginController implements Initializable {
     Auth accounts = new Auth();
 
     @FXML private TextField loginInput;
-    @FXML private TextField passwordInput;
+    @FXML private PasswordField passwordInput;
     @FXML private Button logInButton;
+    @FXML private Button Back;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        Back.setOnAction(event -> {
+                    try {
+                        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                        stage.setScene(new Scene(ParentsLoader.getParent(ParentsList.splash)));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
         logInButton.setOnAction(event -> {
             if(accounts.authorize(loginInput.getText(), passwordInput.getText())) {
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();

@@ -8,9 +8,8 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="632.0" prefWidth="959.0" xmlns="http://javafx.com/javafx/8.0.91" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Components.Main.MainController">
+<AnchorPane id="AnchorPane" prefHeight="632.0" prefWidth="959.0" xmlns="http://javafx.com/javafx/8.0.131" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Components.Main.MainController">
     <children>
         <Label fx:id="label" layoutX="126" layoutY="120" minHeight="16" minWidth="69" />
       <Pane prefHeight="43.0" prefWidth="959.0">
@@ -58,5 +57,6 @@
       </ListView>
       <Button fx:id="addTask" layoutX="280.0" layoutY="594.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="118.0" style="-fx-background-radius: 0;" text="Dodaj zadanie" />
       <Button fx:id="removeTask" layoutX="405.0" layoutY="594.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="118.0" style="-fx-background-radius: 0;" text="Usuń zadanie" />
+      <Button fx:id="logOut" layoutX="869.0" layoutY="596.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="80.0" text="Wyloguj" />
     </children>
 </AnchorPane>

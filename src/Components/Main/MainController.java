@@ -77,6 +77,8 @@ public class MainController implements Initializable {
     private Button addMember;
     @FXML
     private Button removeMember;
+    @FXML
+    private Button logOut;
 
     @FXML
     private void handleButtonAction(ActionEvent event) {
@@ -142,6 +144,14 @@ public class MainController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        logOut.setOnAction(event -> {
+            try {
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                stage.setScene(new Scene(ParentsLoader.getParent(ParentsList.splash)));
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        });
             try {
 
                 userName.setText(Session.getDisplayName());
