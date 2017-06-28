@@ -137,12 +137,13 @@ public class TasksDAO {
     }
 
     public static void insertTask (int projectId, int userId, String description, int state) throws SQLException, ClassNotFoundException {
-
+        java.util.Date date = new java.util.Date();
+        Object dataAndTime = new java.sql.Timestamp(date.getTime());
         String updateStmt =
                 "INSERT INTO tasks" +
-                        "(project_id, user_id, description, state)" +
+                        "(project_id, user_id, description, state, dateAndTime)" +
                         "VALUES" +
-                        "( " +projectId+ "," +userId+ ",'" +description+ "'," +state+ ")";
+                        "( " + projectId + "," + userId + ",'" + description + "'," + state + ", '" + dataAndTime + "')";
 
         try {
             DatabaseHandler.databaseExecuteUpdate(updateStmt);
