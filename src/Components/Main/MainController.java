@@ -7,6 +7,7 @@ import java.util.concurrent.*;
 import Main.ParentsList;
 import Main.ParentsLoader;
 import Service.Session;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -173,8 +174,8 @@ public class MainController implements Initializable {
 
                         currentProject = ProjectsDAO.searchProject(newValue);
 
-                        Runnable refreshValues = new Runnable() {
-                            public void run() {
+                        Runnable refreshValues = () -> {
+                            Platform.runLater(() -> {
                                 try {
 
 
@@ -236,7 +237,7 @@ public class MainController implements Initializable {
                                 }catch (Exception e){
                                     e.printStackTrace();
                                 }
-                            }
+                            });
                         };
                         exec = executor.scheduleAtFixedRate(refreshValues, 0, 1, TimeUnit.SECONDS);
                         executorStatus = true;
