@@ -418,8 +418,7 @@ public class MainController implements Initializable {
 
                                 String selected = projectUserList.getSelectionModel().getSelectedItem();
                                 Users removeUser = UsersDAO.searchUsers(selected);
-                                ProjectsMembersDAO.deleteProjectMember(removeUser.getUserId());
-
+                                ProjectsMembersDAO.deleteProjectMember(currentProject.getProjectId(), removeUser.getUserId());
                             }catch (Exception e){
                                 e.printStackTrace();
                             }
