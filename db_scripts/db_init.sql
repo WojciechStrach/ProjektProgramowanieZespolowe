@@ -1,6 +1,7 @@
 CREATE TABLE IF NOT EXISTS Users (
     user_id INTEGER NOT NULL AUTO_INCREMENT,
     email text NOT NULL,
+    avatar MEDIUMBLOB,
     password text NOT NULL,
     display_name varchar(32) NOT NULL,
     PRIMARY KEY(user_id)

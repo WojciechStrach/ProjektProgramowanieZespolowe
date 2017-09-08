@@ -41,9 +41,9 @@
          <children>
             <Label layoutX="14.0" layoutY="14.0" prefHeight="17.0" prefWidth="108.0" text="Członkowie" />
             <ListView fx:id="projectUserList" layoutX="15.0" layoutY="50.0" prefHeight="459.0" prefWidth="250.0" style="-fx-background-color: b3d9ff;">
-               <FXCollections fx:id="projectUserCollection" fx:factory="observableArrayList">
-                  <String fx:value="Wybierz projekt z listy" />
-               </FXCollections>
+                <FXCollections fx:id="projectUserCollection" fx:factory="observableArrayList">
+                <String fx:value="Wybierz projekt z listy" />
+                </FXCollections>
             </ListView>
             <Button fx:id="addMember" layoutX="15.0" layoutY="516.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="250.0" style="-fx-background-radius: 0;" text="Dodaj członka projektu" textAlignment="CENTER">
             </Button>
@@ -51,9 +51,7 @@
          </children>
       </Pane>
       <ListView fx:id="projectTaskList" layoutX="278.0" layoutY="43.0" prefHeight="549.0" prefWidth="681.0" style="-fx-background-color: #e6eeff;">
-            <FXCollections fx:id="projectTaskCollection" fx:factory="observableArrayList">
-               <String fx:value="Wybierz projekt z listy" />
-            </FXCollections>
+
       </ListView>
       <Button fx:id="addTask" layoutX="280.0" layoutY="594.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="118.0" style="-fx-background-radius: 0;" text="Dodaj zadanie" />
       <Button fx:id="removeTask" layoutX="405.0" layoutY="594.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="118.0" style="-fx-background-radius: 0;" text="Usuń zadanie" />

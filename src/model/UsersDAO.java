@@ -4,10 +4,17 @@ import Service.Session;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import Utilize.DatabaseHandler;
+import javafx.embed.swing.SwingFXUtils;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.stream.Stream;
 
 public class UsersDAO {
 
@@ -22,7 +29,13 @@ public class UsersDAO {
             user.setEmail(rs.getString("email"));
             user.setPassword(rs.getString("password"));
             user.setDisplayName(rs.getString("display_name"));
-
+            InputStream x = rs.getBinaryStream("avatar");
+            try {
+                BufferedImage bImageFromConvert = ImageIO.read(x);
+                user.setAvatar(SwingFXUtils.toFXImage(bImageFromConvert, null));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             usersList.add(user);
         }
 
@@ -41,6 +54,14 @@ public class UsersDAO {
             user.setEmail(rs.getString("email"));
             user.setPassword(rs.getString("password"));
             user.setDisplayName(rs.getString("display_name"));
+            InputStream x = rs.getBinaryStream("avatar");
+            try {
+                BufferedImage bImageFromConvert = ImageIO.read(x);
+                user.setAvatar(SwingFXUtils.toFXImage(bImageFromConvert, null));
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
         }
 
@@ -146,7 +167,7 @@ public class UsersDAO {
     public static void insertUser (String email, String password, String displayName) throws SQLException, ClassNotFoundException {
 
         String updateStmt =
-                "INSERT INTO users" +
+            "INSERT INTO users" +
                         "(email, password, display_name)" +
                         "VALUES" +
                         "( '" +email+ "','" +password+ "','" +displayName+ "')";

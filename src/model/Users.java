@@ -1,7 +1,7 @@
 package model;
 
 import javafx.beans.property.*;
-import java.sql.Date;
+import javafx.scene.image.Image;
 
 public class Users {
 
@@ -9,12 +9,14 @@ public class Users {
     private StringProperty email;
     private StringProperty password;
     private StringProperty display_name;
+    private SimpleObjectProperty<Image> avatar;
 
-    public Users(){
+    public Users() {
         this.user_id = new SimpleIntegerProperty();
         this.email = new SimpleStringProperty();
         this.password = new SimpleStringProperty();
         this.display_name = new SimpleStringProperty();
+        this.avatar = new SimpleObjectProperty<Image>();
     }
 
     //
@@ -48,4 +50,12 @@ public class Users {
     public void setDisplayName(String displayName) { this.display_name.set(displayName); }
 
     public  StringProperty displayNameProperty() { return display_name; }
+
+    //
+
+    public Image getAvatar() { return avatar.get(); }
+
+    public void setAvatar(Image avatar) { this.avatar.set(avatar); }
+
+    public SimpleObjectProperty avatarProperty() { return avatar; }
 }

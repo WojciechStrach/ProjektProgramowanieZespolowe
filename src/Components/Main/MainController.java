@@ -7,17 +7,20 @@ import java.util.concurrent.*;
 import Main.ParentsList;
 import Main.ParentsLoader;
 import Service.Session;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import model.*;
 
 public class MainController implements Initializable {
@@ -37,7 +40,7 @@ public class MainController implements Initializable {
 
 
     @FXML
-    private ObservableList<String> projectTaskCollection;
+    private ObservableList<Tasks> projectTaskCollection = FXCollections.observableArrayList();
     @FXML
     private Label label;
     @FXML
@@ -45,7 +48,7 @@ public class MainController implements Initializable {
     @FXML
     private ComboBox<String> projects;
     @FXML
-    private ListView<String> projectTaskList = new ListView<>(projectTaskCollection);
+    private ListView<Tasks> projectTaskList = new ListView<>(projectTaskCollection);
     @FXML
     private ListView<String> projectUserList;
     @FXML
@@ -173,8 +176,8 @@ public class MainController implements Initializable {
 
                         currentProject = ProjectsDAO.searchProject(newValue);
 
-                        Runnable refreshValues = new Runnable() {
-                            public void run() {
+                        Runnable refreshValues = () -> {
+                            Platform.runLater(() -> {
                                 try {
 
 
@@ -184,7 +187,7 @@ public class MainController implements Initializable {
                                     if(numberOfTasksObjects < projectTasks.size()){
                                         for(int i = numberOfTasksObjects; i<projectTasks.size(); i++){
                                             Tasks temp = projectTasks.get(i);
-                                            projectTaskCollection.add(temp.getDescription());
+                                            projectTaskCollection.add(temp);
 
                                         }
                                         numberOfTasksObjects = projectTasks.size();
@@ -236,7 +239,7 @@ public class MainController implements Initializable {
                                 }catch (Exception e){
                                     e.printStackTrace();
                                 }
-                            }
+                            });
                         };
                         exec = executor.scheduleAtFixedRate(refreshValues, 0, 1, TimeUnit.SECONDS);
                         executorStatus = true;
@@ -274,6 +277,8 @@ public class MainController implements Initializable {
                     }
                 });
 
+                projectTaskList.setCellFactory(p -> new TaskListCell());
+
                 /*addUser.setOnAction(new EventHandler<ActionEvent>(){
                     public void handle(ActionEvent){
                         TextInputDialog dialog = new TextInputDialog("Dodaj użytkownika do projektu");
@@ -286,10 +291,10 @@ public class MainController implements Initializable {
                     @Override
                     public void handle(ActionEvent event) {
                         if(isProjectSet){
-                            String selected = projectTaskList.getSelectionModel().getSelectedItem();
+                            Tasks selected = projectTaskList.getSelectionModel().getSelectedItem();
                             if (selected != null) {
                                 try {
-                                    TasksDAO.deleteTaskByDescription(selected);
+                                    TasksDAO.deleteTaskByDescription(selected.getDescription());
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
