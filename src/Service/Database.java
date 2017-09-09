@@ -5,10 +5,9 @@ import java.sql.*;
 import java.util.ArrayList;
 
 class Database<T> {
-    private static String databaseUrl = "http://sql31.hostinger.pl/u376531145_ramse";
-    private static String databaseLogin = "u376531145_ramse";
-    private static String databasePassword = "kompletniesurowe";
-
+    private static String databaseUrl = "jdbc:mysql://mysql5.gear.host:3306/programowanie";
+    private static String databaseLogin = "programowanie";
+    private static String databasePassword = "<surowe>";
     static {
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
