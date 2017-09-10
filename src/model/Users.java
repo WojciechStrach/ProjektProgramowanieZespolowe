@@ -2,6 +2,7 @@ package model;
 
 import javafx.beans.property.*;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class Users {
 
@@ -9,14 +10,14 @@ public class Users {
     private StringProperty email;
     private StringProperty password;
     private StringProperty display_name;
-    private SimpleObjectProperty<Image> avatar;
+    private SimpleObjectProperty<ImageView> avatar;
 
     public Users() {
         this.user_id = new SimpleIntegerProperty();
         this.email = new SimpleStringProperty();
         this.password = new SimpleStringProperty();
         this.display_name = new SimpleStringProperty();
-        this.avatar = new SimpleObjectProperty<Image>();
+        this.avatar = new SimpleObjectProperty<>();
     }
 
     //
@@ -53,9 +54,9 @@ public class Users {
 
     //
 
-    public Image getAvatar() { return avatar.get(); }
+    public ImageView getAvatar() { return avatar.get(); }
 
-    public void setAvatar(Image avatar) { this.avatar.set(avatar); }
+    public void setAvatar(ImageView avatar) { this.avatar.set(avatar); }
 
     public SimpleObjectProperty avatarProperty() { return avatar; }
 }

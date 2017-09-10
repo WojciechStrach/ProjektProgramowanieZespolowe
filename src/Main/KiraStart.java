@@ -9,7 +9,8 @@ import javafx.stage.Stage;
 public class KiraStart extends Application {
     @Override
     public void start(Stage stage) throws Exception {
-        stage.setScene(new Scene(ParentsLoader.getParent(ParentsList.splash)));
+        Scene scene = new Scene(ParentsLoader.getParent(ParentsList.splash));
+        stage.setScene(scene);
         stage.show();
     }
     /*public static void main(String[] args) {

@@ -125,7 +125,6 @@ public class TasksDAO {
             ResultSet rsTasks = DatabaseHandler.databaseExecuteQuery(selectStmt);
 
             ObservableList<Tasks> tasksList = getTasksList(rsTasks);
-
             return tasksList;
 
         } catch (Exception e) {

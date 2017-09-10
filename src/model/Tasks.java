@@ -2,6 +2,8 @@ package model;
 
 
 import javafx.beans.property.*;
+import javafx.concurrent.Task;
+
 import java.sql.Date;
 
 public class Tasks {
@@ -13,7 +15,7 @@ public class Tasks {
     private SimpleObjectProperty<Date> dateAndTime;
     private IntegerProperty state;
 
-    public Tasks(){
+    public Tasks() {
         this.task_id = new SimpleIntegerProperty();
         this.project_id = new SimpleIntegerProperty();
         this.user_id = new SimpleIntegerProperty();
@@ -69,4 +71,24 @@ public class Tasks {
     public void setState(int state) { this.state.set(state); }
 
     public  IntegerProperty stateProperty() { return state; }
+
+
+    @Override
+    public boolean equals (Object obj)
+    {
+        if (obj == null) {
+            return false; // todo
+        }
+        Tasks taskToCompare = (Tasks)obj;
+//        return taskToCompare.getTaskId() == this.getTaskId()
+//            && taskToCompare.getProjectId() == this.getProjectId()
+//            && taskToCompare.getUserId() == this.getUserId()
+//            && taskToCompare.getDescription().equals(this.getDescription())
+////            && (
+////                (taskToCompare.getDateAndTime() == null && this.getDateAndTime() == null)
+////                || taskToCompare.getDateAndTime().equals(this.getDateAndTime())
+////            )
+//            && taskToCompare.getState() == this.getState();
+        return taskToCompare.getDescription().equals(this.getDescription());
+    }
 }
