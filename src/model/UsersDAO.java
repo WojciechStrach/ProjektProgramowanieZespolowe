@@ -31,8 +31,12 @@ public class UsersDAO {
             user.setDisplayName(rs.getString("display_name"));
             InputStream x = rs.getBinaryStream("avatar");
             try {
-                BufferedImage bImageFromConvert = ImageIO.read(x);
-                user.setAvatar(SwingFXUtils.toFXImage(bImageFromConvert, null));
+                if (x == null) {
+                    user.setAvatar(null);
+                } else {
+                    BufferedImage bImageFromConvert = ImageIO.read(x);
+                    user.setAvatar(SwingFXUtils.toFXImage(bImageFromConvert, null));
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -56,13 +60,15 @@ public class UsersDAO {
             user.setDisplayName(rs.getString("display_name"));
             InputStream x = rs.getBinaryStream("avatar");
             try {
-                BufferedImage bImageFromConvert = ImageIO.read(x);
-                user.setAvatar(SwingFXUtils.toFXImage(bImageFromConvert, null));
-
+                if (x == null) {
+                    user.setAvatar(null);
+                } else {
+                    BufferedImage bImageFromConvert = ImageIO.read(x);
+                    user.setAvatar(SwingFXUtils.toFXImage(bImageFromConvert, null));
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }
 
         return user;

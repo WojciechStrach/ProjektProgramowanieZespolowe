@@ -127,11 +127,12 @@ public class ProjectsMembersDAO {
         }
     }
 
-    public static void deleteProjectMember (int id) throws SQLException, ClassNotFoundException {
+    public static void deleteProjectMember (int projectId, int id) throws SQLException, ClassNotFoundException {
 
         String updateStmt =
                 "DELETE FROM projectsmembers " +
-                        "WHERE user_id =" + id;
+                        "WHERE user_id = " + id +
+                        " AND project_id = " + projectId;
         try {
             DatabaseHandler.databaseExecuteUpdate(updateStmt);
         } catch (SQLException e) {

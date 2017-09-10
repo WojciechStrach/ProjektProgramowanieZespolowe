@@ -11,6 +11,7 @@ import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -176,74 +177,103 @@ public class MainController implements Initializable {
 
                         currentProject = ProjectsDAO.searchProject(newValue);
 
-                        Runnable refreshValues = () -> {
-                            Platform.runLater(() -> {
-                                try {
+//                        Runnable refreshValues = () -> {
+//                            Platform.runLater(() -> {
+                        //                            });
+                        Task<Void> task = new Task<Void>() {
 
-
+                            @Override protected Void call() throws Exception {
+                                int x = 1;
+                                while (x == 1) {
                                     projectTasks = TasksDAO.getTaskById(currentProject.getProjectId());
+                                    updateProgress();
 
+                                    projectTaskCollection.clear();
+//                                if (numberOfTasksObjects < projectTasks.size()) {
+                                    for (int i = 0; i < projectTasks.size(); i++) {
+                                        Tasks temp = projectTasks.get(i);
+                                        System.out.println("dodaje: ");
+                                        final int y = i;
+//                                                                            projectTaskCollection.add(temp);
+                                                                                                    Platform.runLater(() -> {
 
-                                    if(numberOfTasksObjects < projectTasks.size()){
-                                        for(int i = numberOfTasksObjects; i<projectTasks.size(); i++){
-                                            Tasks temp = projectTasks.get(i);
-                                            projectTaskCollection.add(temp);
-
-                                        }
-                                        numberOfTasksObjects = projectTasks.size();
+                                                                                                        projectTaskList.getItems().add(y, temp);
+                                                                                                    });
                                     }
-
-                                    if(numberOfTasksObjects > projectTasks.size()){
-
-                                        for(int j=0; j<projectTaskCollection.size(); j++){
-                                            boolean isPresent = false;
-                                            for (int k=0; k<projectTasks.size(); k++){
-                                                if(projectTaskCollection.get(j).equals(projectTasks.get(k).getDescription())){
-                                                    isPresent = true;
-                                                }
-                                            }
-                                            if (isPresent == false){
-
-                                                projectTaskCollection.remove(j);
-
-                                            }
-                                        }
-                                    }
-
-
-                                    projectMembers = projectMembers();
-
-                                    if(numberOfUsersObjects < projectMembers.size()){
-                                        for(int i = numberOfUsersObjects; i<projectMembers.size(); i++){
-                                            Users temp = projectMembers.get(i);
-                                            projectUserList.getItems().add(temp.getDisplayName());
-
-                                        }
-                                        numberOfUsersObjects = projectMembers.size();
-                                    }
-
-                                    if(numberOfUsersObjects > projectMembers.size()){
-                                        numberOfUsersObjects = projectMembers.size();
-                                        projectUserList.getItems().clear();
-                                        for (int j=0; j<projectMembers.size(); j++){
-                                            Users userRemoveTemp = projectMembers.get(j);
-                                            projectUserList.getItems().add(userRemoveTemp.getDisplayName());
-                                        }
-                                    }
-
-                                    for (Users pU : projectMembers) {
-                                        System.out.println(pU.getDisplayName());
-
-                                    }
-
-                                }catch (Exception e){
-                                    e.printStackTrace();
+                                    Thread.sleep(1000);
                                 }
-                            });
+                                return null;
+                            }
                         };
-                        exec = executor.scheduleAtFixedRate(refreshValues, 0, 1, TimeUnit.SECONDS);
+                        Thread th = new Thread(task);
+                        th.setDaemon(true);
+                        th.start();
+                        Runnable refreshValues = () -> {
+                            try {
+                                projectTasks = TasksDAO.getTaskById(currentProject.getProjectId());
+//                                projectMembers = projectMembers();
+//                                projectTasks.addAll(projectTaskCollection);
+//                                                            Platform.runLater(() -> {
+                                                                        System.out.println("tcc before:" + projectTaskList.getItems().size());
+                                                                        System.out.println("tc before:" + projectTaskCollection.size());
+                                                                        projectTaskCollection.clear();
+                                                                        projectTaskList.getItems().clear();
+//                                if (numberOfTasksObjects < projectTasks.size()) {
+                                                                        for (int i = 0; i < projectTasks.size(); i++) {
+                                                                            Tasks temp = projectTasks.get(i);
+                                                                            final int x = i;
+                                                                            System.out.println("dodaje: " + x);
+//                                                                            projectTaskCollection.add(temp);
+                                                                            projectTaskCollection.add(i, temp);
+                                                                        }
+                                                                        numberOfTasksObjects = projectTasks.size();
+//                                }
+                                                                        System.out.println("tc after:" + projectTaskCollection.size());
+                                                                        System.out.println("tcc after:" + projectTaskList.getItems().size());
+//                                                                    });
+
+//                                    if (numberOfTasksObjects > projectTasks.size()) {
+//
+//                                        for (int j = 0; j < projectTaskCollection.size(); j++) {
+//                                            boolean isPresent = false;
+//                                            for (int k = 0; k < projectTasks.size(); k++) {
+//                                                if (projectTaskCollection.get(j).equals(projectTasks.get(k).getDescription())) {
+//                                                    isPresent = true;
+//                                                }
+//                                            }
+//                                            if (isPresent == false) {
+//
+//                                                projectTaskCollection.remove(j);
+//
+//                                            }
+//                                        }
+//                                    }
+//                                });
+//                                Platform.runLater(() -> {
+//                                if (numberOfUsersObjects < projectMembers.size()) {
+//                                    for (int i = numberOfUsersObjects; i < projectMembers.size(); i++) {
+//                                        Users temp = projectMembers.get(i);
+//                                        projectUserList.getItems().add(temp.getDisplayName());
+//                                    }
+//                                    numberOfUsersObjects = projectMembers.size();
+//                                }
+//                                if (numberOfUsersObjects > projectMembers.size()) {
+//                                    numberOfUsersObjects = projectMembers.size();
+//                                    projectUserList.getItems().clear();
+//                                    for (int j = 0; j < projectMembers.size(); j++) {
+//                                        Users userRemoveTemp = projectMembers.get(j);
+//                                        projectUserList.getItems().add(userRemoveTemp.getDisplayName());
+//                                    }
+//                                }
+//                                    for (Users pU : projectMembers) {
+//                                        System.out.println(pU.getDisplayName());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        };
+//                        exec = executor.scheduleAtFixedRate(th, 0, 5, TimeUnit.SECONDS);
                         executorStatus = true;
-                    }catch (Exception e){
+                    } catch (Exception e){
                         e.printStackTrace();
                     }
                 });
@@ -423,7 +453,7 @@ public class MainController implements Initializable {
 
                                 String selected = projectUserList.getSelectionModel().getSelectedItem();
                                 Users removeUser = UsersDAO.searchUsers(selected);
-                                ProjectsMembersDAO.deleteProjectMember(removeUser.getUserId());
+                                ProjectsMembersDAO.deleteProjectMember(currentProject.getProjectId(), removeUser.getUserId());
 
                             }catch (Exception e){
                                 e.printStackTrace();
