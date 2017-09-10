@@ -5,6 +5,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import Utilize.DatabaseHandler;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -35,7 +37,11 @@ public class UsersDAO {
                     user.setAvatar(null);
                 } else {
                     BufferedImage bImageFromConvert = ImageIO.read(x);
-                    user.setAvatar(SwingFXUtils.toFXImage(bImageFromConvert, null));
+                    Image image = SwingFXUtils.toFXImage(bImageFromConvert, null);
+                    ImageView imageView = new ImageView(image);
+                    imageView.setFitHeight(50);
+                    imageView.setFitWidth(50);
+                    user.setAvatar(imageView);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -64,7 +70,11 @@ public class UsersDAO {
                     user.setAvatar(null);
                 } else {
                     BufferedImage bImageFromConvert = ImageIO.read(x);
-                    user.setAvatar(SwingFXUtils.toFXImage(bImageFromConvert, null));
+                    Image image = SwingFXUtils.toFXImage(bImageFromConvert, null);
+                    ImageView imageView = new ImageView(image);
+                    imageView.setFitHeight(50);
+                    imageView.setFitWidth(50);
+                    user.setAvatar(imageView);
                 }
             } catch (IOException e) {
                 e.printStackTrace();

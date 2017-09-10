@@ -26,10 +26,12 @@ public class TaskController {
         try
         {
             fxmlLoader.load();
-            descriptionLabel.setText(task.getDescription() + " : " + UsersDAO.searchUsers(task.getUserId()).getDisplayName());
-            Image image = UsersDAO.searchUsers(task.getUserId()).getAvatar();
-            if(image != null) {
-                taskAssignedAvatarImageView.setImage(image);
+            if(task != null) {
+                descriptionLabel.setText(task.getDescription() + " : " + UsersDAO.searchUsers(task.getUserId()).getDisplayName());
+//                Image image = UsersDAO.searchUsers(task.getUserId()).getAvatar();
+//                if (image != null) {
+//                    taskAssignedAvatarImageView.setImage(image);
+//                }
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

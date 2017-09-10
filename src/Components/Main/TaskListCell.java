@@ -2,6 +2,7 @@ package Components.Main;
 
 import javafx.scene.control.ListCell;
 import model.Tasks;
+import model.UsersDAO;
 
 public class TaskListCell extends ListCell<Tasks>
 {
@@ -12,6 +13,8 @@ public class TaskListCell extends ListCell<Tasks>
         if(task != null)
         {
             setGraphic(new Components.Main.TaskController(task).getBox());
+            setText(task.getDescription());
+
         }
     }
 }

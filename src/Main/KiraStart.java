@@ -9,7 +9,10 @@ import javafx.stage.Stage;
 public class KiraStart extends Application {
     @Override
     public void start(Stage stage) throws Exception {
-        stage.setScene(new Scene(ParentsLoader.getParent(ParentsList.splash)));
+        Scene scene = new Scene(ParentsLoader.getParent(ParentsList.splash));
+        scene.getStylesheets().add("Components/Main/style.css");
+        stage.setScene(scene);
+        //                String css = this.getClass().getResource("double_slider.css").toExternalForm();
         stage.show();
     }
     /*public static void main(String[] args) {

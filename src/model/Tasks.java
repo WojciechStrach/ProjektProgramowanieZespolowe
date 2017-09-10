@@ -13,7 +13,7 @@ public class Tasks {
     private SimpleObjectProperty<Date> dateAndTime;
     private IntegerProperty state;
 
-    public Tasks(){
+    public Tasks() {
         this.task_id = new SimpleIntegerProperty();
         this.project_id = new SimpleIntegerProperty();
         this.user_id = new SimpleIntegerProperty();

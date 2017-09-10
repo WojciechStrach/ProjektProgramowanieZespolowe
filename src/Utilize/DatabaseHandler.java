@@ -59,7 +59,7 @@ public class DatabaseHandler {
             try {
 
                 databaseConnect();
-                System.out.println("Wykonuje zapytanie: " + queryStmt + "\n");
+//                System.out.println("Wykonuje zapytanie: " + queryStmt + "\n");
 
                 stmt = conn.createStatement();
 

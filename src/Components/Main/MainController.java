@@ -7,19 +7,25 @@ import java.util.concurrent.*;
 import Main.ParentsList;
 import Main.ParentsLoader;
 import Service.Session;
+import com.sun.javafx.scene.control.skin.TableHeaderRow;
+import com.sun.javafx.scene.control.skin.TableViewSkinBase;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import model.*;
@@ -39,9 +45,9 @@ public class MainController implements Initializable {
     private ScheduledFuture<?> exec;
     private boolean executorStatus = false;
 
-
-    @FXML
-    private ObservableList<Tasks> projectTaskCollection = FXCollections.observableArrayList();
+    private ObservableList<Tasks> projectDoneTaskCollection = FXCollections.observableArrayList();
+    private ObservableList<Tasks> projectToDoTaskCollection = FXCollections.observableArrayList();
+    private ObservableList<Tasks> projectToReviewTaskCollection = FXCollections.observableArrayList();
     @FXML
     private Label label;
     @FXML
@@ -49,7 +55,11 @@ public class MainController implements Initializable {
     @FXML
     private ComboBox<String> projects;
     @FXML
-    private ListView<Tasks> projectTaskList = new ListView<>(projectTaskCollection);
+    private TableView<Tasks> tasksDoneTableView = new TableView<>();
+    @FXML
+    private TableView<Tasks> tasksToDoTableView = new TableView<>();
+    @FXML
+    private TableView<Tasks> tasksToReviewTableView = new TableView<>();
     @FXML
     private ListView<String> projectUserList;
     @FXML
@@ -138,100 +148,65 @@ public class MainController implements Initializable {
         logOut.setOnAction(event -> {
             try {
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                stage.setScene(new Scene(ParentsLoader.getParent(ParentsList.splash)));
-            }catch (Exception e){
+                Scene scene = new Scene(ParentsLoader.getParent(ParentsList.splash));
+                stage.setScene(scene);
+            } catch (Exception e){
                 e.printStackTrace();
             }
         });
-            try {
+        try {
+            userName.setText(Session.getDisplayName());
+            clickedProject.bindBidirectional(projects.valueProperty());
+            userProjects = matchProjects();
+            for (Projects uP : userProjects) {
+                projects.getItems().add(uP.getTitle());
+            }
+            clickedProject.addListener((observable, oldValue, newValue) -> {
+                System.out.println(newValue);
+                projectName.setText(newValue);
+                isProjectSet = true;
 
-                userName.setText(Session.getDisplayName());
-
-                clickedProject.bindBidirectional(projects.valueProperty());
-
-                userProjects = matchProjects();
-
-                for (Projects uP : userProjects) {
-                    projects.getItems().add(uP.getTitle());
+                if(executorStatus){
+                    exec.cancel(false);
                 }
 
+                projectUserList.getItems().clear();
+                projectDoneTaskCollection.clear();
+                projectToDoTaskCollection.clear();
 
-                clickedProject.addListener((observable, oldValue, newValue) -> {
-                    System.out.println(newValue);
-                    projectName.setText(newValue);
-                    isProjectSet = true;
+//                    projectTaskList.setItems(projectTaskCollection);
 
-                    if(executorStatus){
-                        exec.cancel(false);
-                    }
+                numberOfTasksObjects = 0;
+                numberOfUsersObjects = 0;
 
-                    projectUserList.getItems().clear();
-                    projectTaskCollection.clear();
-
-                    projectTaskList.setItems(projectTaskCollection);
-
-                    numberOfTasksObjects = 0;
-                    numberOfUsersObjects = 0;
-
-                    try {
-
-                        currentProject = ProjectsDAO.searchProject(newValue);
-
+                try {
+                    currentProject = ProjectsDAO.searchProject(newValue);
 //                        Runnable refreshValues = () -> {
 //                            Platform.runLater(() -> {
-                        //                            });
-                        Task<Void> task = new Task<Void>() {
-
-                            @Override protected Void call() throws Exception {
-                                int x = 1;
-                                while (x == 1) {
-                                    projectTasks = TasksDAO.getTaskById(currentProject.getProjectId());
-                                    updateProgress();
-
-                                    projectTaskCollection.clear();
+                    //                            });
+                    Runnable refreshValues = () -> {
+                        try {
+                            projectTasks = TasksDAO.getTaskById(currentProject.getProjectId());
+                            projectMembers = projectMembers();
+                            Platform.runLater(() -> {
+                                projectToDoTaskCollection.clear();
+                                projectDoneTaskCollection.clear();
+                                projectToReviewTaskCollection.clear();
 //                                if (numberOfTasksObjects < projectTasks.size()) {
-                                    for (int i = 0; i < projectTasks.size(); i++) {
-                                        Tasks temp = projectTasks.get(i);
-                                        System.out.println("dodaje: ");
-                                        final int y = i;
+                                for (int i = 0; i < projectTasks.size(); i++) {
+                                    Tasks temp = projectTasks.get(i);
+                                    final int x = i;
 //                                                                            projectTaskCollection.add(temp);
-                                                                                                    Platform.runLater(() -> {
-
-                                                                                                        projectTaskList.getItems().add(y, temp);
-                                                                                                    });
+                                    if(temp.getState() == 1) {
+                                        projectToDoTaskCollection.add(temp);
+                                    } else if(temp.getState() == 2) {
+                                        projectDoneTaskCollection.add(temp);
+                                    } else if(temp.getState() == 3) {
+                                        projectToReviewTaskCollection.add(temp);
                                     }
-                                    Thread.sleep(1000);
                                 }
-                                return null;
-                            }
-                        };
-                        Thread th = new Thread(task);
-                        th.setDaemon(true);
-                        th.start();
-                        Runnable refreshValues = () -> {
-                            try {
-                                projectTasks = TasksDAO.getTaskById(currentProject.getProjectId());
-//                                projectMembers = projectMembers();
-//                                projectTasks.addAll(projectTaskCollection);
-//                                                            Platform.runLater(() -> {
-                                                                        System.out.println("tcc before:" + projectTaskList.getItems().size());
-                                                                        System.out.println("tc before:" + projectTaskCollection.size());
-                                                                        projectTaskCollection.clear();
-                                                                        projectTaskList.getItems().clear();
-//                                if (numberOfTasksObjects < projectTasks.size()) {
-                                                                        for (int i = 0; i < projectTasks.size(); i++) {
-                                                                            Tasks temp = projectTasks.get(i);
-                                                                            final int x = i;
-                                                                            System.out.println("dodaje: " + x);
-//                                                                            projectTaskCollection.add(temp);
-                                                                            projectTaskCollection.add(i, temp);
-                                                                        }
-                                                                        numberOfTasksObjects = projectTasks.size();
+                                numberOfTasksObjects = projectTasks.size();
 //                                }
-                                                                        System.out.println("tc after:" + projectTaskCollection.size());
-                                                                        System.out.println("tcc after:" + projectTaskList.getItems().size());
-//                                                                    });
-
 //                                    if (numberOfTasksObjects > projectTasks.size()) {
 //
 //                                        for (int j = 0; j < projectTaskCollection.size(); j++) {
@@ -248,242 +223,273 @@ public class MainController implements Initializable {
 //                                            }
 //                                        }
 //                                    }
-//                                });
-//                                Platform.runLater(() -> {
-//                                if (numberOfUsersObjects < projectMembers.size()) {
-//                                    for (int i = numberOfUsersObjects; i < projectMembers.size(); i++) {
-//                                        Users temp = projectMembers.get(i);
-//                                        projectUserList.getItems().add(temp.getDisplayName());
-//                                    }
-//                                    numberOfUsersObjects = projectMembers.size();
-//                                }
-//                                if (numberOfUsersObjects > projectMembers.size()) {
-//                                    numberOfUsersObjects = projectMembers.size();
-//                                    projectUserList.getItems().clear();
-//                                    for (int j = 0; j < projectMembers.size(); j++) {
-//                                        Users userRemoveTemp = projectMembers.get(j);
-//                                        projectUserList.getItems().add(userRemoveTemp.getDisplayName());
-//                                    }
-//                                }
-//                                    for (Users pU : projectMembers) {
-//                                        System.out.println(pU.getDisplayName());
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        };
-//                        exec = executor.scheduleAtFixedRate(th, 0, 5, TimeUnit.SECONDS);
-                        executorStatus = true;
-                    } catch (Exception e){
-                        e.printStackTrace();
-                    }
-                });
 
-                addTask.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
-                        if(isProjectSet) {
-                            TextInputDialog dialog = new TextInputDialog("Wpisz treść zadania");
-                            dialog.setTitle("Dodawanie zadania");
-                            dialog.setHeaderText("Wypełnij poniższe pole aby dodać nowe zadanie");
-                            dialog.setContentText("Wpisz treść zadania");
-
-                            Optional<String> result = dialog.showAndWait();
-                            if (result.isPresent()) {
-                                try {
-                                    TasksDAO.insertTask(currentProject.getProjectId(), Session.getUserId(), result.get(), 1);
-                                } catch (Exception e) {
-                                    e.printStackTrace();
+                                if (numberOfUsersObjects < projectMembers.size()) {
+                                    for (int i = numberOfUsersObjects; i < projectMembers.size(); i++) {
+                                        Users temp = projectMembers.get(i);
+                                        projectUserList.getItems().add(temp.getDisplayName());
+                                    }
+                                    numberOfUsersObjects = projectMembers.size();
                                 }
-
-                            }
-                        }else {
-                            Alert alert = new Alert(Alert.AlertType.ERROR);
-                            alert.setTitle("Błąd");
-                            alert.setHeaderText("Nie wybrano projektu");
-                            alert.setContentText("Aby dodać zadanie najpierw wybierz projekt z menu");
-
-                            alert.showAndWait();
-                        }
-                    }
-                });
-
-                projectTaskList.setCellFactory(p -> new TaskListCell());
-
-                /*addUser.setOnAction(new EventHandler<ActionEvent>(){
-                    public void handle(ActionEvent){
-                        TextInputDialog dialog = new TextInputDialog("Dodaj użytkownika do projektu");
-                        dialog.setTitle("Dodawanie użytkownika");
-                        dialog.setHeaderText("Wybierz użytkownika z listy aby go dodać");
-                    }
-                });*/
-
-                removeTask.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
-                        if(isProjectSet){
-                            Tasks selected = projectTaskList.getSelectionModel().getSelectedItem();
-                            if (selected != null) {
-                                try {
-                                    TasksDAO.deleteTaskByDescription(selected.getDescription());
-                                } catch (Exception e) {
-                                    e.printStackTrace();
+                                if (numberOfUsersObjects > projectMembers.size()) {
+                                    numberOfUsersObjects = projectMembers.size();
+                                    projectUserList.getItems().clear();
+                                    for (int j = 0; j < projectMembers.size(); j++) {
+                                        Users userRemoveTemp = projectMembers.get(j);
+                                        projectUserList.getItems().add(userRemoveTemp.getDisplayName());
+                                    }
                                 }
-                            }else {
-                                Alert alert = new Alert(Alert.AlertType.ERROR);
-                                alert.setTitle("Błąd");
-                                alert.setHeaderText("Nie zaznaczono zadania");
-                                alert.setContentText("Zaznacz zadanie aby je usunąć");
-
-                                alert.showAndWait();
-                            }
-
-                        }else {
-                            Alert alert = new Alert(Alert.AlertType.ERROR);
-                            alert.setTitle("Błąd");
-                            alert.setHeaderText("Nie wybrano projektu");
-                            alert.setContentText("Aby usunąć zadanie wybierz projekt z listy a następnie zaznacz zadanie");
-
-                            alert.showAndWait();
-                        }
-                    }
-                });
-
-                editUser.setOnAction(event -> {
-                    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                    try {
-                        stage.setScene(new Scene(ParentsLoader.getParent(ParentsList.edit)));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    stage.show();
-                });
-
-                newProject.setOnAction(event -> {
-                    TextInputDialog dialog = new TextInputDialog("Podaj nazwę projektu");
-                    dialog.setTitle("Nowy projekt");
-                    dialog.setHeaderText("Wypełnij poniższe pole aby stworzyć nowy projekt");
-                    dialog.setContentText("Wpisz nazwę projektu ");
-
-                    Optional<String> result = dialog.showAndWait();
-                    if (result.isPresent()) {
-                        try {
-                            ProjectsDAO.insertProject(result.get());
-                            Projects temp = ProjectsDAO.searchProject(result.get());
-                            ProjectsMembersDAO.insertProjectMember(temp.getProjectId(), Session.getUserId(), 1);
+                            });
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
+                    };
+                    exec = executor.scheduleAtFixedRate(refreshValues, 0, 40, TimeUnit.SECONDS);
+                    executorStatus = true;
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            });
 
-                    }
-                });
+            addTask.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    if(isProjectSet) {
+                        TextInputDialog dialog = new TextInputDialog("Wpisz treść zadania");
+                        dialog.setTitle("Dodawanie zadania");
+                        dialog.setHeaderText("Wypełnij poniższe pole aby dodać nowe zadanie");
+                        dialog.setContentText("Wpisz treść zadania");
 
-                addMember.setOnAction(event -> {
-                    if(isProjectSet){
-                        ProjectsMembers adminCheck = ProjectsMembersDAO.adminGetter(currentProject.getProjectId());
-                        int adminCheckId = adminCheck.getUserId();
-                        if(adminCheckId == Session.getUserId()){
-
+                        Optional<String> result = dialog.showAndWait();
+                        if (result.isPresent()) {
                             try {
+                                TasksDAO.insertTask(currentProject.getProjectId(), Session.getUserId(), result.get(), 1);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
 
-                                ObservableList<ProjectsMembers> projectMembers = ProjectsMembersDAO.searchProjectMembersByProjectId(currentProject.getProjectId());
-                                List<String>temp = new ArrayList<>();
-                                for (ProjectsMembers pM : projectMembers){
-                                    Users userTemp = UsersDAO.searchUsers(pM.getUserId());
-                                    temp.add(userTemp.getDisplayName());
-                                }
-                                ObservableList<Users> allUsers = UsersDAO.getAllUsers();
+                        }
+                    }else {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Błąd");
+                        alert.setHeaderText("Nie wybrano projektu");
+                        alert.setContentText("Aby dodać zadanie najpierw wybierz projekt z menu");
 
-                                for (int i=0; i<allUsers.size(); i++){
-                                    for(int j=0; j<temp.size(); j++){
-                                        if(allUsers.get(i).getDisplayName().equals(temp.get(j))){
-                                            allUsers.remove(i);
-                                        }
+                        alert.showAndWait();
+                    }
+                }
+            });
+
+            initTasksTableView(tasksToDoTableView, projectToDoTaskCollection);
+            initTasksTableView(tasksToReviewTableView, projectToReviewTaskCollection);
+            initTasksTableView(tasksDoneTableView, projectDoneTaskCollection);
+
+//                addUser.setOnAction(new EventHandler<ActionEvent>(){
+//                    public void handle(ActionEvent){
+//                        TextInputDialog dialog = new TextInputDialog("Dodaj użytkownika do projektu");
+//                        dialog.setTitle("Dodawanie użytkownika");
+//                        dialog.setHeaderText("Wybierz użytkownika z listy aby go dodać");
+//                    }
+//                });
+
+//                removeTask.setOnAction(new EventHandler<ActionEvent>() { todo
+//                    @Override
+//                    public void handle(ActionEvent event) {
+//                        if(isProjectSet){
+//                            Tasks selected = projectTaskList.getSelectionModel().getSelectedItem();
+//                            if (selected != null) {
+//                                try {
+//                                    TasksDAO.deleteTaskByDescription(selected.getDescription());
+//                                } catch (Exception e) {
+//                                    e.printStackTrace();
+//                                }
+//                            }else {
+//                                Alert alert = new Alert(Alert.AlertType.ERROR);
+//                                alert.setTitle("Błąd");
+//                                alert.setHeaderText("Nie zaznaczono zadania");
+//                                alert.setContentText("Zaznacz zadanie aby je usunąć");
+//
+//                                alert.showAndWait();
+//                            }
+//
+//                        } else {
+//                            Alert alert = new Alert(Alert.AlertType.ERROR);
+//                            alert.setTitle("Błąd");
+//                            alert.setHeaderText("Nie wybrano projektu");
+//                            alert.setContentText("Aby usunąć zadanie wybierz projekt z listy a następnie zaznacz zadanie");
+//
+//                            alert.showAndWait();
+//                        }
+//                    }
+//                });
+
+            editUser.setOnAction(event -> {
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                try {
+                    stage.setScene(new Scene(ParentsLoader.getParent(ParentsList.edit)));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                stage.show();
+            });
+
+            newProject.setOnAction(event -> {
+                TextInputDialog dialog = new TextInputDialog("Podaj nazwę projektu");
+                dialog.setTitle("Nowy projekt");
+                dialog.setHeaderText("Wypełnij poniższe pole aby stworzyć nowy projekt");
+                dialog.setContentText("Wpisz nazwę projektu ");
+
+                Optional<String> result = dialog.showAndWait();
+                if (result.isPresent()) {
+                    try {
+                        ProjectsDAO.insertProject(result.get());
+                        Projects temp = ProjectsDAO.searchProject(result.get());
+                        ProjectsMembersDAO.insertProjectMember(temp.getProjectId(), Session.getUserId(), 1);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            });
+
+            addMember.setOnAction(event -> {
+                if(isProjectSet){
+                    ProjectsMembers adminCheck = ProjectsMembersDAO.adminGetter(currentProject.getProjectId());
+                    int adminCheckId = adminCheck.getUserId();
+                    if(adminCheckId == Session.getUserId()){
+
+                        try {
+
+                            ObservableList<ProjectsMembers> projectMembers = ProjectsMembersDAO.searchProjectMembersByProjectId(currentProject.getProjectId());
+                            List<String>temp = new ArrayList<>();
+                            for (ProjectsMembers pM : projectMembers){
+                                Users userTemp = UsersDAO.searchUsers(pM.getUserId());
+                                temp.add(userTemp.getDisplayName());
+                            }
+                            ObservableList<Users> allUsers = UsersDAO.getAllUsers();
+
+                            for (int i=0; i<allUsers.size(); i++){
+                                for(int j=0; j<temp.size(); j++){
+                                    if(allUsers.get(i).getDisplayName().equals(temp.get(j))){
+                                        allUsers.remove(i);
                                     }
                                 }
-
-                                List<String> choices = new ArrayList<>();
-                                for(int k=0; k<allUsers.size(); k++){
-                                    choices.add(allUsers.get(k).getDisplayName());
-                                }
-
-                                ChoiceDialog<String> dialog = new ChoiceDialog<>(choices.get(0), choices);
-                                dialog.setTitle("Wybierz użytkownika którego chcesz dodać do projektu");
-                                dialog.setHeaderText("wybierz użytkownika z listy poniżej");
-                                dialog.setContentText("Wybierz użytkownika:");
-
-                                Optional<String> result = dialog.showAndWait();
-                                if (result.isPresent()) {
-
-                                    System.out.println("Your choice: " + result.get());
-                                    Users addUser = UsersDAO.searchUsers(result.get());
-                                    ProjectsMembersDAO.insertProjectMember(currentProject.getProjectId(), addUser.getUserId(), 0);
-
-                                }
-
-                            }catch (Exception e){
-                                e.printStackTrace();
                             }
 
-                        }else {
-                            Alert alert = new Alert(Alert.AlertType.ERROR);
-                            alert.setTitle("Błąd");
-                            alert.setHeaderText("Brak uprawnień");
-                            alert.setContentText("Musisz być właścicielem projektu aby dodawać i usuwać jego członków");
+                            List<String> choices = new ArrayList<>();
+                            for(int k=0; k<allUsers.size(); k++){
+                                choices.add(allUsers.get(k).getDisplayName());
+                            }
 
-                            alert.showAndWait();
+                            ChoiceDialog<String> dialog = new ChoiceDialog<>(choices.get(0), choices);
+                            dialog.setTitle("Wybierz użytkownika którego chcesz dodać do projektu");
+                            dialog.setHeaderText("wybierz użytkownika z listy poniżej");
+                            dialog.setContentText("Wybierz użytkownika:");
+
+                            Optional<String> result = dialog.showAndWait();
+                            if (result.isPresent()) {
+
+                                System.out.println("Your choice: " + result.get());
+                                Users addUser = UsersDAO.searchUsers(result.get());
+                                ProjectsMembersDAO.insertProjectMember(currentProject.getProjectId(), addUser.getUserId(), 0);
+
+                            }
+
+                        }catch (Exception e){
+                            e.printStackTrace();
                         }
 
                     }else {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("Błąd");
-                        alert.setHeaderText("Nie wybrano projektu");
-                        alert.setContentText("Aby dodawać i usuwać członków projektu wybierz projekt z listy");
+                        alert.setHeaderText("Brak uprawnień");
+                        alert.setContentText("Musisz być właścicielem projektu aby dodawać i usuwać jego członków");
 
                         alert.showAndWait();
                     }
-                });
 
-                removeMember.setOnAction(event -> {
-                    if(isProjectSet){
-                        ProjectsMembers adminCheck = ProjectsMembersDAO.adminGetter(currentProject.getProjectId());
-                        int adminCheckId = adminCheck.getUserId();
-                        if(adminCheckId == Session.getUserId()){
+                }else {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Błąd");
+                    alert.setHeaderText("Nie wybrano projektu");
+                    alert.setContentText("Aby dodawać i usuwać członków projektu wybierz projekt z listy");
 
-                            try {
+                    alert.showAndWait();
+                }
+            });
 
-                                String selected = projectUserList.getSelectionModel().getSelectedItem();
-                                Users removeUser = UsersDAO.searchUsers(selected);
-                                ProjectsMembersDAO.deleteProjectMember(currentProject.getProjectId(), removeUser.getUserId());
+            removeMember.setOnAction(event -> {
+                if(isProjectSet){
+                    ProjectsMembers adminCheck = ProjectsMembersDAO.adminGetter(currentProject.getProjectId());
+                    int adminCheckId = adminCheck.getUserId();
+                    if(adminCheckId == Session.getUserId()){
 
-                            }catch (Exception e){
-                                e.printStackTrace();
-                            }
+                        try {
 
-                        }else {
-                            Alert alert = new Alert(Alert.AlertType.ERROR);
-                            alert.setTitle("Błąd");
-                            alert.setHeaderText("Brak uprawnień");
-                            alert.setContentText("Musisz być właścicielem projektu aby dodawać i usuwać jego członków");
+                            String selected = projectUserList.getSelectionModel().getSelectedItem();
+                            Users removeUser = UsersDAO.searchUsers(selected);
+                            ProjectsMembersDAO.deleteProjectMember(currentProject.getProjectId(), removeUser.getUserId());
 
-                            alert.showAndWait();
+                        }catch (Exception e){
+                            e.printStackTrace();
                         }
-
 
                     }else {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("Błąd");
-                        alert.setHeaderText("Nie wybrano projektu");
-                        alert.setContentText("Aby dodawać i usuwać członków projektu wybierz projekt z listy");
+                        alert.setHeaderText("Brak uprawnień");
+                        alert.setContentText("Musisz być właścicielem projektu aby dodawać i usuwać jego członków");
 
                         alert.showAndWait();
                     }
-                });
 
 
+                }else {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Błąd");
+                    alert.setHeaderText("Nie wybrano projektu");
+                    alert.setContentText("Aby dodawać i usuwać członków projektu wybierz projekt z listy");
 
-            }catch (Exception e){
-                e.printStackTrace();
+                    alert.showAndWait();
+                }
+            });
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    private void initTasksTableView(TableView tableView, ObservableList<Tasks> data) {
+        int avatarColumnWidth = 55;
+
+        TableColumn<Tasks, String> taskNameColumn = new TableColumn<>("Task");
+        taskNameColumn.setCellValueFactory(new PropertyValueFactory("description"));
+        taskNameColumn.setPrefWidth(tableView.getPrefWidth() - avatarColumnWidth - 10); // todo
+
+        TableColumn<Tasks, ImageView> avatarColumn = new TableColumn<>("Avatar");
+        avatarColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Tasks, ImageView>, ObservableValue<ImageView>>() {
+            @Override
+            public ObservableValue<ImageView> call(TableColumn.CellDataFeatures<Tasks, ImageView> cd) {
+                Tasks task  = cd.getValue();
+                return Bindings.createObjectBinding(() -> UsersDAO.searchUsers(task.getUserId()).getAvatar());
             }
-        // TODO
+        });
+        avatarColumn.setPrefWidth(avatarColumnWidth);
+
+
+        tableView.getColumns().setAll(taskNameColumn, avatarColumn);
+        tableView.setItems(data);
+        hideTableViewHeader(tableView);
+    }
+
+    private void hideTableViewHeader(TableView tableView) {
+        tableView.skinProperty().addListener((a, b, newSkin) -> {
+            TableHeaderRow header = ((TableViewSkinBase) newSkin).getTableHeaderRow();
+            if (header.isVisible()){
+                header.setMaxHeight(0);
+                header.setMinHeight(0);
+                header.setPrefHeight(0);
+                header.setVisible(false);
+            }
+        });
     }
 }
