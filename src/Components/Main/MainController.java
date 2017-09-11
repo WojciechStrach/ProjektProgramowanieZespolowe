@@ -26,6 +26,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
@@ -150,6 +151,8 @@ public class MainController implements Initializable {
         userName.setText(Session.getDisplayName());
         if (Session.getAvatar() != null) {
             loggedUserAvatar.setImage(Session.getAvatar().getImage());
+        } else {
+            loggedUserAvatar.setImage(new Image("images/defaultAvatar.png"));
         }
         clickedProject.bindBidirectional(projects.valueProperty());
         ObservableList<Projects> userProjects = matchProjects();

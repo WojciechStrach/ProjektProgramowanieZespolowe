@@ -123,7 +123,9 @@ public class ProjectsMembersDAO {
                 "INSERT INTO projectsmembers" +
                         "(project_id, user_id, admin, dateAndTime)" +
                         "VALUES" +
-                        "( " +projectId+ "," +userId+ "," +admin+ "," +currentTime+ ")";
+                        "( " +projectId+ "," +userId+ "," +admin+ ",'" +currentTime+ "')";
+
+        System.out.println(updateStmt);
 
         try {
             DatabaseHandler.databaseExecuteUpdate(updateStmt);
