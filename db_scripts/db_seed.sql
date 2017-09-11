@@ -1,17 +1,17 @@
-INSERT INTO Users (email, password, display_name) VALUES ('jankowalski@example.com', '12345678', 'Jan Kowalski');
-INSERT INTO Users (email, password, display_name) VALUES ('jerzykrawczyk@example.com', 'zaq12wsx', 'Jerzy Krawczyk');
-INSERT INTO Users (email, password, display_name) VALUES ('adamnowak@com.com', 'mko09ijn', 'Adam Nowak');
-INSERT INTO Users (email, password, display_name) VALUES ('agatakowalczyk@example.com', '12345678', 'Agata Kowalczyk');
-INSERT INTO Users (email, password, display_name) VALUES ('marianowakowska@example.com', 'nji98uhb', 'Maria Nowakowska');
+INSERT INTO Users (email, password, display_name) VALUES ('jankowalski@example.com', '12345678', 'Jan Kowalski','2017-04-16 19:22:34');
+INSERT INTO Users (email, password, display_name) VALUES ('jerzykrawczyk@example.com', 'zaq12wsx', 'Jerzy Krawczyk','2017-04-16 19:22:34');
+INSERT INTO Users (email, password, display_name) VALUES ('adamnowak@com.com', 'mko09ijn', 'Adam Nowak','2017-04-16 19:22:34');
+INSERT INTO Users (email, password, display_name) VALUES ('agatakowalczyk@example.com', '12345678', 'Agata Kowalczyk','2017-04-16 19:22:34');
+INSERT INTO Users (email, password, display_name) VALUES ('marianowakowska@example.com', 'nji98uhb', 'Maria Nowakowska','2017-04-16 19:22:34');
 
-INSERT INTO Projects (title) VALUES ('Pierwszy projekt');
-INSERT INTO Projects (title) VALUES ('Drugi projekt');
+INSERT INTO Projects (title) VALUES ('Pierwszy projekt','2017-04-16 19:22:34');
+INSERT INTO Projects (title) VALUES ('Drugi projekt','2017-04-16 19:22:34');
 
-INSERT INTO projectsmembers(project_id, user_id, admin) VALUES ('1','1','TRUE');
-INSERT INTO projectsmembers(project_id, user_id, admin) VALUES ('1','2','FALSE');
-INSERT INTO projectsmembers(project_id, user_id, admin) VALUES ('1','3','FALSE');
-INSERT INTO projectsmembers(project_id, user_id, admin) VALUES ('2','4','TRUE');
-INSERT INTO projectsmembers(project_id, user_id, admin) VALUES ('2','5','FALSE');
+INSERT INTO projectsmembers(project_id, user_id, admin) VALUES ('1','1','TRUE','2017-04-16 19:22:34');
+INSERT INTO projectsmembers(project_id, user_id, admin) VALUES ('1','2','FALSE','2017-04-16 19:22:34');
+INSERT INTO projectsmembers(project_id, user_id, admin) VALUES ('1','3','FALSE','2017-04-16 19:22:34');
+INSERT INTO projectsmembers(project_id, user_id, admin) VALUES ('2','4','TRUE','2017-04-16 19:22:34');
+INSERT INTO projectsmembers(project_id, user_id, admin) VALUES ('2','5','FALSE','2017-04-16 19:22:34');
 
 INSERT INTO Tasks (project_id, user_id, description, dateandtime, state) VALUES ('1', '1', 'Utworzenie GUI', '2017-04-16 19:22:34', '1');
 INSERT INTO Tasks (project_id, user_id, description, dateandtime, state) VALUES ('1', '2', 'Utworzenie GUI', '2017-04-16 20:12:45', '2');
