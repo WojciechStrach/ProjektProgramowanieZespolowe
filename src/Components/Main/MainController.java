@@ -148,7 +148,9 @@ public class MainController implements Initializable {
         initTasksTableView(tasksToReviewTableView, projectToReviewTaskCollection);
         initTasksTableView(tasksDoneTableView, projectDoneTaskCollection);
         userName.setText(Session.getDisplayName());
-        loggedUserAvatar.setImage(Session.getAvatar().getImage());
+        if (Session.getAvatar() != null) {
+            loggedUserAvatar.setImage(Session.getAvatar().getImage());
+        }
         clickedProject.bindBidirectional(projects.valueProperty());
         ObservableList<Projects> userProjects = matchProjects();
         for (Projects uP : userProjects) {
