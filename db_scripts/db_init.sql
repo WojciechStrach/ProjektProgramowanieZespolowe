@@ -9,12 +9,14 @@ CREATE TABLE IF NOT EXISTS Users (
     avatar MEDIUMBLOB,
     password text NOT NULL,
     display_name varchar(32) NOT NULL,
+    dateAndTime DATETIME NOT NULL,
     PRIMARY KEY(user_id)
 );
 
 CREATE TABLE IF NOT EXISTS Projects (
     project_id INTEGER NOT NULL AUTO_INCREMENT,
     title text NOT NULL,
+    dateAndTime DATETIME NOT NULL,
     PRIMARY KEY(project_id)
 );
 
@@ -23,6 +25,7 @@ CREATE TABLE IF NOT EXISTS ProjectsMembers (
     project_id INTEGER NOT NULL,
     user_id INTEGER NOT NULL,
     admin BOOLEAN DEFAULT FALSE,
+    dateAndTime DATETIME NOT NULL,
     PRIMARY KEY(projectMember_id),
     FOREIGN KEY(project_id) references Projects(project_id),
     FOREIGN KEY(user_id) references Users(user_id)
