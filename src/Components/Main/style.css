@@ -1,9 +1,5 @@
-.hide-header .column-header-background {
-    visibility: hidden; -fx-padding: -1em;
-}
-
-.noheader .column-header-background {
-    -fx-max-height: 0;
-    -fx-pref-height: 0;
-    -fx-min-height: 0;
+.table-row-cell{
+    -fx-background-color: -fx-table-cell-border-color, #616161;
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-padding: 0.0em; /* 0 */
 }

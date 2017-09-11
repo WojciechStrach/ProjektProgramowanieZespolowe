@@ -11,6 +11,7 @@ public class Tasks {
     private IntegerProperty task_id;
     private IntegerProperty project_id;
     private IntegerProperty user_id;
+    private SimpleObjectProperty<Integer> assigned_user_id;
     private StringProperty  descripition;
     private SimpleObjectProperty<Date> dateAndTime;
     private SimpleObjectProperty<TaskState> state;
@@ -19,6 +20,7 @@ public class Tasks {
         this.task_id = new SimpleIntegerProperty();
         this.project_id = new SimpleIntegerProperty();
         this.user_id = new SimpleIntegerProperty();
+        this.assigned_user_id = new SimpleObjectProperty<Integer>();
         this.descripition = new SimpleStringProperty();
         this.dateAndTime = new SimpleObjectProperty<Date>();
         this.state = new SimpleObjectProperty<TaskState>();
@@ -47,6 +49,16 @@ public class Tasks {
     public void setUserId(int userId) { this.user_id.set(userId); }
 
     public  IntegerProperty userIdProperty() { return user_id; }
+
+    //
+
+    public Integer getAssignedUserId() {
+        return assigned_user_id.get();
+    }
+
+    public void setAssignedUserId(Integer userId) { this.assigned_user_id.set(userId); }
+
+    public  SimpleObjectProperty<Integer> assignedUserIdProperty() { return assigned_user_id; }
 
     //
 

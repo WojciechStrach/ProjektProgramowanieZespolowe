@@ -2,6 +2,7 @@ package Components.Main;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.*;
 import Main.ParentsList;
@@ -27,6 +28,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.Pair;
@@ -49,6 +52,8 @@ public class MainController implements Initializable {
     private Label label;
     @FXML
     private Label userName;
+    @FXML
+    private ImageView loggedUserAvatar;
     @FXML
     private ComboBox<String> projects;
     @FXML
@@ -141,6 +146,7 @@ public class MainController implements Initializable {
         initTasksTableView(tasksToReviewTableView, projectToReviewTaskCollection);
         initTasksTableView(tasksDoneTableView, projectDoneTaskCollection);
         userName.setText(Session.getDisplayName());
+        loggedUserAvatar.setImage(Session.getAvatar().getImage());
         clickedProject.bindBidirectional(projects.valueProperty());
         ObservableList<Projects> userProjects = matchProjects();
         for (Projects uP : userProjects) {
@@ -395,7 +401,7 @@ public class MainController implements Initializable {
         });
         clickedProject.addListener((observable, oldValue, newValue) -> {
             System.out.println(newValue);
-            projectName.setText(newValue);
+//            projectName.setText(newValue);
             isProjectSet = true;
 
             if(executorStatus){
@@ -546,32 +552,61 @@ public class MainController implements Initializable {
     private void initTasksTableView(TableView tableView, ObservableList<Tasks> data) {
         int avatarColumnWidth = 55;
 
-        TableColumn<Tasks, String> taskNameColumn = new TableColumn<>("Task");
-        taskNameColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
-        taskNameColumn.setPrefWidth((tableView.getPrefWidth() - avatarColumnWidth)/2 - 5); // todo
+//        tableView.setStyle("-fx-cell-height: 60px;");
+        tableView.setFixedCellSize(60.0);
+//        tableView.setStyle("-fx-border-color: #B3D9FF;");
 
-        TableColumn<Tasks, String> taskUserNameColumn = new TableColumn<>("Task");
-        taskUserNameColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Tasks, String>, ObservableValue<String>>() {
+//        TableColumn<Tasks, String> taskNameColumn = new TableColumn<>("Task");
+//        taskNameColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+//        taskNameColumn.setPrefWidth((tableView.getPrefWidth() - avatarColumnWidth)/2 - 5); // todo
+
+        TableColumn<Tasks, TextFlow> taskUserNameColumn = new TableColumn<>("Task");
+
+        taskUserNameColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Tasks, TextFlow>, ObservableValue<TextFlow>>() {
             @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<Tasks, String> cd) {
+            public ObservableValue<TextFlow> call(TableColumn.CellDataFeatures<Tasks, TextFlow> cd) {
                 Tasks task  = cd.getValue();
-                return Bindings.createObjectBinding(() -> UsersDAO.searchUsers(task.getUserId()).getDisplayName());
+                Users assignedUser = null;
+                if(task.getAssignedUserId() != null) {
+                    try {
+                        assignedUser = UsersDAO.searchUsers(task.getAssignedUserId());
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
+                final Users assignedUserFinal = assignedUser;
+                TextFlow flow = new TextFlow();
+
+                Text taskDescription = new Text(task.getDescription() + "\n");
+                taskDescription.setStyle("-fx-font-weight: bold");
+
+                Text taskAssignedUserInfo = new Text((assignedUserFinal != null ? "Przypisane do: " + assignedUserFinal.getDisplayName() : "Nie przypisane"));
+                taskAssignedUserInfo.setStyle("-fx-font-weight: regular");
+                flow.getChildren().addAll(taskDescription, taskAssignedUserInfo);
+
+                return Bindings.createObjectBinding(() -> flow);
+//                return Bindings.createObjectBinding(() -> "<b>" + task.getDescription() + "</b>\n" + );
             }
         });
-        taskUserNameColumn.setPrefWidth((tableView.getPrefWidth() - avatarColumnWidth)/2 - 5); // todo
+        taskUserNameColumn.setPrefWidth(tableView.getPrefWidth() - avatarColumnWidth - 5); // todo
 
         TableColumn<Tasks, ImageView> avatarColumn = new TableColumn<>("Avatar");
         avatarColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Tasks, ImageView>, ObservableValue<ImageView>>() {
             @Override
             public ObservableValue<ImageView> call(TableColumn.CellDataFeatures<Tasks, ImageView> cd) {
                 Tasks task  = cd.getValue();
-                return Bindings.createObjectBinding(() -> UsersDAO.searchUsers(task.getUserId()).getAvatar());
+                if(task.getAssignedUserId() != null) {
+                    return Bindings.createObjectBinding(() -> UsersDAO.searchUsers(task.getAssignedUserId()).getAvatar());
+                }
+                return Bindings.createObjectBinding(() -> null);
             }
         });
         avatarColumn.setPrefWidth(avatarColumnWidth);
 
 
-        tableView.getColumns().setAll(taskNameColumn, taskUserNameColumn, avatarColumn);
+        tableView.getColumns().setAll(taskUserNameColumn, avatarColumn);
         tableView.setItems(data);
         hideTableViewHeader(tableView);
 

@@ -25,6 +25,10 @@ public class TasksDAO {
             task.setTaskId(rs.getInt("task_id"));
             task.setProjectId(rs.getInt("project_id"));
             task.setUserId(rs.getInt("user_id"));
+            task.setAssignedUserId(rs.getInt("assigned_user_id"));
+            if (rs.wasNull()) {
+                task.setAssignedUserId(null);
+            }
             task.setDescripition(rs.getString("description"));
             task.setDateAndTime(rs.getDate("dateAndTime"));
             task.setState(TaskState.valueOf(rs.getString("state")));
@@ -47,7 +51,8 @@ public class TasksDAO {
             return tasksList;
 
         } catch (Exception e) {
-            System.out.println("Nie udało się pobrać zadań: " + e);
+            e.printStackTrace();
+            System.out.println("Nie udało się pobrać zadań: ");
             e.printStackTrace();
 
             return null;
