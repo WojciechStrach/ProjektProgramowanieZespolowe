@@ -1,7 +1,7 @@
-DROP TABLE Users;
-DROP TABLE Projects;
 DROP TABLE ProjectsMembers;
 DROP TABLE Tasks;
+DROP TABLE Users;
+DROP TABLE Projects;
 
 CREATE TABLE IF NOT EXISTS Users (
     user_id INTEGER NOT NULL AUTO_INCREMENT,
@@ -43,3 +43,5 @@ CREATE TABLE IF NOT EXISTS Tasks (
     FOREIGN KEY(project_id) references Projects(project_id),
     FOREIGN KEY(user_id) references Users(user_id)
 );
+
+
