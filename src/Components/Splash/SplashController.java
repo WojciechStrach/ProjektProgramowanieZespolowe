@@ -37,15 +37,15 @@ public class SplashController implements Initializable {
 
 
 
-//        DatabaseHandler.setDatabaseUrl("mysql5.gear.host");
-//        DatabaseHandler.setDatabaseName("programowanie");
-//        DatabaseHandler.setUsername("programowanie");
-//        DatabaseHandler.setPassword("<surowe>");
+        DatabaseHandler.setDatabaseUrl("mysql5.gear.host");
+        DatabaseHandler.setDatabaseName("programowanie");
+        DatabaseHandler.setUsername("programowanie");
+        DatabaseHandler.setPassword("<surowe>");
 
-        DatabaseHandler.setDatabaseUrl("localhost");
-        DatabaseHandler.setDatabaseName("kira");
-        DatabaseHandler.setUsername("kamil");
-        DatabaseHandler.setPassword("qwe123");
+//        DatabaseHandler.setDatabaseUrl("localhost");
+//        DatabaseHandler.setDatabaseName("kira");
+//        DatabaseHandler.setUsername("kamil");
+//        DatabaseHandler.setPassword("qwe123");
 
 
         login.setOnAction(event -> {

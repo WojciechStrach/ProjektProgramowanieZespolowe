@@ -62,6 +62,7 @@
 
       <Button fx:id="addTask" layoutX="280.0" layoutY="594.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="118.0" style="-fx-background-radius: 0;" text="Dodaj zadanie" />
       <Button fx:id="removeTask" layoutX="405.0" layoutY="594.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="118.0" style="-fx-background-radius: 0;" text="Usuń zadanie" />
+      <Button fx:id="editTask" layoutX="530.0" layoutY="594.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="118.0" style="-fx-background-radius: 0;" text="Edytuj zadanie" />
       <Button fx:id="logOut" layoutX="869.0" layoutY="596.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="80.0" text="Wyloguj" />
     </children>
 </AnchorPane>

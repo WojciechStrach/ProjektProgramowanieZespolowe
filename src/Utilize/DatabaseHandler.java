@@ -5,7 +5,6 @@ import java.sql.*;
 
 public class DatabaseHandler {
 
-    private static final String JDBC_DRIVER = "oracle.jdbc.driver.OracleDriver";
     private static Connection conn = null;
     private static String databaseUrl = null;
     private static String databaseName = null;
@@ -71,7 +70,9 @@ public class DatabaseHandler {
             } catch (SQLException e) {
                 System.out.println("Nie udało się wykonać zapytania: " + e);
                 e.printStackTrace();
-
+            } catch (NullPointerException e) {
+                System.out.println("Nie udało się wykonać zapytania: " + queryStmt + e);
+                e.printStackTrace();
             } catch (ClassNotFoundException e){
                 System.out.println("To je surowe");
                 e.printStackTrace();

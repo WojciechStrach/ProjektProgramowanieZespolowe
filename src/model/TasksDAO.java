@@ -7,6 +7,7 @@ import Utilize.DatabaseHandler;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Random;
 
 public class TasksDAO {
 
@@ -21,8 +22,7 @@ public class TasksDAO {
             task.setProjectId(rs.getInt("project_id"));
             task.setUserId(rs.getInt("user_id"));
             task.setDescripition(rs.getString("description"));
-            task.setState(rs.getInt("state"));
-
+            task.setState(TaskState.valueOf(rs.getString("state")));
             tasksList.add(task);
         }
 
@@ -147,6 +147,22 @@ public class TasksDAO {
             DatabaseHandler.databaseExecuteUpdate(updateStmt);
         } catch (Exception e) {
             System.out.print("Nie udało się dodać zadania, nie patrz na stack trace bo dostaniesz raka " + e);
+            e.printStackTrace();
+        }
+    }
+
+    public static void updateTask (int taskId, String description, String state) throws SQLException, ClassNotFoundException {
+
+        String updateStmt =
+                "UPDATE tasks " +
+                    "SET description = '" + description + "'" +
+                    ", state = '" + state + "'" +
+                " WHERE task_id = " + taskId;
+
+        try {
+            DatabaseHandler.databaseExecuteUpdate(updateStmt);
+        } catch (Exception e) {
+            System.out.print("Nie udało się zmienić zadania, nie patrz na stack trace bo dostaniesz raka (przy dodawaniu taska podobno można dostać raka, zostawie tu też na wszelki wypadek, ufam kolegom z teamu)" + e);
             e.printStackTrace();
         }
     }

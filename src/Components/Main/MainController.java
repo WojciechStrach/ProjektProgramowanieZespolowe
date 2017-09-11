@@ -16,18 +16,20 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import javafx.util.Pair;
 import model.*;
 
 public class MainController implements Initializable {
@@ -63,6 +65,8 @@ public class MainController implements Initializable {
     private Button addTask;
     @FXML
     private Button removeTask;
+    @FXML
+    private Button editTask;
     @FXML
     private Button editUser;
     @FXML
@@ -132,7 +136,7 @@ public class MainController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        initClicksActions();
+        initUserActions();
         initTasksTableView(tasksToDoTableView, projectToDoTaskCollection);
         initTasksTableView(tasksToReviewTableView, projectToReviewTaskCollection);
         initTasksTableView(tasksDoneTableView, projectDoneTaskCollection);
@@ -144,7 +148,7 @@ public class MainController implements Initializable {
         }
     }
 
-    private void initClicksActions() {
+    private void initUserActions() {
         logOut.setOnAction(event -> {
             try {
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -173,6 +177,44 @@ public class MainController implements Initializable {
 
                     }
                 }else {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Błąd");
+                    alert.setHeaderText("Nie wybrano projektu");
+                    alert.setContentText("Aby dodać zadanie najpierw wybierz projekt z menu");
+
+                    alert.showAndWait();
+                }
+            }
+        });
+        editTask.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Tasks selected = null;
+                Tasks temp = tasksToDoTableView.getSelectionModel().getSelectedItem();
+                if (temp != null) {
+                    selected = temp;
+                }
+                temp = tasksToReviewTableView.getSelectionModel().getSelectedItem();
+                if (temp != null) {
+                    selected = temp;
+                }
+                temp = tasksDoneTableView.getSelectionModel().getSelectedItem();
+                if (temp != null) {
+                    selected = temp;
+                }
+                final Tasks selectedFinal = selected;
+                if(isProjectSet) {
+                    Dialog dialog = updateTaskDialog(selectedFinal);
+                    Optional<String[]> result = dialog.showAndWait();
+
+                    result.ifPresent(task -> {
+                        try {
+                            TasksDAO.updateTask(selectedFinal.getTaskId(), task[0], task[1]);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    });
+                } else {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Błąd");
                     alert.setHeaderText("Nie wybrano projektu");
@@ -378,7 +420,6 @@ public class MainController implements Initializable {
                         Platform.runLater(() -> {
                             updateTasksCollections(projectTasks);
                             updateMembersCollection(projectMembers);
-
                         });
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -392,6 +433,46 @@ public class MainController implements Initializable {
         });
     }
 
+    private Dialog<String[]> updateTaskDialog(Tasks task) {
+        Dialog<String[]> dialog = new Dialog<>();
+        dialog.setTitle("Login Dialog");
+        dialog.setHeaderText("Look, a Custom Login Dialog");
+
+        ButtonType loginButtonType = new ButtonType("Update", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+
+        TextField usernameTextField = new TextField(task.getDescription());
+        usernameTextField.setPromptText("Task description");
+
+        ComboBox<TaskState> stateComboBox = new ComboBox();
+        stateComboBox.getSelectionModel().select(task.getState());
+        stateComboBox.setItems( FXCollections.observableArrayList( TaskState.values()));
+        stateComboBox.setPromptText("Task stateComboBox");
+
+        grid.add(new Label("Username:"), 0, 0);
+        grid.add(usernameTextField, 1, 0);
+        grid.add(new Label("State:"), 0, 1);
+        grid.add(stateComboBox, 1, 1);
+
+        dialog.getDialogPane().setContent(grid);
+
+        Platform.runLater(() -> usernameTextField.requestFocus());
+
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == loginButtonType) {
+                return new String[]{usernameTextField.getText(), stateComboBox.getSelectionModel().getSelectedItem().name()};
+            }
+            return null;
+        });
+
+        return dialog;
+    }
+
     private ObservableList<Tasks> updateAndRemoveFromCollection(ObservableList<Tasks> collection, ObservableList<Tasks> newData) {
         for (int i = 0; i < collection.size(); i++) {
             Tasks currentTask = collection.get(i);
@@ -399,11 +480,17 @@ public class MainController implements Initializable {
             for (int j = 0; j < newData.size(); j++) {
                 Tasks newTask = newData.get(j);
                 if(currentTask.getTaskId() == newTask.getTaskId()) {
-                    if(! currentTask.equals(newTask)) {
-                        // update task
-                        collection.set(i, newTask);
+                    if(! currentTask.getState().equals(newTask.getState())) {
+                        // update task with change collection
+                        addTaskToSuitableColletion(newTask);
+                        collection.remove(currentTask);
+                    } else {
+                        if(! currentTask.equals(newTask)) {
+                            // update task
+                            collection.set(i, newTask);
+                        }
+                        currentTaskToRemove = false;
                     }
-                    currentTaskToRemove = false;
                     newData.remove(newTask);
                     break;
                 }
@@ -416,22 +503,25 @@ public class MainController implements Initializable {
         return newData;
     }
 
+    private void addTaskToSuitableColletion(Tasks task) {
+        if(task.getState().name().equals(TaskState.TODO.name())) { // todo
+            projectToDoTaskCollection.add(task);
+        } else if(task.getState().name().equals(TaskState.DONE.name())) {
+            projectDoneTaskCollection.add(task);
+        } else if(task.getState().name().equals(TaskState.TOREVIEW.name())) {
+            projectToReviewTaskCollection.add(task);
+        } else {
+            System.out.println("Undefined task state");
+            System.exit(0);
+        }
+    }
+
     private void updateTasksCollections(ObservableList<Tasks> newData) {
         newData = updateAndRemoveFromCollection(projectToDoTaskCollection, newData);
         newData = updateAndRemoveFromCollection(projectToReviewTaskCollection, newData);
         newData = updateAndRemoveFromCollection(projectDoneTaskCollection, newData);
         for (int i = 0; i < newData.size(); i++) {
-            Tasks temp = newData.get(i);
-            if(temp.getState() == 1) { // todo
-                projectToDoTaskCollection.add(temp);
-            } else if(temp.getState() == 2) {
-                projectDoneTaskCollection.add(temp);
-            } else if(temp.getState() == 3) {
-                projectToReviewTaskCollection.add(temp);
-            } else {
-                System.out.println("Undefined task state");
-                System.exit(0);
-            }
+            addTaskToSuitableColletion(newData.get(i));
         }
     }
 
@@ -458,7 +548,17 @@ public class MainController implements Initializable {
 
         TableColumn<Tasks, String> taskNameColumn = new TableColumn<>("Task");
         taskNameColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
-        taskNameColumn.setPrefWidth(tableView.getPrefWidth() - avatarColumnWidth - 10); // todo
+        taskNameColumn.setPrefWidth((tableView.getPrefWidth() - avatarColumnWidth)/2 - 5); // todo
+
+        TableColumn<Tasks, String> taskUserNameColumn = new TableColumn<>("Task");
+        taskUserNameColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Tasks, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<Tasks, String> cd) {
+                Tasks task  = cd.getValue();
+                return Bindings.createObjectBinding(() -> UsersDAO.searchUsers(task.getUserId()).getDisplayName());
+            }
+        });
+        taskUserNameColumn.setPrefWidth((tableView.getPrefWidth() - avatarColumnWidth)/2 - 5); // todo
 
         TableColumn<Tasks, ImageView> avatarColumn = new TableColumn<>("Avatar");
         avatarColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Tasks, ImageView>, ObservableValue<ImageView>>() {
@@ -471,7 +571,7 @@ public class MainController implements Initializable {
         avatarColumn.setPrefWidth(avatarColumnWidth);
 
 
-        tableView.getColumns().setAll(taskNameColumn, avatarColumn);
+        tableView.getColumns().setAll(taskNameColumn, taskUserNameColumn, avatarColumn);
         tableView.setItems(data);
         hideTableViewHeader(tableView);
 

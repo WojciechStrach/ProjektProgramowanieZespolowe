@@ -13,7 +13,7 @@ public class Tasks {
     private IntegerProperty user_id;
     private StringProperty  descripition;
     private SimpleObjectProperty<Date> dateAndTime;
-    private IntegerProperty state;
+    private SimpleObjectProperty<TaskState> state;
 
     public Tasks() {
         this.task_id = new SimpleIntegerProperty();
@@ -21,7 +21,7 @@ public class Tasks {
         this.user_id = new SimpleIntegerProperty();
         this.descripition = new SimpleStringProperty();
         this.dateAndTime = new SimpleObjectProperty<Date>();
-        this.state = new SimpleIntegerProperty();
+        this.state = new SimpleObjectProperty<TaskState>();
     }
 
     //
@@ -66,11 +66,11 @@ public class Tasks {
 
     //
 
-    public int getState() { return state.get(); }
+    public TaskState getState() { return state.get(); }
 
-    public void setState(int state) { this.state.set(state); }
+    public void setState(TaskState state) { this.state.set(state); }
 
-    public  IntegerProperty stateProperty() { return state; }
+    public  SimpleObjectProperty<TaskState> stateProperty() { return state; }
 
 
     @Override
@@ -80,15 +80,14 @@ public class Tasks {
             return false; // todo
         }
         Tasks taskToCompare = (Tasks)obj;
-//        return taskToCompare.getTaskId() == this.getTaskId()
-//            && taskToCompare.getProjectId() == this.getProjectId()
-//            && taskToCompare.getUserId() == this.getUserId()
-//            && taskToCompare.getDescription().equals(this.getDescription())
-////            && (
-////                (taskToCompare.getDateAndTime() == null && this.getDateAndTime() == null)
-////                || taskToCompare.getDateAndTime().equals(this.getDateAndTime())
-////            )
-//            && taskToCompare.getState() == this.getState();
-        return taskToCompare.getDescription().equals(this.getDescription());
+        return taskToCompare.getTaskId() == this.getTaskId()
+            && taskToCompare.getProjectId() == this.getProjectId()
+            && taskToCompare.getUserId() == this.getUserId()
+            && taskToCompare.getDescription().equals(this.getDescription())
+            && (
+                (taskToCompare.getDateAndTime() == null && this.getDateAndTime() == null)
+                || taskToCompare.getDateAndTime().equals(this.getDateAndTime())
+            )
+            && taskToCompare.getState().equals(this.getState());
     }
 }
