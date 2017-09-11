@@ -76,4 +76,9 @@ public class Users {
     public void setAvatar(ImageView avatar) { this.avatar.set(avatar); }
 
     public SimpleObjectProperty avatarProperty() { return avatar; }
+
+    @Override
+    public String toString() {
+        return this.getDisplayName();
+    }
 }

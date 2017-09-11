@@ -82,7 +82,9 @@ public class MainController implements Initializable {
     private Button removeMember;
     @FXML
     private Button logOut;
-    
+
+    private ObservableList<Users> projectMembers;
+
     private ObservableList<Projects> matchProjects(){
         ObservableList<Projects> matchedProjects = FXCollections.observableArrayList();
         try {
@@ -211,11 +213,11 @@ public class MainController implements Initializable {
                 final Tasks selectedFinal = selected;
                 if(isProjectSet) {
                     Dialog dialog = updateTaskDialog(selectedFinal);
-                    Optional<String[]> result = dialog.showAndWait();
+                    Optional<Object[]> result = dialog.showAndWait();
 
                     result.ifPresent(task -> {
                         try {
-                            TasksDAO.updateTask(selectedFinal.getTaskId(), task[0], task[1]);
+                            TasksDAO.updateTask(selectedFinal.getTaskId(), task[0].toString(), task[1].toString(), (Integer) task[2]);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -422,7 +424,7 @@ public class MainController implements Initializable {
                     try {
 //                            System.out.println("ŁADOWANIE DANYCH");
                         ObservableList<Tasks> projectTasks = TasksDAO.getTaskById(currentProject.getProjectId());
-                        ObservableList<Users> projectMembers = projectMembers();
+                        projectMembers = projectMembers();
                         Platform.runLater(() -> {
                             updateTasksCollections(projectTasks);
                             updateMembersCollection(projectMembers);
@@ -439,10 +441,10 @@ public class MainController implements Initializable {
         });
     }
 
-    private Dialog<String[]> updateTaskDialog(Tasks task) {
-        Dialog<String[]> dialog = new Dialog<>();
-        dialog.setTitle("Login Dialog");
-        dialog.setHeaderText("Look, a Custom Login Dialog");
+    private Dialog<Object[]> updateTaskDialog(Tasks task) {
+        Dialog<Object[]> dialog = new Dialog<>();
+        dialog.setTitle("Edycja zadania");
+        dialog.setHeaderText("Edycja zadania");
 
         ButtonType loginButtonType = new ButtonType("Update", ButtonBar.ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
@@ -460,10 +462,30 @@ public class MainController implements Initializable {
         stateComboBox.setItems( FXCollections.observableArrayList( TaskState.values()));
         stateComboBox.setPromptText("Task stateComboBox");
 
+        ComboBox<Users> assignedUserComboBox = new ComboBox();
+        try {
+            if(task.getAssignedUserId() != null) {
+                assignedUserComboBox.getSelectionModel().select(UsersDAO.searchUsers(task.getAssignedUserId()));
+            } else {
+                assignedUserComboBox.getSelectionModel().select(new Users());
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        Users tempUser = new Users();
+        projectMembers.add(tempUser);
+        assignedUserComboBox.setItems(projectMembers);
+        assignedUserComboBox.setPromptText("Task stateComboBox");
+
         grid.add(new Label("Username:"), 0, 0);
         grid.add(usernameTextField, 1, 0);
         grid.add(new Label("State:"), 0, 1);
         grid.add(stateComboBox, 1, 1);
+        grid.add(new Label("Assigned user:"), 0, 2);
+        grid.add(assignedUserComboBox, 1, 2);
 
         dialog.getDialogPane().setContent(grid);
 
@@ -471,7 +493,12 @@ public class MainController implements Initializable {
 
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == loginButtonType) {
-                return new String[]{usernameTextField.getText(), stateComboBox.getSelectionModel().getSelectedItem().name()};
+                Integer assignedUser = assignedUserComboBox.getSelectionModel().getSelectedItem().getUserId();
+                if(assignedUser == 0) {
+                    assignedUser = null;
+                }
+                projectMembers.remove(tempUser);
+                return new Object[]{usernameTextField.getText(), stateComboBox.getSelectionModel().getSelectedItem().name(), assignedUser};
             }
             return null;
         });
@@ -554,7 +581,7 @@ public class MainController implements Initializable {
 
 //        tableView.setStyle("-fx-cell-height: 60px;");
         tableView.setFixedCellSize(60.0);
-//        tableView.setStyle("-fx-border-color: #B3D9FF;");
+//        tableView.setStyle(".table-row{-fx-border-color: red; -fx-table-row-border-color:red;}"); // -fx-border-color: #B3D9FF;
 
 //        TableColumn<Tasks, String> taskNameColumn = new TableColumn<>("Task");
 //        taskNameColumn.setCellValueFactory(new PropertyValueFactory<>("description"));

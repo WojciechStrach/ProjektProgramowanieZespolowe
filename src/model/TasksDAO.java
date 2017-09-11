@@ -165,14 +165,15 @@ public class TasksDAO {
         }
     }
 
-    public static void updateTask (int taskId, String description, String state) throws SQLException, ClassNotFoundException {
+    public static void updateTask (int taskId, String description, String state, Integer assigned_user_id) throws SQLException, ClassNotFoundException {
 
         String updateStmt =
                 "UPDATE tasks " +
                     "SET description = '" + description + "'" +
                     ", state = '" + state + "'" +
+                    ", assigned_user_id = " + assigned_user_id +
+//                    (assigned_user_id != null ? ", assigned_user_id = '" + assigned_user_id + "'" : "") +
                 " WHERE task_id = " + taskId;
-
         try {
             DatabaseHandler.databaseExecuteUpdate(updateStmt);
         } catch (Exception e) {

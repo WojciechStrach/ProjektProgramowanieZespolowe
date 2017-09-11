@@ -95,6 +95,7 @@ public class Tasks {
         return taskToCompare.getTaskId() == this.getTaskId()
             && taskToCompare.getProjectId() == this.getProjectId()
             && taskToCompare.getUserId() == this.getUserId()
+            && taskToCompare.getAssignedUserId() == this.getAssignedUserId()
             && taskToCompare.getDescription().equals(this.getDescription())
             && (
                 (taskToCompare.getDateAndTime() == null && this.getDateAndTime() == null)
