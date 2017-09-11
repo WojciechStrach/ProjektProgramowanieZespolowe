@@ -1,3 +1,8 @@
+DROP TABLE Users;
+DROP TABLE Projects;
+DROP TABLE ProjectsMembers;
+DROP TABLE Tasks;
+
 CREATE TABLE IF NOT EXISTS Users (
     user_id INTEGER NOT NULL AUTO_INCREMENT,
     email text NOT NULL,
@@ -27,6 +32,7 @@ CREATE TABLE IF NOT EXISTS Tasks (
     task_id INTEGER NOT NULL AUTO_INCREMENT,
     project_id INTEGER NOT NULL,
     user_id INTEGER NOT NULL,
+    assigned_user_id INTEGER,
     description TEXT NOT NULL,
     dateAndTime DATETIME NOT NULL,
     state ENUM('TOREVIEW', 'TODO', 'DONE') NOT NULL,
