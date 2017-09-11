@@ -1,16 +1,15 @@
 package Service;
 
 
+import Utilize.DatabaseData;
+
 import java.sql.*;
 import java.util.ArrayList;
 
 class Database<T> {
-    private static String databaseUrl = "jdbc:mysql://mysql5.gear.host:3306/programowanie";
-    private static String databaseLogin = "programowanie";
-    private static String databasePassword = "<surowe>";
-//    private static String databaseUrl = "jdbc:mysql://localhost/kira";
-//    private static String databaseLogin = "kamil";
-//    private static String databasePassword = "qwe123";
+    private static String databaseUrl = "jdbc:mysql://" + DatabaseData.databaseUrlAndDBName;
+    private static String databaseLogin = DatabaseData.databaseLogin;
+    private static String databasePassword = DatabaseData.databasePassword;
     static {
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();

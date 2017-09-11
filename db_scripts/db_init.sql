@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS Tasks (
     user_id INTEGER NOT NULL,
     description TEXT NOT NULL,
     dateAndTime DATETIME NOT NULL,
-    state INTEGER NOT NULL,
+    state ENUM('TOREVIEW', 'TODO', 'DONE') NOT NULL,
     PRIMARY KEY(task_id),
     FOREIGN KEY(project_id) references Projects(project_id),
     FOREIGN KEY(user_id) references Users(user_id)
