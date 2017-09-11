@@ -71,7 +71,9 @@ public class Users {
 
     //
 
-    public ImageView getAvatar() { return avatar.get(); }
+    public ImageView getAvatar() {
+        return avatar.get();
+    }
 
     public void setAvatar(ImageView avatar) { this.avatar.set(avatar); }
 
