@@ -2,6 +2,7 @@ package Components.Splash;
 
 import Main.ParentsList;
 import Main.ParentsLoader;
+import Utilize.DatabaseData;
 import Utilize.DatabaseHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -37,15 +38,10 @@ public class SplashController implements Initializable {
 
 
 
-        DatabaseHandler.setDatabaseUrl("mysql5.gear.host");
-        DatabaseHandler.setDatabaseName("programowanie");
-        DatabaseHandler.setUsername("programowanie");
-        DatabaseHandler.setPassword("<surowe>");
-
-//        DatabaseHandler.setDatabaseUrl("localhost");
-//        DatabaseHandler.setDatabaseName("kira");
-//        DatabaseHandler.setUsername("kamil");
-//        DatabaseHandler.setPassword("qwe123");
+        DatabaseHandler.setDatabaseUrl(DatabaseData.databaseUrl);
+        DatabaseHandler.setDatabaseName(DatabaseData.databaseName);
+        DatabaseHandler.setUsername(DatabaseData.databaseLogin);
+        DatabaseHandler.setPassword(DatabaseData.databasePassword);
 
 
         login.setOnAction(event -> {
