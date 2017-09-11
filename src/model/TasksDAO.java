@@ -7,6 +7,10 @@ import Utilize.DatabaseHandler;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.DateTimeException;
+import java.time.LocalDate;
 import java.util.Random;
 
 public class TasksDAO {
@@ -22,6 +26,7 @@ public class TasksDAO {
             task.setProjectId(rs.getInt("project_id"));
             task.setUserId(rs.getInt("user_id"));
             task.setDescripition(rs.getString("description"));
+            task.setDateAndTime(rs.getDate("dateAndTime"));
             task.setState(TaskState.valueOf(rs.getString("state")));
             tasksList.add(task);
         }
@@ -137,11 +142,15 @@ public class TasksDAO {
 
     public static void insertTask (int projectId, int userId, String description, int state) throws SQLException, ClassNotFoundException {
 
+        java.util.Date dt = new java.util.Date();
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String currentTime = sdf.format(dt);
+
         String updateStmt =
                 "INSERT INTO tasks" +
-                        "(project_id, user_id, description, state)" +
+                        "(project_id, user_id, description, dateAndTime, state)" +
                         "VALUES" +
-                        "( " +projectId+ "," +userId+ ",'" +description+ "'," +state+ ")";
+                        "( " +projectId+ "," +userId+ ",'" +description+ "','" +currentTime+ "'," +state+ ")";
 
         try {
             DatabaseHandler.databaseExecuteUpdate(updateStmt);

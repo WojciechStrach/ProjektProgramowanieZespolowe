@@ -19,6 +19,7 @@ public class ProjectsDAO {
 
             project.setProjectId(rs.getInt("project_id"));
             project.setTitle(rs.getString("title"));
+            project.setProjectDateAndTime(rs.getDate("dateAndTime"));
 
         }
         return project;
@@ -75,6 +76,7 @@ public class ProjectsDAO {
 
             project.setProjectId(rs.getInt("PROJECT_ID"));
             project.setTitle(rs.getString("TITLE"));
+            project.setProjectDateAndTime(rs.getDate("dateAndTime"));
 
             projectsList.add(project);
         }
@@ -131,11 +133,15 @@ public class ProjectsDAO {
 
     public static void insertProject (String title) throws SQLException, ClassNotFoundException {
 
+        java.util.Date dt = new java.util.Date();
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String currentTime = sdf.format(dt);
+
         String updateStmt =
                         "INSERT INTO projects" +
-                        "(title)" +
+                        "(title, dateAndTime)" +
                         "VALUES" +
-                        "('"+title+"')";
+                        "('"+title+"','" +currentTime+ "')";
 
         try {
             DatabaseHandler.databaseExecuteUpdate(updateStmt);

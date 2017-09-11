@@ -4,6 +4,8 @@ import javafx.beans.property.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import java.sql.Date;
+
 public class Users {
 
     private IntegerProperty user_id;
@@ -11,6 +13,7 @@ public class Users {
     private StringProperty password;
     private StringProperty display_name;
     private SimpleObjectProperty<ImageView> avatar;
+    private SimpleObjectProperty<Date> dateAndTime;
 
     public Users() {
         this.user_id = new SimpleIntegerProperty();
@@ -18,6 +21,20 @@ public class Users {
         this.password = new SimpleStringProperty();
         this.display_name = new SimpleStringProperty();
         this.avatar = new SimpleObjectProperty<>();
+        this.dateAndTime = new SimpleObjectProperty<>();
+    }
+
+    //
+    public Date getProjectDateAndTime() {
+        return dateAndTime.get();
+    }
+
+    public void setProjectDateAndTime(Date dateAndTime){
+        this.dateAndTime.set(dateAndTime);
+    }
+
+    public ObjectProperty<Date> projectDateAndTimeProperty(){
+        return this.dateAndTime;
     }
 
     //

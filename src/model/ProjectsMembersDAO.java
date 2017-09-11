@@ -20,6 +20,7 @@ public class ProjectsMembersDAO {
             projectMember.setProjectId(rs.getInt("project_id"));
             projectMember.setUserId(rs.getInt("user_id"));
             projectMember.setAdmin(rs.getBoolean("admin"));
+            projectMember.setProjectDateAndTime(rs.getDate("dateAndTime"));
 
             projectsMembersList.add(projectMember);
         }
@@ -39,6 +40,7 @@ public class ProjectsMembersDAO {
             projectMember.setProjectId(rs.getInt("project_id"));
             projectMember.setUserId(rs.getInt("user_id"));
             projectMember.setAdmin(rs.getBoolean("admin"));
+            projectMember.setProjectDateAndTime(rs.getDate("dateAndTime"));
 
         }
 
@@ -113,11 +115,15 @@ public class ProjectsMembersDAO {
 
     public static void insertProjectMember (int projectId, int userId, int admin) throws SQLException, ClassNotFoundException {
 
+        java.util.Date dt = new java.util.Date();
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String currentTime = sdf.format(dt);
+
         String updateStmt =
                 "INSERT INTO projectsmembers" +
-                        "(project_id, user_id, admin)" +
+                        "(project_id, user_id, admin, dateAndTime)" +
                         "VALUES" +
-                        "( " +projectId+ "," +userId+ "," +admin+ ")";
+                        "( " +projectId+ "," +userId+ "," +admin+ "," +currentTime+ ")";
 
         try {
             DatabaseHandler.databaseExecuteUpdate(updateStmt);

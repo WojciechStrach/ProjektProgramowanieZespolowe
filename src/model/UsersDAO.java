@@ -182,11 +182,15 @@ public class UsersDAO {
 
     public static void insertUser (String email, String password, String displayName) throws SQLException, ClassNotFoundException {
 
+        java.util.Date dt = new java.util.Date();
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String currentTime = sdf.format(dt);
+
         String updateStmt =
             "INSERT INTO users" +
-                        "(email, password, display_name)" +
+                        "(email, password, display_name, dateAndTime)" +
                         "VALUES" +
-                        "( '" +email+ "','" +password+ "','" +displayName+ "')";
+                        "( '" +email+ "','" +password+ "','" +displayName+ "','" +currentTime+ "')";
 
         try {
             DatabaseHandler.databaseExecuteUpdate(updateStmt);

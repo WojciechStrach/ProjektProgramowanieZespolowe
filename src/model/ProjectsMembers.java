@@ -9,12 +9,27 @@ public class ProjectsMembers {
     private IntegerProperty project_id;
     private IntegerProperty user_id;
     private BooleanProperty admin;
+    private SimpleObjectProperty<Date> dateAndTime;
 
     public ProjectsMembers(){
         this.projectMember_id = new SimpleIntegerProperty();
         this.project_id = new SimpleIntegerProperty();
         this.user_id = new SimpleIntegerProperty();
         this.admin = new SimpleBooleanProperty();
+        this.dateAndTime = new SimpleObjectProperty<>();
+    }
+
+    //
+    public Date getProjectDateAndTime() {
+        return dateAndTime.get();
+    }
+
+    public void setProjectDateAndTime(Date dateAndTime){
+        this.dateAndTime.set(dateAndTime);
+    }
+
+    public ObjectProperty<Date> projectDateAndTimeProperty(){
+        return this.dateAndTime;
     }
 
     //
