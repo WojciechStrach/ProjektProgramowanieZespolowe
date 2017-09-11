@@ -10,6 +10,7 @@ public class KiraStart extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         Scene scene = new Scene(ParentsLoader.getParent(ParentsList.splash));
+        scene.getStylesheets().add("Components/Main/style.css");
         stage.setScene(scene);
         stage.show();
     }

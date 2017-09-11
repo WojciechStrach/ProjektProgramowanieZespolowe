@@ -1,11 +1,13 @@
 package Service;
 
 import javafx.beans.property.*;
+import javafx.scene.image.ImageView;
 
 public class Session {
 
     private static IntegerProperty user_id;
     private static StringProperty email;
+    private static SimpleObjectProperty<ImageView> avatar;
     private static StringProperty display_name;
 
     //
@@ -40,6 +42,17 @@ public class Session {
     }
 
     public  StringProperty displayNameProperty() { return display_name; }
+
+    //
+
+    public static ImageView getAvatar() { return avatar.get(); }
+
+    public static void setAvatar(ImageView avatar) {
+        Session.avatar = new SimpleObjectProperty<ImageView>();
+        Session.avatar.set(avatar);
+    }
+
+    public static SimpleObjectProperty avatarProperty() { return avatar; }
 
 }
 

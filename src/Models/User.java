@@ -2,6 +2,14 @@ package Models;
 
 import Service.Session;
 import javafx.beans.property.*;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -10,8 +18,24 @@ public class User {
         User user = new User();
         try {
             Session.setUserId(resultSet.getInt("user_id"));
+//            Session.setUserId(resultSet.getInt("user_id"));
             Session.setEmail(resultSet.getString("email"));
             Session.setDisplayName(resultSet.getString("display_name"));
+            InputStream x = resultSet.getBinaryStream("avatar");
+            try {
+                if (x == null) {
+                    Session.setAvatar(null);
+                } else {
+                    BufferedImage bImageFromConvert = ImageIO.read(x);
+                    Image image = SwingFXUtils.toFXImage(bImageFromConvert, null);
+                    ImageView imageView = new ImageView(image);
+                    imageView.setFitHeight(50);
+                    imageView.setFitWidth(50);
+                    Session.setAvatar(imageView);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             user.setEmail(resultSet.getString("email"));
         } catch (SQLException e) {
             e.printStackTrace();
