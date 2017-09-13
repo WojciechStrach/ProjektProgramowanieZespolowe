@@ -27,8 +27,8 @@ CREATE TABLE IF NOT EXISTS ProjectsMembers (
     admin BOOLEAN DEFAULT FALSE,
     dateAndTime DATETIME NOT NULL,
     PRIMARY KEY(projectMember_id),
-    FOREIGN KEY(project_id) references Projects(project_id),
-    FOREIGN KEY(user_id) references Users(user_id)
+    FOREIGN KEY(project_id) references Projects(project_id) ON DELETE CASCADE,
+    FOREIGN KEY(user_id) references Users(user_id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS Tasks (
@@ -40,8 +40,8 @@ CREATE TABLE IF NOT EXISTS Tasks (
     dateAndTime DATETIME NOT NULL,
     state ENUM('TOREVIEW', 'TODO', 'DONE') NOT NULL,
     PRIMARY KEY(task_id),
-    FOREIGN KEY(project_id) references Projects(project_id),
-    FOREIGN KEY(user_id) references Users(user_id)
+    FOREIGN KEY(project_id) references Projects(project_id) ON DELETE CASCADE,
+    FOREIGN KEY(user_id) references Users(user_id) ON DELETE CASCADE
 );
 
 

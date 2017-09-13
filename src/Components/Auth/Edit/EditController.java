@@ -7,6 +7,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.PasswordField;
 import javafx.stage.Stage;
 import model.UsersDAO;
 import javafx.scene.control.Button;
@@ -27,13 +29,13 @@ public class EditController implements Initializable {
 
     @FXML private TextField username;
     @FXML private TextField email;
-    @FXML private TextField password;
-    @FXML private TextField rpassword;
+    @FXML private PasswordField password;
+    @FXML private PasswordField rpassword;
     @FXML private Button Back;
 
 
     public void editUser(){
-        if((!email.getText().isEmpty() && !username.getText().isEmpty() && !password.getText().isEmpty()) ) {
+        if(((!email.getText().isEmpty() && !username.getText().isEmpty() && !password.getText().isEmpty()) || username.getText().isEmpty() || email.getText().isEmpty() )) {
             if (password.getText().equals(rpassword.getText())) {
                 try {
                     UsersDAO.updateUser(email.getText(), password.getText(), username.getText());
@@ -63,8 +65,25 @@ public class EditController implements Initializable {
             }
         });
 
+        edit.setOnAction(event -> {
+            try {
+                editUser();
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Powodzenie");
+                alert.setHeaderText(" ");
+                alert.setContentText("Zmiana danych się powiodła!");
+                alert.showAndWait();
+                System.out.println("User edit success");
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
         username.setText(Session.getDisplayName());
         email.setText(Session.getEmail());
+        password.setText(Session.getPassword());
+        rpassword.setText(Session.getPassword());
 
         delete.setOnAction(event -> {
             try {

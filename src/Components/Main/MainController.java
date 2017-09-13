@@ -485,7 +485,7 @@ public class MainController implements Initializable {
         assignedUserComboBox.setItems(projectMembers);
         assignedUserComboBox.setPromptText("Task stateComboBox");
 
-        grid.add(new Label("Username:"), 0, 0);
+        grid.add(new Label("Task Name:"), 0, 0);
         grid.add(usernameTextField, 1, 0);
         grid.add(new Label("State:"), 0, 1);
         grid.add(stateComboBox, 1, 1);
