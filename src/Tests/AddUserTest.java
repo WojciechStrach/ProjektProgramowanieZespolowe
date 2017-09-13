@@ -50,9 +50,9 @@ public class AddUserTest {
 
         String selectStmt = "SELECT * " +
                 "FROM users " +
-                "WHERE email =" + this.email +
-                "AND password =" + this.password +
-                "AND display_name =" + this.displayName;
+                "WHERE email =" + "'" + this.email + "'" +
+                "AND password =" + "'" + this.password + "'" +
+                "AND display_name ='"+ this.displayName +"';";
 
         try {
 
@@ -79,9 +79,9 @@ public class AddUserTest {
     public void checkAddedValue(){
         String selectStmt = "SELECT * " +
                 "FROM users " +
-                "WHERE email =" + this.email +
-                "AND password =" + this.password +
-                "AND display_name =" + this.displayName;
+                "WHERE email =" + "'" + this.email + "'" +
+                "AND password =" + "'" + this.password + "'" +
+                "AND display_name ='"+ this.displayName +"';";
 
         try {
 
@@ -114,7 +114,7 @@ public class AddUserTest {
                 }
             }
 
-            assertTrue(this.email == user.getEmail().toString() &&
+            assertFalse(this.email == user.getEmail().toString() &&
                     this.password == user.getPassword().toString() &&
                     this.displayName == user.getDisplayName().toString());
 

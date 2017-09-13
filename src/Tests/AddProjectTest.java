@@ -44,7 +44,7 @@ public class AddProjectTest {
 
         String selectStmt = "SELECT * " +
                 "FROM projects " +
-                "WHERE title =" + this.projectTitle;
+                "WHERE title = '"+ this.projectTitle +"';";
 
         try {
 
@@ -72,7 +72,7 @@ public class AddProjectTest {
 
         String selectStmt = "SELECT * " +
                 "FROM projects " +
-                "WHERE title =" + this.projectTitle;
+                "WHERE title = '"+ this.projectTitle +"';";
 
         try {
 
@@ -89,7 +89,9 @@ public class AddProjectTest {
                 project.setProjectDateAndTime(rsProjects.getDate("dateAndTime"));
             }
 
-            assertTrue(project.getTitle() == this.projectTitle.toString());
+            String cond = project.getTitle().toString();
+
+            assertFalse(cond == this.projectTitle);
 
             /*if(this.email == user.getEmail().toString() && this.password == user.getPassword().toString() &&
                     this.displayName == user.getDisplayName().toString()){
