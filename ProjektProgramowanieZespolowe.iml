@@ -66,5 +66,9 @@
     <orderEntry type="library" name="Maven: net.sourceforge.dynamicreports:dynamicreports-googlecharts:5.0.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.velocity:velocity:1.7" level="project" />
     <orderEntry type="library" name="Maven: mysql:mysql-connector-java:5.1.25" level="project" />
+    <orderEntry type="library" name="Maven: junit:junit:4.4" level="project" />
+    <orderEntry type="library" name="Maven: org.testng:testng:6.11" level="project" />
+    <orderEntry type="library" name="Maven: com.beust:jcommander:1.64" level="project" />
+    <orderEntry type="library" name="Maven: org.yaml:snakeyaml:1.17" level="project" />
   </component>
 </module>
