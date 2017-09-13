@@ -80,6 +80,5 @@ public class UsersReport {
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         UsersReport rep = new UsersReport();
         ProjectsReport rep2 = new ProjectsReport();
-        TasksReport rep3 = new TasksReport();
     }
 }

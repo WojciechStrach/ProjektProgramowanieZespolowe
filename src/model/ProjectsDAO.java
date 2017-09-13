@@ -6,7 +6,8 @@ import Utilize.DatabaseHandler;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+import java.util.HashMap;
+import org.json.*;
 
 public class ProjectsDAO {
 
@@ -42,6 +43,50 @@ public class ProjectsDAO {
             System.out.println("Wystąpił błąd podczas wyszukiwania frazy " + title + "Błąd: " + e);
             e.printStackTrace();
 
+            return null;
+        }
+    }
+
+    public static HashMap<String, HashMap<String, Integer>> getProjectsWithDetails() {
+        String selectStmt =
+            "SELECT title,  CONCAT('{\"userTasks\": [', GROUP_CONCAT(json_array(display_name, countY)), ']}') as userTasks FROM" +
+            "    (" +
+            "        SELECT" +
+            "            title," +
+            "            display_name," +
+            "            count(*) AS countY" +
+            "        FROM Tasks AS t" +
+            "            INNER JOIN Projects AS p ON p.project_id = t.project_id" +
+            "            INNER JOIN ProjectsMembers AS pm ON pm.project_id = t.project_id AND pm.user_id = t.user_id" +
+            "            INNER JOIN Users AS u ON pm.user_id = u.user_id" +
+            "        GROUP BY display_name" +
+            "    ) AS x " +
+            "GROUP BY title";
+
+        try {
+            HashMap<String, HashMap<String, Integer>> projectWithDetails = new HashMap<>();
+
+            ResultSet rsProject = DatabaseHandler.databaseExecuteQuery(selectStmt);
+            while(rsProject.next()) {
+                String projectTitle = rsProject.getString("title");
+
+                HashMap<String, Integer> projectUsersAndTaskCount = new HashMap<>();
+                JSONArray projectUsersAndTaskCountArray = new JSONObject(rsProject.getString("userTasks")).getJSONArray("userTasks");
+
+                for (int i = 0; i < projectUsersAndTaskCountArray.length(); i++) {
+                    JSONArray projectUserAndTaskCount = projectUsersAndTaskCountArray.getJSONArray(i);
+                    String userName = (String)projectUserAndTaskCount.get(0);
+                    Integer userTasksCount = (Integer)projectUserAndTaskCount.get(1);
+                    projectUsersAndTaskCount.put(userName, userTasksCount);
+                }
+
+                projectWithDetails.put(projectTitle, projectUsersAndTaskCount);
+
+            }
+            return projectWithDetails;
+
+        } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }
