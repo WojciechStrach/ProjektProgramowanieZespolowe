@@ -9,6 +9,7 @@ public class Session {
     private static StringProperty email;
     private static SimpleObjectProperty<ImageView> avatar;
     private static StringProperty display_name;
+    private static StringProperty password;
 
     //
 
@@ -22,6 +23,12 @@ public class Session {
     public static IntegerProperty userIdProperty() { return user_id; }
 
     //
+    public static void setPassword(String password)
+    {
+        Session.password = new SimpleStringProperty();
+        Session.password.set(password);
+    }
+    public static String getPassword() {return password.get();}
 
     public static String getEmail() { return email.get(); }
 
@@ -55,4 +62,3 @@ public class Session {
     public static SimpleObjectProperty avatarProperty() { return avatar; }
 
 }
-

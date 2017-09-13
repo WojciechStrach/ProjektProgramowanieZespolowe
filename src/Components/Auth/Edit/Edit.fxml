@@ -6,6 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.control.PasswordField?>
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.131" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Components.Auth.Edit.EditController">
    <children>
       <Label layoutX="217.0" layoutY="14.0" prefHeight="30.0" prefWidth="188.0" text="Edycja użytkownika">
@@ -20,9 +21,9 @@
       <Label layoutX="287.0" layoutY="106.0" text="Email" />
       <TextField fx:id="email" layoutX="201.0" layoutY="123.0" prefHeight="25.0" prefWidth="200.0" style="-fx-background-radius: 0;" />
       <Label layoutX="284.0" layoutY="163.0" prefHeight="17.0" prefWidth="42.0" text="Hasło" />
-      <TextField fx:id="password" layoutX="200.0" layoutY="180.0" prefHeight="25.0" prefWidth="200.0" style="-fx-background-radius: 0;" />
+      <PasswordField fx:id="password" layoutX="200.0" layoutY="180.0" prefHeight="25.0" prefWidth="200.0" style="-fx-background-radius: 0;" />
       <Label layoutX="257.0" layoutY="215.0" text="Potwierdź hasło" />
-      <TextField fx:id="rpassword" layoutX="200.0" layoutY="232.0" prefHeight="25.0" prefWidth="200.0" style="-fx-background-radius: 0;" />
+      <PasswordField fx:id="rpassword" layoutX="200.0" layoutY="232.0" prefHeight="25.0" prefWidth="200.0" style="-fx-background-radius: 0;" />
       <Button fx:id="Back" layoutX="26.0" layoutY="16.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="67.0" text="Powrót" />
    </children>
 </AnchorPane>

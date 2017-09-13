@@ -7,6 +7,9 @@ import java.util.*;
 import java.util.concurrent.*;
 import Main.ParentsList;
 import Main.ParentsLoader;
+import Reports.ProjectsReport;
+import Reports.TasksReport;
+import Reports.UsersReport;
 import Service.Session;
 import com.sun.javafx.scene.control.skin.TableHeaderRow;
 import com.sun.javafx.scene.control.skin.TableViewSkinBase;
@@ -83,6 +86,8 @@ public class MainController implements Initializable {
     private Button removeMember;
     @FXML
     private Button logOut;
+    @FXML
+    private Button raports;
 
     private ObservableList<Users> projectMembers;
 
@@ -162,6 +167,16 @@ public class MainController implements Initializable {
     }
 
     private void initUserActions() {
+        raports.setOnAction(event ->{
+            try {
+                new ProjectsReport();
+                new TasksReport();
+                new UsersReport();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+        } );
         logOut.setOnAction(event -> {
             try {
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();

@@ -65,7 +65,7 @@ public class UsersReport {
                     .pageFooter(cmp.pageXofY().setStyle(boldCenteredStyle))
                     .setDataSource(createDataSource())
                     .show()
-                    .toPdf(new FileOutputStream("F:/UsersReport.pdf"));
+                    .toPdf(new FileOutputStream("UsersReport.pdf"));
         } catch (DRException e) {
             e.printStackTrace();
             e.printStackTrace();

@@ -1,5 +1,6 @@
 package Reports;
 
+import static java.sql.JDBCType.NULL;
 import static net.sf.dynamicreports.report.builder.DynamicReports.*;
 import Utilize.DatabaseHandler;
 import net.sf.dynamicreports.report.builder.column.TextColumnBuilder;
@@ -27,17 +28,59 @@ public class TasksReport {
 
     private JRDataSource createDataSource() throws SQLException, ClassNotFoundException {
 
-        String tasksStmt = "SELECT * " +
+        String tasksToDoStmt = "SELECT * " +
                 "FROM tasks " +
-                "WHERE state =" + "TODO";
+                "WHERE state = '" + "TODO" + "';" ;
 
-        ResultSet rsTasks = DatabaseHandler.databaseExecuteQuery(tasksStmt);
+        ResultSet rsTasksToDo = DatabaseHandler.databaseExecuteQuery(tasksToDoStmt);
+
+        int toDoTaskCount = 0;
+
+        while (rsTasksToDo.next()) {
+            ++toDoTaskCount;
+        }
+
+        String tasksDoneStmt = "SELECT * " +
+                "FROM tasks " +
+                "WHERE state = '" + "DONE" + "';" ;
+
+        ResultSet rsTaskDone = DatabaseHandler.databaseExecuteQuery(tasksDoneStmt);
+
+        int doneTaskCount = 0;
+
+        while (rsTaskDone.next()) {
+            ++doneTaskCount;
+        }
+
+        String assignedTaskStmt = "SELECT * " +
+                "FROM tasks " +
+                "WHERE assigned_user_id != " + NULL;
+
+        ResultSet rsTaskAssigned = DatabaseHandler.databaseExecuteQuery(assignedTaskStmt);
+
+        int assignedTaskCount = 0;
+
+        while (rsTaskAssigned.next()){
+            ++assignedTaskCount;
+        }
+
+        String unassignedTaskStmt = "SELECT * " +
+                "FROM tasks " +
+                "WHERE assigned_user_id = " + NULL;
+
+        ResultSet rsTaskUnassigned = DatabaseHandler.databaseExecuteQuery(unassignedTaskStmt);
+
+        int unassignedTaskCount = 0;
+
+        while (rsTaskUnassigned.next()){
+            ++unassignedTaskCount;
+        }
 
         DRDataSource dataSource = new DRDataSource("dataType", "quantity");
-        dataSource.add("Tasks ongoing",1);
-        dataSource.add("Tasks finished",1);
-        dataSource.add("Tasks assigned",1);
-        dataSource.add("Tasks unassigned",1);
+        dataSource.add("Tasks todo",toDoTaskCount);
+        dataSource.add("Tasks finished",doneTaskCount);
+        dataSource.add("Tasks assigned",assignedTaskCount);
+        dataSource.add("Tasks unassigned",unassignedTaskCount);
         return  dataSource;
     }
 

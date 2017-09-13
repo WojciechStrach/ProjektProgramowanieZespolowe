@@ -16,7 +16,7 @@
       <Button layoutX="262.0" layoutY="109.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" text="Zaloguj" fx:id="login"/>
       <Button layoutX="263.0" layoutY="142.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" text="Zarejestruj" fx:id="register" />
       <Label layoutX="286.0" layoutY="57.0" text="v0.5a" />
-      <Hyperlink layoutX="277.0" layoutY="183.0" text="GitHub" />
+      <!--<Hyperlink layoutX="277.0" layoutY="183.0" text="GitHub" />-->
       <Separator layoutX="150.0" layoutY="74.0" prefHeight="6.0" prefWidth="300.0" />
    </children>
 </AnchorPane>

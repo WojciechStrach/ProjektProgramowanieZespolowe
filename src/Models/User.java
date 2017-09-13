@@ -21,6 +21,7 @@ public class User {
 //            Session.setUserId(resultSet.getInt("user_id"));
             Session.setEmail(resultSet.getString("email"));
             Session.setDisplayName(resultSet.getString("display_name"));
+            Session.setPassword(resultSet.getString("password"));
             InputStream x = resultSet.getBinaryStream("avatar");
             try {
                 if (x == null) {

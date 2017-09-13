@@ -6,13 +6,11 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 
-<?import javafx.scene.control.ListCell?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.image.ImageView?>
 <AnchorPane id="AnchorPane" prefHeight="632.0" prefWidth="1159.0" xmlns="http://javafx.com/javafx/8.0.131" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Components.Main.MainController">
     <children>
         <Label fx:id="label" layoutX="126" layoutY="120" minHeight="16" minWidth="69" />
@@ -20,12 +18,12 @@
             <children>
             <Pane prefHeight="43.0" prefWidth="278.0">
                <children>
-                  <ImageView fx:id="loggedUserAvatar" layoutX="17.0" layoutY="8.0" fitWidth="28.0" fitHeight="28.0" style="-fx-background-color: black;"></ImageView>
-                  <Label fx:id="userName" layoutX="53.0" layoutY="13.0" text="UserName" style="-fx-font-weight: bold;"/>
+                  <ImageView fx:id="loggedUserAvatar" fitHeight="28.0" fitWidth="28.0" layoutX="17.0" layoutY="8.0" style="-fx-background-color: black;" />
+                  <Label fx:id="userName" layoutX="53.0" layoutY="13.0" style="-fx-font-weight: bold;" text="UserName" />
                </children>
             </Pane>
-                <Label layoutX="278.0" prefHeight="25.0" layoutY="9.0">Wybór projektu: </Label>
-                <ComboBox fx:id="projects" layoutX="390.0" style="-fx-background-radius: 0;" layoutY="9.0" prefWidth="170.0" prefHeight="25.0">
+                <Label layoutX="278.0" layoutY="9.0" prefHeight="25.0">Wybór projektu: </Label>
+                <ComboBox fx:id="projects" layoutX="390.0" layoutY="9.0" prefHeight="25.0" prefWidth="170.0" style="-fx-background-radius: 0;">
                     <items>
                         <FXCollections fx:factory="observableArrayList">
                         </FXCollections>
@@ -37,26 +35,27 @@
         </Pane>
         <Pane layoutY="40.0" prefHeight="590.0" prefWidth="278.0">
          <children>
-            <Label layoutX="14.0" layoutY="20.0" prefHeight="17.0" prefWidth="250.0" text="CZŁONKOWIE" alignment="CENTER" style="-fx-font-weight: bold;"/>
+            <Label alignment="CENTER" layoutX="14.0" layoutY="20.0" prefHeight="17.0" prefWidth="250.0" style="-fx-font-weight: bold;" text="CZŁONKOWIE" />
             <ListView fx:id="projectUserList" layoutX="15.0" layoutY="50.0" prefHeight="459.0" prefWidth="250.0">
                 <FXCollections fx:id="projectUserCollection" fx:factory="observableArrayList">
                 <String fx:value="Wybierz projekt z listy" />
                 </FXCollections>
             </ListView>
-             <Button fx:id="addMember" layoutX="15.0" layoutY="519.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="250.0" text="Dodaj członka projektu" textAlignment="CENTER" style="-fx-background-radius: 0;"/>
-            <Button fx:id="removeMember" layoutX="15.0" layoutY="554.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="250.0" text="Usuń członka projektu" style="-fx-background-radius: 0;"/>
+             <Button fx:id="addMember" layoutX="15.0" layoutY="519.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="250.0" style="-fx-background-radius: 0;" text="Dodaj członka projektu" textAlignment="CENTER" />
+            <Button fx:id="removeMember" layoutX="15.0" layoutY="554.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="250.0" style="-fx-background-radius: 0;" text="Usuń członka projektu" />
          </children>
         </Pane>
-        <Label layoutX="280.0" layoutY="60" prefWidth="290.0" alignment="CENTER" style="-fx-font-weight: bold;">DO ZROBIENIA</Label>
+        <Label alignment="CENTER" layoutX="280.0" layoutY="60" prefWidth="290.0" style="-fx-font-weight: bold;">DO ZROBIENIA</Label>
         <TableView fx:id="tasksToDoTableView" layoutX="280.0" layoutY="90" prefHeight="489.0" prefWidth="289.0" />
-        <Label layoutX="570.0" layoutY="60" prefWidth="290.0" alignment="CENTER" style="-fx-font-weight: bold">GOTOWE DO ANALIZY</Label>
+        <Label alignment="CENTER" layoutX="570.0" layoutY="60" prefWidth="290.0" style="-fx-font-weight: bold">GOTOWE DO ANALIZY</Label>
         <TableView fx:id="tasksToReviewTableView" layoutX="569.0" layoutY="90" prefHeight="489.0" prefWidth="289.0" />
-        <Label layoutX="860.0" layoutY="60" prefWidth="290.0" alignment="CENTER" style="-fx-font-weight: bold">WYKONANE</Label>
-        <TableView fx:id="tasksDoneTableView" layoutX="858.0" layoutY="90" prefHeight="489.0" prefWidth="289.0"/>
+        <Label alignment="CENTER" layoutX="860.0" layoutY="60" prefWidth="290.0" style="-fx-font-weight: bold">WYKONANE</Label>
+        <TableView fx:id="tasksDoneTableView" layoutX="858.0" layoutY="90" prefHeight="489.0" prefWidth="289.0" />
 
       <Button fx:id="addTask" layoutX="280.0" layoutY="594.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="118.0" style="-fx-background-radius: 0;" text="Dodaj zadanie" />
       <Button fx:id="removeTask" layoutX="405.0" layoutY="594.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="118.0" style="-fx-background-radius: 0;" text="Usuń zadanie" />
       <Button fx:id="editTask" layoutX="530.0" layoutY="594.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="118.0" style="-fx-background-radius: 0;" text="Edytuj zadanie" />
-      <Button fx:id="logOut" layoutX="1065.0" layoutY="594.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="80.0" text="Wyloguj" style="-fx-background-radius: 0;"/>
+      <Button fx:id="logOut" layoutX="1065.0" layoutY="594.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="80.0" style="-fx-background-radius: 0;" text="Wyloguj" />
+      <Button fx:id="raports" layoutX="860.0" layoutY="594.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="197.0" text="Wygeneruj raport" />
     </children>
 </AnchorPane>
