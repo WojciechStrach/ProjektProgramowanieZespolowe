@@ -451,7 +451,7 @@ public class MainController implements Initializable {
         dialog.setTitle("Edycja zadania");
         dialog.setHeaderText("Edycja zadania");
 
-        ButtonType loginButtonType = new ButtonType("Update", ButtonBar.ButtonData.OK_DONE);
+        ButtonType loginButtonType = new ButtonType("Aktualizuj", ButtonBar.ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
 
         GridPane grid = new GridPane();
@@ -460,12 +460,12 @@ public class MainController implements Initializable {
         grid.setPadding(new Insets(20, 150, 10, 10));
 
         TextField usernameTextField = new TextField(task.getDescription());
-        usernameTextField.setPromptText("Task description");
+        usernameTextField.setPromptText("Opis zadania");
 
         ComboBox<TaskState> stateComboBox = new ComboBox();
         stateComboBox.getSelectionModel().select(task.getState());
         stateComboBox.setItems( FXCollections.observableArrayList( TaskState.values()));
-        stateComboBox.setPromptText("Task stateComboBox");
+        stateComboBox.setPromptText("Status zadania ");
 
         ComboBox<Users> assignedUserComboBox = new ComboBox();
         try {
@@ -483,13 +483,13 @@ public class MainController implements Initializable {
         Users tempUser = new Users();
         projectMembers.add(tempUser);
         assignedUserComboBox.setItems(projectMembers);
-        assignedUserComboBox.setPromptText("Task stateComboBox");
+        assignedUserComboBox.setPromptText("Status zadania ");
 
-        grid.add(new Label("Username:"), 0, 0);
+        grid.add(new Label("Nazwa zadania:"), 0, 0);
         grid.add(usernameTextField, 1, 0);
-        grid.add(new Label("State:"), 0, 1);
+        grid.add(new Label("Status:"), 0, 1);
         grid.add(stateComboBox, 1, 1);
-        grid.add(new Label("Assigned user:"), 0, 2);
+        grid.add(new Label("Przypisany użytkownik:"), 0, 2);
         grid.add(assignedUserComboBox, 1, 2);
 
         dialog.getDialogPane().setContent(grid);
@@ -549,7 +549,7 @@ public class MainController implements Initializable {
         } else if(task.getState().name().equals(TaskState.TOREVIEW.name())) {
             projectToReviewTaskCollection.add(task);
         } else {
-            System.out.println("Undefined task state");
+            System.out.println("Niezdefiniowany status zadania");
             System.exit(0);
         }
     }
@@ -592,7 +592,7 @@ public class MainController implements Initializable {
 //        taskNameColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
 //        taskNameColumn.setPrefWidth((tableView.getPrefWidth() - avatarColumnWidth)/2 - 5); // todo
 
-        TableColumn<Tasks, TextFlow> taskUserNameColumn = new TableColumn<>("Task");
+        TableColumn<Tasks, TextFlow> taskUserNameColumn = new TableColumn<>("Zadanie");
 
         taskUserNameColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Tasks, TextFlow>, ObservableValue<TextFlow>>() {
             @Override
