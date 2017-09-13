@@ -48,11 +48,11 @@
          </children>
         </Pane>
         <Label layoutX="280.0" layoutY="60" prefWidth="290.0" alignment="CENTER" style="-fx-font-weight: bold;">TO DO</Label>
-        <TableView fx:id="tasksToDoTableView" layoutX="280.0" layoutY="90" prefHeight="489.0" prefWidth="290.0" />
+        <TableView fx:id="tasksToDoTableView" layoutX="280.0" layoutY="90" prefHeight="489.0" prefWidth="289.0" />
         <Label layoutX="570.0" layoutY="60" prefWidth="290.0" alignment="CENTER" style="-fx-font-weight: bold">READY TO REVIEW</Label>
-        <TableView fx:id="tasksToReviewTableView" layoutX="569.0" layoutY="90" prefHeight="489.0" prefWidth="290.0" />
+        <TableView fx:id="tasksToReviewTableView" layoutX="569.0" layoutY="90" prefHeight="489.0" prefWidth="289.0" />
         <Label layoutX="860.0" layoutY="60" prefWidth="290.0" alignment="CENTER" style="-fx-font-weight: bold">DONE</Label>
-        <TableView fx:id="tasksDoneTableView" layoutX="858.0" layoutY="90" prefHeight="489.0" prefWidth="290.0"/>
+        <TableView fx:id="tasksDoneTableView" layoutX="858.0" layoutY="90" prefHeight="489.0" prefWidth="289.0"/>
 
       <Button fx:id="addTask" layoutX="280.0" layoutY="594.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="118.0" style="-fx-background-radius: 0;" text="Dodaj zadanie" />
       <Button fx:id="removeTask" layoutX="405.0" layoutY="594.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="118.0" style="-fx-background-radius: 0;" text="Usuń zadanie" />

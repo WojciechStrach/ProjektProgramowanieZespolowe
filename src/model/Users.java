@@ -72,9 +72,6 @@ public class Users {
     //
 
     public ImageView getAvatar() {
-        if (avatar.get() == null) {
-            return new ImageView(new Image("images/defaultAvatar.png"));
-        }
         return avatar.get();
     }
 

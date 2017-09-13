@@ -34,7 +34,10 @@ public class UsersDAO {
             InputStream x = rs.getBinaryStream("avatar");
             try {
                 if (x == null) {
-                    user.setAvatar(null);
+                    ImageView imageView = new ImageView(new Image("images/defaultAvatar.png"));
+                    imageView.setFitHeight(50);
+                    imageView.setFitWidth(50);
+                    user.setAvatar(imageView);
                 } else {
                     BufferedImage bImageFromConvert = ImageIO.read(x);
                     Image image = SwingFXUtils.toFXImage(bImageFromConvert, null);
@@ -53,35 +56,12 @@ public class UsersDAO {
     }
 
     private static Users getUserFromResultSet(ResultSet rs) throws SQLException {
-
-        Users user = null;
-
-        if (rs.next()) {
-
-            user = new Users();
-
-            user.setUserId(rs.getInt("user_id"));
-            user.setEmail(rs.getString("email"));
-            user.setPassword(rs.getString("password"));
-            user.setDisplayName(rs.getString("display_name"));
-            InputStream x = rs.getBinaryStream("avatar");
-            try {
-                if (x == null) {
-                    user.setAvatar(null);
-                } else {
-                    BufferedImage bImageFromConvert = ImageIO.read(x);
-                    Image image = SwingFXUtils.toFXImage(bImageFromConvert, null);
-                    ImageView imageView = new ImageView(image);
-                    imageView.setFitHeight(50);
-                    imageView.setFitWidth(50);
-                    user.setAvatar(imageView);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        try {
+            return UsersDAO.getUsersList(rs).get(0);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
-
-        return user;
+        return null;
     }
 
     public static ObservableList<Users> getAllUsers () throws SQLException, ClassNotFoundException {
