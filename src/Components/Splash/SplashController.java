@@ -38,10 +38,6 @@ public class SplashController implements Initializable {
 
 
 
-        DatabaseHandler.setDatabaseUrl(DatabaseData.databaseUrl);
-        DatabaseHandler.setDatabaseName(DatabaseData.databaseName);
-        DatabaseHandler.setUsername(DatabaseData.databaseLogin);
-        DatabaseHandler.setPassword(DatabaseData.databasePassword);
 
 //        DatabaseHandler.setDatabaseUrl("localhost");
 //        DatabaseHandler.setDatabaseName("kira");

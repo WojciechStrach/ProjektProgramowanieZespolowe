@@ -6,26 +6,10 @@ import java.sql.*;
 public class DatabaseHandler {
 
     private static Connection conn = null;
-    private static String databaseUrl = null;
-    private static String databaseName = null;
-    private static String username = null;
-    private static String password = null;
-
-    public static void setDatabaseUrl(String databaseUrl){
-        DatabaseHandler.databaseUrl = databaseUrl;
-    }
-
-    public static void setDatabaseName(String databaseName){
-        DatabaseHandler.databaseName = databaseName;
-    }
-
-    public static void  setUsername(String username){
-        DatabaseHandler.username = username;
-    }
-
-    public static void setPassword(String password){
-        DatabaseHandler.password = password;
-    }
+    private static String databaseUrl = DatabaseData.databaseUrl;
+    private static String databaseName = DatabaseData.databaseName;
+    private static String username = DatabaseData.databaseLogin;
+    private static String password = DatabaseData.databasePassword;
 
 
     private static void databaseConnect() throws SQLException, ClassNotFoundException {

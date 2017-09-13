@@ -1,7 +1,8 @@
-DROP TABLE ProjectsMembers;
-DROP TABLE Tasks;
-DROP TABLE Users;
-DROP TABLE Projects;
+DROP TABLE IF EXISTS ProjectsMembers;
+DROP TABLE IF EXISTS Tasks;
+DROP TABLE IF EXISTS Users;
+DROP TABLE IF EXISTS Projects;
+
 
 CREATE TABLE IF NOT EXISTS Users (
     user_id INTEGER NOT NULL AUTO_INCREMENT,
@@ -27,8 +28,7 @@ CREATE TABLE IF NOT EXISTS ProjectsMembers (
     admin BOOLEAN DEFAULT FALSE,
     dateAndTime DATETIME NOT NULL,
     PRIMARY KEY(projectMember_id),
-    FOREIGN KEY(project_id) references Projects(project_id),
-    FOREIGN KEY(user_id) references Users(user_id)
+    FOREIGN KEY(project_id) references Projects(project_id)
 );
 
 CREATE TABLE IF NOT EXISTS Tasks (
