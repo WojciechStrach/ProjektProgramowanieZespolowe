@@ -1,5 +1,6 @@
 package model;
 
+import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import Utilize.DatabaseHandler;
@@ -7,6 +8,7 @@ import Utilize.DatabaseHandler;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.DateTimeException;
@@ -159,6 +161,8 @@ public class TasksDAO {
 
         try {
             DatabaseHandler.databaseExecuteUpdate(updateStmt);
+        } catch (SQLIntegrityConstraintViolationException e) {
+            throw new SQLIntegrityConstraintViolationException();
         } catch (Exception e) {
             System.out.print("Nie udało się dodać zadania, nie patrz na stack trace bo dostaniesz raka " + e);
             e.printStackTrace();
@@ -176,6 +180,8 @@ public class TasksDAO {
                 " WHERE task_id = " + taskId;
         try {
             DatabaseHandler.databaseExecuteUpdate(updateStmt);
+        } catch (SQLIntegrityConstraintViolationException e) {
+            throw new SQLIntegrityConstraintViolationException();
         } catch (Exception e) {
             System.out.print("Nie udało się zmienić zadania, nie patrz na stack trace bo dostaniesz raka (przy dodawaniu taska podobno można dostać raka, zostawie tu też na wszelki wypadek, ufam kolegom z teamu)" + e);
             e.printStackTrace();

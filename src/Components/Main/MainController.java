@@ -3,6 +3,7 @@ package Components.Main;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.*;
 import java.util.concurrent.*;
 import Main.ParentsList;
@@ -11,6 +12,7 @@ import Reports.ProjectsReport;
 import Reports.TasksReport;
 import Reports.UsersReport;
 import Service.Session;
+import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
 import com.sun.javafx.scene.control.skin.TableHeaderRow;
 import com.sun.javafx.scene.control.skin.TableViewSkinBase;
 import javafx.application.Platform;
@@ -199,12 +201,17 @@ public class MainController implements Initializable {
                     if (result.isPresent()) {
                         try {
                             TasksDAO.insertTask(currentProject.getProjectId(), Session.getUserId(), result.get(), 1);
+                        } catch (SQLIntegrityConstraintViolationException e) {
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Błąd dodania zadania");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Nie można dodać tego zadania, zadanie z podaną nazwą \"" + result.get() + "\" już istnieje");
+                            alert.showAndWait();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-
                     }
-                }else {
+                } else {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Błąd");
                     alert.setHeaderText("Nie wybrano projektu");
@@ -238,6 +245,12 @@ public class MainController implements Initializable {
                     result.ifPresent(task -> {
                         try {
                             TasksDAO.updateTask(selectedFinal.getTaskId(), task[0].toString(), task[1].toString(), (Integer) task[2]);
+                        } catch (SQLIntegrityConstraintViolationException e) {
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Błąd edycji zadania");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Nie można zaktualizować tego zadania, zadanie z podaną nazwą \"" + result.get() + "\" już istnieje");
+                            alert.showAndWait();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

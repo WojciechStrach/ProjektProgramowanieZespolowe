@@ -41,7 +41,8 @@ CREATE TABLE IF NOT EXISTS Tasks (
     state ENUM('TOREVIEW', 'TODO', 'DONE') NOT NULL,
     PRIMARY KEY(task_id),
     FOREIGN KEY(project_id) references Projects(project_id),
-    FOREIGN KEY(user_id) references Users(user_id)
+    FOREIGN KEY(user_id) references Users(user_id),
+    UNIQUE(description(100), project_id)
 );
 
 

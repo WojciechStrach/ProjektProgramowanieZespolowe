@@ -82,10 +82,12 @@ public class DatabaseHandler {
                 databaseConnect();
                 stmt = conn.createStatement();
                 stmt.executeUpdate(sqlStmt);
+            } catch (SQLIntegrityConstraintViolationException e) {
+                throw new SQLIntegrityConstraintViolationException();
             } catch (SQLException e) {
                 System.out.println("Nie udało się zaktualizwoać danych w bazie : " + e);
                 e.printStackTrace();
-            } catch(ClassNotFoundException e){
+            } catch(ClassNotFoundException e) {
                 System.out.println("Całkowicie nic się nie udało");
                 e.printStackTrace();
             } finally {
