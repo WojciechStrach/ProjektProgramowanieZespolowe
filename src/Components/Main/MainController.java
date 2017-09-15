@@ -352,8 +352,11 @@ public class MainController implements Initializable {
 
                         for (int i=0; i<allUsers.size(); i++){
                             for(int j=0; j<temp.size(); j++){
-                                if(allUsers.get(i).getDisplayName().equals(temp.get(j))){
+                                Users user = allUsers.get(i);
+                                if(user.getDisplayName().equals(temp.get(j))){
                                     allUsers.remove(i);
+                                    i--;
+                                    break;
                                 }
                             }
                         }
